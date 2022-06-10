@@ -1,7 +1,9 @@
+import Admin from "./pages/Admin";
+
 function App() {
   return (
     <>
-      <h1>Mini Website</h1>
+      <h1 className="text-3xl font-bold underline">Mini Website</h1>
     </>
   );
 }
