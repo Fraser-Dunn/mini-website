@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
-const Navbar = () => {
+const Navbar = (props) => {
   const [nav, setNav] = useState(false);
   const handleClick = () => setNav(!nav);
 
@@ -50,9 +50,11 @@ const Navbar = () => {
           </div>
 
           {/* Admin Button needs to be hidden at 1050px */}
-          <div className="hidden lg:flex pr-4">
-            <button className="px-4 py-3 ml-6">Admin</button>
-          </div>
+          <Link to={props.isAuthed ? "/admin" : "/login"}>
+            <div className="hidden lg:flex pr-4">
+              <button className="px-4 py-3 ml-6">Admin</button>
+            </div>
+          </Link>
 
           <div className="md2:hidden mr-4" onClick={handleClick}>
             {!nav ? (
