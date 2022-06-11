@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import MiniCard from "../components/MiniCard";
+import MiniGrid from "../components/MiniGrid";
 import strahd from "../assets/strahd.json";
 
 const Home = () => {
   return (
     <>
       <div>
-        <MiniCard mini={strahd} />
+        <MiniGrid />
       </div>
     </>
   );

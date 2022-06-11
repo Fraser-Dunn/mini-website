@@ -1,7 +1,7 @@
 const MiniCard = (props) => {
   return (
     <>
-      <div className="items-center text-center mt-24 ml-12 max-w-fit outline outline-black px-2 py-2">
+      <div className="items-center text-center w-[240px] h-[260px] outline outline-black px-2 py-2">
         <div>
           <h1>{props.mini.name}</h1>
           <p>{props.mini.size}</p>
