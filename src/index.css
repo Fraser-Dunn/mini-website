@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+    @apply bg-primary text-primary
+  }
+  
+  .rounded-div {
+    @apply border border-secondary rounded-2xl shadow-xl bg-primary px-2 max-w-[1140px] w-full mx-auto
+  }
+  
+  
+  @layer base {
+    button {
+        @apply text-orange-400 border text-lg bg-white border-white hover:bg-transparent hover:text-white rounded-md
+    }
+} 
+
