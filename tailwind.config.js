@@ -9,6 +9,8 @@ module.exports = {
         // => @media (min-width: 1050px) { ... }
         md2: "910px",
         // => @media (min-width: 910px) {...}
+        md3: "720px",
+        // => @media (min-width: 720px) {...}
       },
       backgroundColor: {
         primary: "var(--color-bg-primary)",

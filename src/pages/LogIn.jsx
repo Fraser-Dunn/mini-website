@@ -3,7 +3,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import ArrowRightIcon from "../assets/svg/keyboardArrowRightIcon.svg";
-import visibilityIcon from "../assets/svg/visibilityIcon.svg";
+import visibilityIconWhite from "../assets/svg/visibilityIconWhite.svg";
+import riseOfTiamat from "../assets/img/riseOfTiamat.jpg";
 
 function LogIn(props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -46,40 +47,58 @@ function LogIn(props) {
 
   return (
     <>
-      <div className="pageContainer">
-        <form onSubmit={onSubmit}>
-          <input
-            type="email"
-            placeholder="Email"
-            id="email"
-            value={email}
-            onChange={onChange}
-          />
+      <div className="body-base p-9">
+        <div className="flex max-w-5xl">
+          <div className="container rounded-l-md bg-orange-400 shadow-lg py-36 px-7 ">
+            <div className="text-center text-2xl text-white font-bold mb-8">
+              <h2>Login</h2>
+            </div>
+            <form className="flex flex-col" onSubmit={onSubmit}>
+              <label className="text-white pt-4">Email:</label>
+              <input
+                className="min-w-[322px]"
+                type="email"
+                placeholder=""
+                id="email"
+                value={email}
+                onChange={onChange}
+              />
 
-          <div className="passwordInputDiv">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              id="password"
-              value={password}
-              onChange={onChange}
-            />
+              <label className="text-white pt-4">Password:</label>
+              <input
+                className="min-w-[322px]"
+                type={showPassword ? "text" : "password"}
+                placeholder=""
+                id="password"
+                value={password}
+                onChange={onChange}
+              />
+              <img
+                src={visibilityIconWhite}
+                alt="show password"
+                className="w-5 pt-1"
+                onClick={() => setShowPassword((prevState) => !prevState)}
+              />
 
+              <div className="self-center flex">
+                <p className="items-center text-white justify-center mr-2">
+                  Sign In
+                </p>
+                <button>
+                  <img className="w-5" src={ArrowRightIcon} alt="arrow" />
+                </button>
+              </div>
+            </form>
+          </div>
+          {/* div needs to be invisible at 270px width*/}
+          <div className="hidden md3:flex ">
             <img
-              src={visibilityIcon}
-              alt="show password"
-              className="showPassword"
-              onClick={() => setShowPassword((prevState) => !prevState)}
+              className="w-full h-full object-cover"
+              src={riseOfTiamat}
+              alt="/"
             />
           </div>
-
-          <div>
-            <p>Sign In</p>
-            <button>
-              <img src={ArrowRightIcon} alt="arrow" />
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </>
   );
