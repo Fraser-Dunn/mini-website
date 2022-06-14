@@ -19,39 +19,42 @@ const Navbar = (props) => {
             </Link>
             <ul className="hidden md2:flex text-xl text-white px-4">
               <li>
-                <Link className="px-8" to="/">
+                <Link className="header-link" to="/">
                   Home
                 </Link>
               </li>
               <li>
-                <Link className="px-8" to="/sets">
+                <Link className="header-link" to="/sets">
                   Sets
                 </Link>
               </li>
               <li>
-                <Link className="px-8" to="/newin">
+                <Link className="header-link" to="/newin">
                   New
                 </Link>
               </li>
               <li>
-                <Link className="px-8" to="/gallery">
+                <Link className="header-link" to="/gallery">
                   Gallery
                 </Link>
               </li>
             </ul>
           </div>
-          <div>
-            {/* Search Bar needs to be hidden below 910px*/}
+          {/* Search Bar */}
+          <div className="justify-items-start">
             <input
-              className="flex w-max rounded-md text-lg px-2 py-0.5 outline-none mr-6"
+              className="search-bar-large w-max rounded-md text-lg px-2 py-0.5 outline-none mr-6"
               type="text"
               placeholder="Search here..."
             />
           </div>
 
-          {/* Admin Button needs to be hidden at 1050px */}
-          <Link to={props.isAuthed ? "/admin" : "/login"}>
-            <div className="hidden lg:flex pr-4">
+          {/* Admin Button needs to be hidden at 910px */}
+          <Link
+            className="admin-button-nav-hidden"
+            to={props.isAuthed ? "/admin" : "/login"}
+          >
+            <div className="flex pr-4">
               <button className="px-4 py-3 ml-6">Admin</button>
             </div>
           </Link>
@@ -67,7 +70,9 @@ const Navbar = (props) => {
 
         <ul
           className={
-            !nav ? "hidden" : "absolute bg-orange-400 w-full px-8 pb-3"
+            !nav
+              ? "hidden"
+              : "absolute bg-orange-400 w-full px-8 pb-3 flex flex-col"
           }
         >
           <li className="border-b-2 border-white w-full">
@@ -90,10 +95,20 @@ const Navbar = (props) => {
               Gallery
             </Link>
           </li>
-
-          <div className="flex justify-end my-4">
-            <button className="px-2 py-1 mb-2">Admin</button>
-          </div>
+          <li className="border-b-2 border-white w-full">
+            <Link
+              onClick={handleClick}
+              className="text-white"
+              to={props.isAuthed ? "/admin" : "/login"}
+            >
+              Admin
+            </Link>
+          </li>
+          <input
+            className="search-bar-drop px-2 py-1 mb-1 w-max rounded-md outline-none"
+            type="text"
+            placeholder="Search here..."
+          />
         </ul>
       </div>
       <div className="headerOffset"></div>

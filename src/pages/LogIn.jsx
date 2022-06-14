@@ -47,16 +47,18 @@ function LogIn(props) {
 
   return (
     <>
-      <div className="body-base p-9">
-        <div className="flex max-w-5xl">
-          <div className="container rounded-l-md bg-orange-400 shadow-lg py-36 px-7 ">
-            <div className="text-center text-2xl text-white font-bold mb-8">
+      <div className="body-base">
+        <div className="container shadow-xl">
+          <div className="card-container bg-orange-400 py-36 px-7 ">
+            <div className="text-center text-3xl text-white font-bold mb-8">
               <h2>Login</h2>
             </div>
             <form className="flex flex-col" onSubmit={onSubmit}>
-              <label className="text-white pt-4">Email:</label>
+              <label className="text-white pt-4 text-lg font-semibold">
+                Email:
+              </label>
               <input
-                className="min-w-[322px]"
+                className="input-w p-[2px] rounded-sm outline-none"
                 type="email"
                 placeholder=""
                 id="email"
@@ -64,9 +66,11 @@ function LogIn(props) {
                 onChange={onChange}
               />
 
-              <label className="text-white pt-4">Password:</label>
+              <label className="text-white pt-4 text-lg font-semibold">
+                Password:
+              </label>
               <input
-                className="min-w-[322px]"
+                className="input-w p-[2px] rounded-sm outline-none"
                 type={showPassword ? "text" : "password"}
                 placeholder=""
                 id="password"
@@ -81,7 +85,7 @@ function LogIn(props) {
               />
 
               <div className="self-center flex">
-                <p className="items-center text-white justify-center mr-2">
+                <p className="items-center text-white text-xl justify-center mr-2">
                   Sign In
                 </p>
                 <button>
@@ -91,7 +95,7 @@ function LogIn(props) {
             </form>
           </div>
           {/* div needs to be invisible at 270px width*/}
-          <div className="hidden md3:flex ">
+          <div className="hidden md3:flex">
             <img
               className="w-full h-full object-cover"
               src={riseOfTiamat}
