@@ -74,12 +74,16 @@ const Admin = () => {
 
         <main className="form-main bg-white">
           <form className="form-actual" onSubmit={onSubmit}>
-            <div className="form-content">
+            <div className="form-content-grid bg-orange-400 rounded-md">
               {/* name */}
               <div className="name-div">
                 <div className="form-name-label-div bg-orange-400 rounded-md">
                   <label className="form-name-label">Name:</label>
-                  <input className="form-name-input rounded-md" type="text" />
+                  <input
+                    placeholder="Enter name here..."
+                    className="form-name-input rounded-md"
+                    type="text"
+                  />
                 </div>
               </div>
 
@@ -87,9 +91,155 @@ const Admin = () => {
               <div className="name-div">
                 <div className="form-name-label-div bg-orange-400 rounded-md">
                   <label className="form-name-label">Size:</label>
-                  <input className="form-name-input rounded-md" type="text" />
+                  <input
+                    placeholder="Enter size here..."
+                    className="form-name-input rounded-md"
+                    type="text"
+                  />
                 </div>
               </div>
+
+              {/* type */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Creature Type:</label>
+                  <input
+                    placeholder="Enter creature type here..."
+                    className="form-name-input rounded-md"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              {/* race */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Race:</label>
+                  <input
+                    placeholder="Enter race here..."
+                    className="form-name-input rounded-md"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              {/* gender */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Gender:</label>
+                  <input
+                    placeholder="Enter gender here..."
+                    className="form-name-input rounded-md"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              {/* number */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Number:</label>
+                  <input
+                    placeholder="Enter set number here..."
+                    className="form-name-input rounded-md"
+                    type="number"
+                  />
+                </div>
+              </div>
+
+              {/* set */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Set:</label>
+                  <input
+                    placeholder="Enter set here..."
+                    className="form-name-input rounded-md"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              {/* rarity */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Rarity:</label>
+                  <input
+                    placeholder="Enter rarity here..."
+                    className="form-name-input rounded-md"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              {/* quantity */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Quantity:</label>
+                  <input
+                    placeholder="Enter quantity here..."
+                    className="form-name-input rounded-md"
+                    type="number"
+                  />
+                </div>
+              </div>
+
+              {/* maker */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Maker:</label>
+                  <input
+                    placeholder="Enter maker here..."
+                    className="form-name-input rounded-md"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              {/* brand */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Brand:</label>
+                  <input
+                    placeholder="Enter brand here..."
+                    className="form-name-input rounded-md"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              {/* damaged */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Damaged?:</label>
+                  <button></button>
+                </div>
+              </div>
+
+              {/* statblock */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Statblock:</label>
+                  <input
+                    placeholder="Enter statblock link here..."
+                    className="form-name-input rounded-md"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              {/* image */}
+              <div className="name-div">
+                <div className="form-name-label-div bg-orange-400 rounded-md">
+                  <label className="form-name-label">Image:</label>
+                  <input
+                    className="form-name-input rounded-md"
+                    type="file"
+                    max="1"
+                    accept=".jpg,.png,.jpeg"
+                  />
+                </div>
+              </div>
+              <button type="submit">Upload Mini</button>
             </div>
           </form>
         </main>

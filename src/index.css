@@ -89,10 +89,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding:0 36px;
+  padding: 50px 36px;
   height: 100%;
   overflow: auto;
-  padding-top: 80px;
 }
 
 .form-container {
@@ -128,10 +127,9 @@
   width: 100%;
 }
 
-.form-content {
-  display: flex;
-  flex-direction: column;
-  outline: solid orange;
+.form-content-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
   padding: 12px;
   width: 100%;
   align-items: center;
@@ -195,6 +193,18 @@
     width:100vw;
     height: 100%;
   }
+}
+
+@media only screen and (max-width: 792px) {
+  .form-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .name-div {
+    justify-self: center;
+  }
+
+
 }
 
 @media only screen and (max-width:465px) {
