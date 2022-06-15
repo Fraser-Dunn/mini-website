@@ -103,6 +103,7 @@
   width: 100%;
   margin-bottom: 8px;
   padding: 0 0 20px 0;
+  max-width: 828px;
 }
 
 .form-header {
@@ -133,13 +134,14 @@
   outline: solid orange;
   padding: 12px;
   width: 100%;
+  align-items: center;
 }
 
 .name-div {
   display: flex;
-  align-items: center;
   padding: 8px;
   margin: 4px 0;
+  width: 329px;
 }
 
 .form-name-label-div {
@@ -147,7 +149,7 @@
   flex-direction: column;
   padding: 8px;
   margin-right: 4px;
-  width:fit-content;
+  width: 100%;
 }
 
 .form-name-label {
@@ -155,6 +157,7 @@
   font-weight: bold;
   color: white;
   padding-bottom: 4px;
+  width: 80%;
 }
 
 .form-name-input {
@@ -209,7 +212,8 @@
   }
 
   .name-div {
-    justify-content: center;
+    width: auto;
+    
   }
 }
 
