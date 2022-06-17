@@ -38,7 +38,7 @@ function LogIn(props) {
 
       if (userCredential.user) {
         props.setIsAuthed(true);
-        navigate("/");
+        navigate("/admin");
       }
     } catch (error) {
       toast.error("Bad User Credentials");

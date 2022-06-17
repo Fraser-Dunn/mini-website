@@ -1,7 +1,17 @@
-import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  getSorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  getStorage,
+} from "firebase/storage";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
 
 const Admin = () => {
   const [loading, setLoading] = useState(false);
@@ -61,6 +71,14 @@ const Admin = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    setLoading(true);
+
+    if (images.length > 1) {
+      setLoading(false);
+      toast.error("Max 1 image");
+      return;
+    }
   };
 
   const onMutate = (e) => {
