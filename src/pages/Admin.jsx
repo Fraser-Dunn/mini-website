@@ -140,17 +140,21 @@ const Admin = () => {
               <div className="name-div">
                 <div className="form-name-label-div rounded-md">
                   <label className="form-name-label">Size</label>
-                  <input
-                    placeholder="Enter size here..."
-                    className="form-name-input rounded-md"
-                    type="text"
+                  <select
+                    className="form-size-select"
+                    defaultValue="medium"
+                    name="sizes"
                     id="size"
                     value={size}
                     onChange={onMutate}
-                    maxLength="30"
-                    minLength="3"
-                    required
-                  />
+                  >
+                    <option value="tiny">Tiny</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="huge">Huge</option>
+                    <option value="gargantuan">Gargantuan</option>
+                  </select>
                 </div>
               </div>
 

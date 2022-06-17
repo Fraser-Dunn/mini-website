@@ -247,6 +247,12 @@
   border: 2px solid #ff943c;
 }
 
+.form-size-select {
+  height: 32px;
+  outline: none;
+  border-radius: 6px;
+}
+
 
 /* Media Queries */
 
