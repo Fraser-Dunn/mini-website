@@ -63,7 +63,32 @@ const Admin = () => {
     e.preventDefault();
   };
 
-  const onMutate = (e) => {};
+  const onMutate = (e) => {
+    let boolean = null;
+
+    if (e.target.value === "true") {
+      boolean = true;
+    }
+    if (e.target.value === "false") {
+      boolean = false;
+    }
+
+    // Files
+    if (e.target.files) {
+      setFormData((prevState) => ({
+        ...prevState,
+        images: e.target.files,
+      }));
+    }
+
+    // Text/Booleans/Numbers
+    if (!e.target.files) {
+      setFormData((prevState) => ({
+        ...prevState,
+        [e.target.id]: boolean ?? e.target.value,
+      }));
+    }
+  };
 
   return (
     <div className="body-base-form ">
@@ -83,6 +108,12 @@ const Admin = () => {
                     placeholder="Enter name here..."
                     className="form-name-input rounded-md"
                     type="text"
+                    id="name"
+                    value={name}
+                    onChange={onMutate}
+                    maxLength="30"
+                    minLength="3"
+                    required
                   />
                 </div>
               </div>
@@ -95,6 +126,12 @@ const Admin = () => {
                     placeholder="Enter size here..."
                     className="form-name-input rounded-md"
                     type="text"
+                    id="size"
+                    value={size}
+                    onChange={onMutate}
+                    maxLength="30"
+                    minLength="3"
+                    required
                   />
                 </div>
               </div>
@@ -107,6 +144,12 @@ const Admin = () => {
                     placeholder="Enter creature type here..."
                     className="form-name-input rounded-md"
                     type="text"
+                    id="type"
+                    value={type}
+                    onChange={onMutate}
+                    maxLength="30"
+                    minLength="3"
+                    required
                   />
                 </div>
               </div>
@@ -119,6 +162,12 @@ const Admin = () => {
                     placeholder="Enter race here..."
                     className="form-name-input rounded-md"
                     type="text"
+                    id="race"
+                    value={race}
+                    onChange={onMutate}
+                    maxLength="30"
+                    minLength="3"
+                    required
                   />
                 </div>
               </div>
@@ -131,6 +180,12 @@ const Admin = () => {
                     placeholder="Enter gender here..."
                     className="form-name-input rounded-md"
                     type="text"
+                    id="gender"
+                    value={gender}
+                    onChange={onMutate}
+                    maxLength="30"
+                    minLength="3"
+                    required
                   />
                 </div>
               </div>
@@ -143,6 +198,12 @@ const Admin = () => {
                     placeholder="Enter set number here..."
                     className="form-name-input rounded-md"
                     type="number"
+                    id="number"
+                    value={number}
+                    onChange={onMutate}
+                    min="1"
+                    max="50"
+                    required
                   />
                 </div>
               </div>
@@ -155,6 +216,11 @@ const Admin = () => {
                     placeholder="Enter set here..."
                     className="form-name-input rounded-md"
                     type="text"
+                    id="set"
+                    value={set}
+                    onChange={onMutate}
+                    maxLength="30"
+                    minLength="3"
                   />
                 </div>
               </div>
@@ -167,6 +233,12 @@ const Admin = () => {
                     placeholder="Enter rarity here..."
                     className="form-name-input rounded-md"
                     type="text"
+                    id="rarity"
+                    value={rarity}
+                    onChange={onMutate}
+                    maxLength="30"
+                    minLength="3"
+                    required
                   />
                 </div>
               </div>
@@ -179,6 +251,12 @@ const Admin = () => {
                     placeholder="Enter quantity here..."
                     className="form-name-input rounded-md"
                     type="number"
+                    id="quantity"
+                    value={quantity}
+                    onChange={onMutate}
+                    min="1"
+                    max="50"
+                    required
                   />
                 </div>
               </div>
@@ -191,6 +269,12 @@ const Admin = () => {
                     placeholder="Enter maker here..."
                     className="form-name-input rounded-md"
                     type="text"
+                    id="maker"
+                    value={maker}
+                    onChange={onMutate}
+                    maxLength="30"
+                    minLength="3"
+                    required
                   />
                 </div>
               </div>
@@ -203,6 +287,12 @@ const Admin = () => {
                     placeholder="Enter brand here..."
                     className="form-name-input rounded-md"
                     type="text"
+                    id="brand"
+                    value={brand}
+                    onChange={onMutate}
+                    maxLength="30"
+                    minLength="3"
+                    required
                   />
                 </div>
               </div>
@@ -213,9 +303,35 @@ const Admin = () => {
                   <label className="form-name-label">Damaged</label>
                   <div className="form-button-div">
                     {/* yes */}
-                    <button className="form-button">Yes</button>
+                    <button
+                      className={
+                        damaged ? "form-button" : "form-button-inactive"
+                      }
+                      type="button"
+                      id="damaged"
+                      value={true}
+                      onClick={onMutate}
+                      min="1"
+                      max="50"
+                    >
+                      Yes
+                    </button>
                     {/* no */}
-                    <button className="form-button">No</button>
+                    <button
+                      className={
+                        !damaged && damaged !== null
+                          ? "form-button"
+                          : "form-button-inactive"
+                      }
+                      type="button"
+                      id="damaged"
+                      value={false}
+                      onClick={onMutate}
+                      min="1"
+                      max="50"
+                    >
+                      No
+                    </button>
                   </div>
                 </div>
               </div>
@@ -228,6 +344,12 @@ const Admin = () => {
                     placeholder="Enter statblock link here..."
                     className="form-name-input rounded-md"
                     type="text"
+                    id="statblock"
+                    value={statblock}
+                    onChange={onMutate}
+                    maxLength="30"
+                    minLength="3"
+                    required
                   />
                 </div>
               </div>
@@ -239,8 +361,12 @@ const Admin = () => {
                   <input
                     className="form-name-input-image "
                     type="file"
+                    id="images"
+                    onChange={onMutate}
                     max="1"
                     accept=".jpg,.png,.jpeg"
+                    multiple
+                    required
                   />
                 </div>
               </div>
