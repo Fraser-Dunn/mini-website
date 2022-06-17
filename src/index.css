@@ -133,6 +133,7 @@
   padding: 12px;
   width: 100%;
   align-items: center;
+  justify-items: center;
 }
 
 .name-div {
@@ -140,6 +141,15 @@
   padding: 8px;
   margin: 4px 0;
   width: 329px;
+  height: 98px;
+}
+
+.name-div-damaged {
+  display: flex;
+  padding: 8px;
+  margin: 4px 0;
+  width: 329px;
+  height: 98px;
 }
 
 .form-name-label-div {
@@ -148,12 +158,13 @@
   padding: 8px;
   margin-right: 4px;
   width: 100%;
+  background-color: #f2f4f8;
 }
 
 .form-name-label {
-  font-size: 20px;
-  font-weight: bold;
-  color: white;
+  font-size: 22px;
+  font-weight: 600;
+  color: #ff943c;
   padding-bottom: 4px;
   width: 80%;
 }
@@ -161,6 +172,64 @@
 .form-name-input {
   padding: 4px;
   outline: none;
+}
+
+.form-name-input-image {
+  padding: 2px;
+  outline: none;
+  color: #ff943c;
+  font-weight: 600;
+  font-size: 18px;
+  width: 100%;
+}
+
+.form-name-input-image::-webkit-file-upload-button {
+  background-color: #ff943c ;
+  color: white;
+  border: 0;
+  font-size: 18px;
+  margin-right: 20px;
+}
+
+.form-name-input-image::-webkit-file-upload-button:hover {
+  background-color: white;
+  color: #ff943c;
+}
+
+.form-button-div {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.form-button {
+  color: white;
+  background-color: #ff943c;
+  width: 100%;
+  margin: 2px;
+}
+
+.form-button:hover {
+  color: #ff943c;
+  background-color: white;
+  border: 1px solid #ff943c;
+}
+
+.form-submit-button {
+  background-color: #ff943c;
+  color: white;
+  width: 80%;
+  height: 60px;
+  margin-top: 30px;
+  grid-column: span 2;
+  font-weight: 700;
+  font-size: 26px;
+  padding: 4px 1px;
+}
+
+.form-submit-button:hover {
+  background-color: white;
+  color: #ff943c;
+  border: 2px solid #ff943c;
 }
 
 
@@ -200,6 +269,10 @@
     grid-template-columns: 1fr;
   }
 
+  .form-submit-button {
+    grid-column: span 1;
+  }
+
   .name-div {
     justify-self: center;
   }
@@ -224,6 +297,22 @@
   .name-div {
     width: auto;
     
+  }
+
+  .form-content-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+
+  }
+
+  .form-submit-button {
+    font-size: 20px;
+  }
+
+  .name-div-damaged {
+    justify-content: left;
   }
 }
 
