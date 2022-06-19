@@ -69,7 +69,7 @@ const Admin = () => {
     };
   }, [isMounted]);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     setLoading(true);
@@ -79,6 +79,68 @@ const Admin = () => {
       toast.error("Max 1 image");
       return;
     }
+
+    // Store Images in firebase
+    const storeImage = async (image) => {
+      return new Promise((resolve, reject) => {
+        const storage = getStorage();
+        const fileName = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`;
+
+        const storageRef = ref(storage, "images/" + fileName);
+
+        const uploadTask = uploadBytesResumable(storageRef, image);
+
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case "paused":
+                console.log("Upload is paused");
+                break;
+              case "running":
+                console.log("Upload is running");
+                break;
+            }
+          },
+          (error) => {
+            reject(error);
+          },
+          () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              resolve(downloadURL);
+            });
+          }
+        );
+      });
+    };
+
+    const imageUrls = await Promise.all(
+      [...images].map((image) => storeImage(image))
+    ).catch(() => {
+      setLoading(false);
+      toast.error("Images not uploaded");
+      return;
+    });
+
+    const formDataCopy = {
+      ...formData,
+      imageUrls,
+      timestamp: serverTimestamp(),
+    };
+
+    delete formDataCopy.images;
+
+    console.log(formDataCopy);
+
+    const docRef = await addDoc(collection(db, "minis"), formDataCopy);
+    setLoading(false);
+    toast.success("Mini saved");
+    setLoading(false);
   };
 
   const onMutate = (e) => {
@@ -148,12 +210,12 @@ const Admin = () => {
                     value={size}
                     onChange={onMutate}
                   >
-                    <option value="tiny">Tiny</option>
-                    <option value="small">Small</option>
-                    <option value="medium">Medium</option>
-                    <option value="large">Large</option>
-                    <option value="huge">Huge</option>
-                    <option value="gargantuan">Gargantuan</option>
+                    <option value="Tiny">Tiny</option>
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Large">Large</option>
+                    <option value="Huge">Huge</option>
+                    <option value="Gargantuan">Gargantuan</option>
                   </select>
                 </div>
               </div>
@@ -387,7 +449,6 @@ const Admin = () => {
                     onChange={onMutate}
                     max="1"
                     accept=".jpg,.png,.jpeg"
-                    multiple
                     required
                   />
                 </div>
