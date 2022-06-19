@@ -13,24 +13,26 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 
+const initialState = {
+  brand: "",
+  damaged: false,
+  gender: "",
+  images: {},
+  maker: "",
+  name: "",
+  number: 0,
+  quantity: 1,
+  race: "",
+  rarity: "",
+  set: "",
+  size: "Medium",
+  statblock: "",
+  type: "",
+};
+
 const Admin = () => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    brand: "",
-    damaged: false,
-    gender: "",
-    images: {},
-    maker: "",
-    name: "",
-    number: 0,
-    quantity: 1,
-    race: "",
-    rarity: "",
-    set: "",
-    size: "",
-    statblock: "",
-    type: "",
-  });
+  const [formData, setFormData] = useState(initialState);
 
   const {
     brand,
@@ -52,6 +54,7 @@ const Admin = () => {
   const auth = getAuth();
   const navigate = useNavigate();
   const isMounted = useRef(true);
+  const inputImage = useRef(null);
 
   useEffect(() => {
     if (isMounted) {
@@ -141,6 +144,8 @@ const Admin = () => {
     setLoading(false);
     toast.success("Mini saved");
     setLoading(false);
+    setFormData(initialState);
+    inputImage.current.value = null;
   };
 
   const onMutate = (e) => {
@@ -204,7 +209,6 @@ const Admin = () => {
                   <label className="form-name-label">Size</label>
                   <select
                     className="form-size-select"
-                    defaultValue="medium"
                     name="sizes"
                     id="size"
                     value={size}
@@ -431,7 +435,7 @@ const Admin = () => {
                     id="statblock"
                     value={statblock}
                     onChange={onMutate}
-                    maxLength="30"
+                    maxLength="100"
                     minLength="3"
                     required
                   />
@@ -446,9 +450,11 @@ const Admin = () => {
                     className="form-name-input-image "
                     type="file"
                     id="images"
+                    ref={inputImage}
                     onChange={onMutate}
                     max="1"
                     accept=".jpg,.png,.jpeg"
+                    //multiple
                     required
                   />
                 </div>
