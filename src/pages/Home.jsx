@@ -11,9 +11,20 @@ class Home extends React.Component {
     this.state = { minisList: [], filtersList: [] };
   }
 
-  addFilter(e) {
+  addFilter(newFilter) {
+    // add validation to apply filter once
     const updatedFilteredList = this.state.filtersList;
-    updatedFilteredList.push(e);
+    updatedFilteredList.push(newFilter);
+    this.setState({ filtersList: updatedFilteredList });
+  }
+
+  removeFilter(filterToBeRemoved) {
+    const updatedFilteredList = this.state.filtersList.filter((filter) => {
+      return (
+        filter.key !== filterToBeRemoved.key &&
+        filter.value !== filterToBeRemoved.value
+      );
+    });
     this.setState({ filtersList: updatedFilteredList });
   }
 
@@ -26,7 +37,10 @@ class Home extends React.Component {
     return (
       <>
         <div>
-          <Filter addFilter={this.addFilter.bind(this)} />
+          <Filter
+            addFilter={this.addFilter.bind(this)}
+            removeFilter={this.removeFilter.bind(this)}
+          />
           <MiniGrid
             displayList={this.state.minisList}
             filtersList={this.state.filtersList}
