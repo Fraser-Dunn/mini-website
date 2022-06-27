@@ -267,6 +267,16 @@
   padding: 8px;
 }
 
+.filter-button {
+  background-color: #ff943c;
+  color: #f2f4f8;
+}
+
+.filter-button:hover {
+  background-color: #ff943c;
+  color: #f2f4f8;
+}
+
 
 /* Media Queries */
 

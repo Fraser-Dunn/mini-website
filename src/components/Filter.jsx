@@ -2,11 +2,10 @@ import React from "react";
 
 const Filter = (props) => {
   const onMutate = (e) => {
-    console.log(
-      props.displayList.filter(
-        (displayList) => displayList.set === "Legends of Barovia"
-      )
-    );
+    props.addFilter({
+      key: "set",
+      value: "Legends of Barovia",
+    });
   };
 
   return (
@@ -14,8 +13,8 @@ const Filter = (props) => {
       <div className="filter-container">
         <div className="filter-body">
           <h1>FILTER</h1>
-          <button onClick={onMutate} className="bg-black">
-            DotMM
+          <button onClick={onMutate} className="filter-button">
+            LoB
           </button>
         </div>
       </div>

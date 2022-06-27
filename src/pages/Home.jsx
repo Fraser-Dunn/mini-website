@@ -8,7 +8,13 @@ import getMinis from "../helperFunctions/firebaseGetAllMinis";
 class Home extends React.Component {
   constructor() {
     super();
-    this.state = { minisList: [] };
+    this.state = { minisList: [], filtersList: [] };
+  }
+
+  addFilter(e) {
+    const updatedFilteredList = this.state.filtersList;
+    updatedFilteredList.push(e);
+    this.setState({ filtersList: updatedFilteredList });
   }
 
   async componentDidMount() {
@@ -20,8 +26,11 @@ class Home extends React.Component {
     return (
       <>
         <div>
-          <Filter displayList={this.state.minisList} />
-          <MiniGrid displayList={this.state.minisList} />
+          <Filter addFilter={this.addFilter.bind(this)} />
+          <MiniGrid
+            displayList={this.state.minisList}
+            filtersList={this.state.filtersList}
+          />
         </div>
       </>
     );
