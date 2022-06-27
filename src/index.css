@@ -253,6 +253,20 @@
   border-radius: 6px;
 }
 
+/* Filter */
+.filter-container {
+  display: flex;
+  height: 80px;
+  width: 100%;
+  padding: 4px;
+  justify-content: center;
+}
+
+.filter-body {
+  display: flex;
+  padding: 8px;
+}
+
 
 /* Media Queries */
 

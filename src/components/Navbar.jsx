@@ -24,11 +24,6 @@ const Navbar = (props) => {
                 </Link>
               </li>
               <li>
-                <Link className="header-link" to="/sets">
-                  Sets
-                </Link>
-              </li>
-              <li>
                 <Link className="header-link" to="/newin">
                   New
                 </Link>
@@ -78,11 +73,6 @@ const Navbar = (props) => {
           <li className="border-b-2 border-white w-full">
             <Link className="text-white" to="/home">
               Home
-            </Link>
-          </li>
-          <li className="border-b-2 border-white w-full">
-            <Link className="text-white" to="/sets">
-              Sets
             </Link>
           </li>
           <li className="border-b-2 border-white w-full">

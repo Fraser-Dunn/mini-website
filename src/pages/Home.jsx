@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import MiniGrid from "../components/MiniGrid";
+import Filter from "../components/Filter";
 import strahd from "../assets/strahd.json";
 import getMinis from "../helperFunctions/firebaseGetAllMinis";
 
@@ -19,6 +20,7 @@ class Home extends React.Component {
     return (
       <>
         <div>
+          <Filter displayList={this.state.minisList} />
           <MiniGrid displayList={this.state.minisList} />
         </div>
       </>
