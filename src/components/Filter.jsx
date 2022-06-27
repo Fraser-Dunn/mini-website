@@ -1,18 +1,26 @@
 import React from "react";
 
 const Filter = (props) => {
-  const onMutate = (e) => {
+  const onAddFilter = (key, value) => {
     props.addFilter({
-      key: "set",
-      value: "Legends of Barovia",
+      key: key,
+      value: value,
     });
   };
 
-  const onMutate2 = (e) => {
+  const onRemoveFilter = (key, value) => {
     props.removeFilter({
-      key: "set",
-      value: "Legends of Barovia",
+      key: key,
+      value: value,
     });
+  };
+
+  const handleChange = (e, key, value) => {
+    if (e.target.checked) {
+      onAddFilter(key, value);
+    } else {
+      onRemoveFilter(key, value);
+    }
   };
 
   return (
@@ -20,12 +28,15 @@ const Filter = (props) => {
       <div className="filter-container">
         <div className="filter-body">
           <h1>FILTER</h1>
-          <button onClick={onMutate} className="filter-button">
+          <label htmlFor="LoB">
+            <input
+              type="checkbox"
+              id="LoB"
+              name="LoB"
+              onChange={(e) => handleChange(e, "set", "Legends of Barovia")}
+            />
             LoB
-          </button>
-          <button onClick={onMutate2} className="filter-button">
-            remove Lob
-          </button>
+          </label>
         </div>
       </div>
     </>
