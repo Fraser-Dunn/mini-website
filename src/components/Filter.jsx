@@ -2,7 +2,11 @@ import React from "react";
 
 const Filter = (props) => {
   const onMutate = (e) => {
-    console.log(props.displayList);
+    console.log(
+      props.displayList.filter(
+        (displayList) => displayList.set === "Legends of Barovia"
+      )
+    );
   };
 
   return (
