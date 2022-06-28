@@ -307,7 +307,7 @@ const Admin = () => {
                     id="set"
                     value={set}
                     onChange={onMutate}
-                    maxLength="30"
+                    maxLength="60"
                     minLength="3"
                   />
                 </div>

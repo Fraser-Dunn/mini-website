@@ -27,7 +27,7 @@
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, 240px);
-  grid-template-rows: repeat(auto-fill, 260px);
+  grid-template-rows: repeat(auto-fill, 290px);
   grid-row-gap: 28px;
   grid-column-gap: 24px;
   justify-content: center;
@@ -256,15 +256,61 @@
 /* Filter */
 .filter-container {
   display: flex;
-  height: 80px;
+  height: auto;
   width: 100%;
   padding: 4px;
   justify-content: center;
+  margin-top: 8px;
+}
+
+.filter-container input {
+  margin-right: 3px;
 }
 
 .filter-body {
   display: flex;
   padding: 8px;
+  flex-direction: column;
+  width: 90%;
+  height: fit-content;
+}
+
+.filter-body h1 {
+  padding: 4px;
+  font-size: large;
+}
+
+.filter-title-div {
+  display: flex;
+  justify-content: center;
+}
+
+.filter-div {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  width: 100%;
+  height: auto;
+}
+
+.filter-sets-div {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+}
+
+.filter-size-div {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+}
+
+.filter-race-div {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+}
+
+.filter-type-div {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
 }
 
 .filter-button {
