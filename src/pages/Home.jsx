@@ -21,7 +21,7 @@ class Home extends React.Component {
   removeFilter(filterToBeRemoved) {
     const updatedFilteredList = this.state.filtersList.filter((filter) => {
       return (
-        filter.key !== filterToBeRemoved.key &&
+        filter.key !== filterToBeRemoved.key ||
         filter.value !== filterToBeRemoved.value
       );
     });
@@ -38,6 +38,7 @@ class Home extends React.Component {
       <>
         <div>
           <Filter
+            displayList={this.state.minisList}
             addFilter={this.addFilter.bind(this)}
             removeFilter={this.removeFilter.bind(this)}
           />

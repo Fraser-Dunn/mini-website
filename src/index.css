@@ -270,14 +270,20 @@
 .filter-body {
   display: flex;
   padding: 8px;
-  flex-direction: column;
-  width: 90%;
+  flex-direction: column;  
   height: fit-content;
+  width: 1150px;
+  max-width: 90%;
+}
+
+.filter-menu-click {
+  align-self: center;
+  padding: 4px;
 }
 
 .filter-body h1 {
   padding: 4px;
-  font-size: large;
+  font-size: 26px;
 }
 
 .filter-title-div {
@@ -288,24 +294,64 @@
 .filter-div {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr;
-  gap: 4px;
+  gap: 10px;
   width: 100%;
-  height: auto;
+  height: auto
+}
+
+.filter-div h1 {
+  font-size: 24px;
+}
+
+.filter-sets-title-div {
+  padding: 4px;
+}
+
+.filter-sets-title {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
 }
 
 .filter-sets-div {
   display: grid;
   grid-template-columns: repeat(2,1fr);
+  align-content: flex-start;
+  padding: 2px;
+}
+
+.filter-size-title-div {
+  padding: 4px;
+}
+
+.filter-size-title {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
 }
 
 .filter-size-div {
   display: grid;
   grid-template-columns: repeat(2,1fr);
+  align-content: flex-start;
+  padding: 2px;
+}
+
+.filter-race-title-div {
+  padding: 4px;
+}
+
+.filter-race-title {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
 }
 
 .filter-race-div {
   display: grid;
   grid-template-columns: repeat(3,1fr);
+  align-content: flex-start;
+  padding: 2px;
 }
 
 .filter-race-div-common {
@@ -323,9 +369,21 @@
   flex-direction: column;
 }
 
+.filter-type-title-div {
+  padding: 4px;
+}
+
+.filter-type-title {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
 .filter-type-div {
   display: grid;
   grid-template-columns: repeat(2,1fr);
+  align-content: flex-start;
+  padding: 2px;
 }
 
 .filter-button {
