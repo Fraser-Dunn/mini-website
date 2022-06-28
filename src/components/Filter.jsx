@@ -156,60 +156,310 @@ const Filter = (props) => {
 
             {/* filter race */}
             <div className="filter-race-div">
-              {/* construct */}
-              <label htmlFor="construct">
-                <input
-                  type="checkbox"
-                  id="construct"
-                  name="construct"
-                  onChange={(e) => handleChange(e, "race", "Construct")}
-                />
-                Construct
-              </label>
+              {/* common races */}
+              <div className="filter-race-div-common">
+                {/* dragonborn */}
+                <label htmlFor="dragonborn">
+                  <input
+                    type="checkbox"
+                    id="dragonborn"
+                    name="dragonborn"
+                    onChange={(e) => handleChange(e, "race", "Dragonborn")}
+                  />
+                  Dragonborn
+                </label>
 
-              {/* drow */}
-              <label htmlFor="drow">
-                <input
-                  type="checkbox"
-                  id="drow"
-                  name="drow"
-                  onChange={(e) => handleChange(e, "race", "Drow")}
-                />
-                Drow
-              </label>
+                {/* dwarf */}
+                <label htmlFor="dwarf">
+                  <input
+                    type="checkbox"
+                    id="dwarf"
+                    name="dwarf"
+                    onChange={(e) => handleChange(e, "race", "Dwarf")}
+                  />
+                  Dwarf
+                </label>
 
-              {/* dwarf */}
-              <label htmlFor="dwarf">
-                <input
-                  type="checkbox"
-                  id="dwarf"
-                  name="dwarf"
-                  onChange={(e) => handleChange(e, "race", "Dwarf")}
-                />
-                Dwarf
-              </label>
+                {/* elf */}
+                <label htmlFor="elf">
+                  <input
+                    type="checkbox"
+                    id="elf"
+                    name="elf"
+                    onChange={(e) => handleChange(e, "race", "Elf")}
+                  />
+                  Elf
+                </label>
 
-              {/* elf */}
-              <label htmlFor="elf">
-                <input
-                  type="checkbox"
-                  id="elf"
-                  name="elf"
-                  onChange={(e) => handleChange(e, "race", "Elf")}
-                />
-                Elf
-              </label>
+                {/* gnome */}
+                <label htmlFor="gnome">
+                  <input
+                    type="checkbox"
+                    id="gnome"
+                    name="gnome"
+                    onChange={(e) => handleChange(e, "race", "Gnome")}
+                  />
+                  Gnome
+                </label>
 
-              {/* human */}
-              <label htmlFor="human">
-                <input
-                  type="checkbox"
-                  id="human"
-                  name="human"
-                  onChange={(e) => handleChange(e, "race", "Human")}
-                />
-                Human
-              </label>
+                {/* half-elf */}
+                <label htmlFor="half-elf">
+                  <input
+                    type="checkbox"
+                    id="half-elf"
+                    name="half-elf"
+                    onChange={(e) => handleChange(e, "race", "Half-Elf")}
+                  />
+                  Half-Elf
+                </label>
+
+                {/* half-orc */}
+                <label htmlFor="half-orc">
+                  <input
+                    type="checkbox"
+                    id="half-orc"
+                    name="half-orc"
+                    onChange={(e) => handleChange(e, "race", "Half-Orc")}
+                  />
+                  Half-Orc
+                </label>
+
+                {/* halfling */}
+                <label htmlFor="halfling">
+                  <input
+                    type="checkbox"
+                    id="halfling"
+                    name="halfling"
+                    onChange={(e) => handleChange(e, "race", "Halfling")}
+                  />
+                  Halfling
+                </label>
+
+                {/* human */}
+                <label htmlFor="human">
+                  <input
+                    type="checkbox"
+                    id="human"
+                    name="human"
+                    onChange={(e) => handleChange(e, "race", "Human")}
+                  />
+                  Human
+                </label>
+
+                {/* tiefling */}
+                <label htmlFor="tiefling">
+                  <input
+                    type="checkbox"
+                    id="tiefling"
+                    name="tiefling"
+                    onChange={(e) => handleChange(e, "race", "Tiefling")}
+                  />
+                  Tiefling
+                </label>
+              </div>
+
+              {/* monstrous races */}
+              <div className="filter-race-div-monstrous">
+                {/* bugbear */}
+                <label htmlFor="bugbear">
+                  <input
+                    type="checkbox"
+                    id="bugbear"
+                    name="bugbear"
+                    onChange={(e) => handleChange(e, "race", "Bugbear")}
+                  />
+                  Bugbear
+                </label>
+
+                {/* centaur */}
+                <label htmlFor="centaur">
+                  <input
+                    type="checkbox"
+                    id="centaur"
+                    name="centaur"
+                    onChange={(e) => handleChange(e, "race", "Centaur")}
+                  />
+                  Centaur
+                </label>
+
+                {/* goblin */}
+                <label htmlFor="goblin">
+                  <input
+                    type="checkbox"
+                    id="goblin"
+                    name="goblin"
+                    onChange={(e) => handleChange(e, "race", "Goblin")}
+                  />
+                  Goblin
+                </label>
+
+                {/* grung */}
+                <label htmlFor="grung">
+                  <input
+                    type="checkbox"
+                    id="grung"
+                    name="grung"
+                    onChange={(e) => handleChange(e, "race", "Grung")}
+                  />
+                  Grung
+                </label>
+
+                {/* hobgoblin */}
+                <label htmlFor="hobgoblin">
+                  <input
+                    type="checkbox"
+                    id="hobgoblin"
+                    name="hobgoblin"
+                    onChange={(e) => handleChange(e, "race", "Hobgoblin")}
+                  />
+                  Hobgoblin
+                </label>
+
+                {/* kobold */}
+                <label htmlFor="kobold">
+                  <input
+                    type="checkbox"
+                    id="kobold"
+                    name="kobold"
+                    onChange={(e) => handleChange(e, "race", "Kobold")}
+                  />
+                  Kobold
+                </label>
+
+                {/* lizardfolk */}
+                <label htmlFor="lizardfolk">
+                  <input
+                    type="checkbox"
+                    id="lizardfolk"
+                    name="lizardfolk"
+                    onChange={(e) => handleChange(e, "race", "Lizardfolk")}
+                  />
+                  Lizardfolk
+                </label>
+
+                {/* minotaur */}
+                <label htmlFor="minotaur">
+                  <input
+                    type="checkbox"
+                    id="minotaur"
+                    name="minotaur"
+                    onChange={(e) => handleChange(e, "race", "Minotaur")}
+                  />
+                  Minotaur
+                </label>
+
+                {/* orc */}
+                <label htmlFor="orc">
+                  <input
+                    type="checkbox"
+                    id="orc"
+                    name="orc"
+                    onChange={(e) => handleChange(e, "race", "Orc")}
+                  />
+                  Orc
+                </label>
+              </div>
+              {/* exotic races */}
+              <div className="filter-race-div-exotic">
+                {/* aarakocra */}
+                <label htmlFor="aarakocra">
+                  <input
+                    type="checkbox"
+                    id="aarakocra"
+                    name="aarakocra"
+                    onChange={(e) => handleChange(e, "race", "Aarakocra")}
+                  />
+                  Aarakocra
+                </label>
+
+                {/* aasimar */}
+                <label htmlFor="aasimar">
+                  <input
+                    type="checkbox"
+                    id="aasimar"
+                    name="aasimar"
+                    onChange={(e) => handleChange(e, "race", "Aasimar")}
+                  />
+                  Aasimar
+                </label>
+
+                {/* fairy */}
+                <label htmlFor="fairy">
+                  <input
+                    type="checkbox"
+                    id="fairy"
+                    name="fairy"
+                    onChange={(e) => handleChange(e, "race", "Fairy")}
+                  />
+                  Fairy
+                </label>
+
+                {/* firbolg */}
+                <label htmlFor="firbolg">
+                  <input
+                    type="checkbox"
+                    id="firbolg"
+                    name="firbolg"
+                    onChange={(e) => handleChange(e, "race", "Firbolg")}
+                  />
+                  Firbolg
+                </label>
+
+                {/* genasi */}
+                <label htmlFor="genasi">
+                  <input
+                    type="checkbox"
+                    id="genasi"
+                    name="genasi"
+                    onChange={(e) => handleChange(e, "race", "Genasi")}
+                  />
+                  Genasi
+                </label>
+
+                {/* gith */}
+                <label htmlFor="gith">
+                  <input
+                    type="checkbox"
+                    id="gith"
+                    name="gith"
+                    onChange={(e) => handleChange(e, "race", "Gith")}
+                  />
+                  Gith
+                </label>
+
+                {/* goliath */}
+                <label htmlFor="goliath">
+                  <input
+                    type="checkbox"
+                    id="goliath"
+                    name="goliath"
+                    onChange={(e) => handleChange(e, "race", "Goliath")}
+                  />
+                  Goliath
+                </label>
+
+                {/* kenku */}
+                <label htmlFor="kenku">
+                  <input
+                    type="checkbox"
+                    id="kenku"
+                    name="kenku"
+                    onChange={(e) => handleChange(e, "race", "Kenku")}
+                  />
+                  Kenku
+                </label>
+
+                {/* triton */}
+                <label htmlFor="triton">
+                  <input
+                    type="checkbox"
+                    id="triton"
+                    name="triton"
+                    onChange={(e) => handleChange(e, "race", "Triton")}
+                  />
+                  Triton
+                </label>
+              </div>
             </div>
 
             {/* filter type */}
