@@ -71,7 +71,7 @@ const Navbar = (props) => {
           }
         >
           <li className="border-b-2 border-white w-full">
-            <Link className="text-white" to="/home">
+            <Link className="text-white" to="/">
               Home
             </Link>
           </li>
