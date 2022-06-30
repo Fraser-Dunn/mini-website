@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
-  getSorage,
   ref,
   uploadBytesResumable,
   getDownloadURL,
@@ -31,7 +30,7 @@ const initialState = {
 };
 
 const Admin = () => {
-  const [loading, setLoading] = useState(false);
+  const [_loading, setLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
 
   const {
@@ -137,7 +136,8 @@ const Admin = () => {
     };
 
     delete formDataCopy.images;
-
+    formDataCopy.number = Number(formDataCopy.number);
+    formDataCopy.quantity = Number(formDataCopy.quantity);
     console.log(formDataCopy);
 
     const docRef = await addDoc(collection(db, "minis"), formDataCopy);

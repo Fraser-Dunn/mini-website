@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import LogIn from "./pages/LogIn";
+import MiniInfo from "./pages/MiniInfo";
 import PrivateRoute from "./components/PrivateRoute";
 import { ToastContainer } from "react-toastify";
 
@@ -21,6 +22,7 @@ function App() {
             <Route path="/admin" element={<Admin />} />
           </Route>
           <Route path="/login" element={<LogIn setIsAuthed={setIsAuthed} />} />
+          <Route path="/miniInfo/:miniId" element={<MiniInfo />} />
         </Routes>
       </Router>
 

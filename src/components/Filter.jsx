@@ -8,6 +8,8 @@ Object.defineProperty(String.prototype, "capitalize", {
   enumerable: false,
 });
 
+const sizeOrder = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"];
+
 const Filter = (props) => {
   const [filterMenu, setFilterMenu] = useState(false);
   const handleClick = () => setFilterMenu(!filterMenu);
@@ -26,13 +28,28 @@ const Filter = (props) => {
     });
   });
 
-  console.log(allFilters);
-
   const onAddFilter = (key, value) => {
     props.addFilter({
       key: key,
       value: value,
     });
+  };
+
+  const filterSort = (filtersToBeSorted) => {
+    const allSortedFilters = [];
+    Object.entries(filtersToBeSorted).forEach(([key, value]) => {
+      let sortedFilters;
+      if (key === "size") {
+        sortedFilters = [...value].sort(
+          (a, b) => sizeOrder.indexOf(a) - sizeOrder.indexOf(b)
+        );
+      } else {
+        sortedFilters = [...value].sort();
+      }
+
+      allSortedFilters.push([key, sortedFilters]);
+    });
+    return allSortedFilters;
   };
 
   const onRemoveFilter = (key, value) => {
@@ -66,7 +83,7 @@ const Filter = (props) => {
           </div>
 
           <div className={!filterMenu ? "hidden" : "filter-div"}>
-            {Object.entries(allFilters).map(([key, value]) => {
+            {filterSort(allFilters).map(([key, value]) => {
               return (
                 <div key={key} className="filter-sets-title-div">
                   <div className="filter-sets-title">

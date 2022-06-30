@@ -1,5 +1,4 @@
 import MiniCard from "./MiniCard";
-import strahd from "../assets/strahd.json";
 
 const MiniGrid = (props) => {
   return (
