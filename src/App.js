@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import LogIn from "./pages/LogIn";
 import MiniInfo from "./pages/MiniInfo";
+import Gallery from "./pages/Gallery";
 import PrivateRoute from "./components/PrivateRoute";
 import { ToastContainer } from "react-toastify";
 
@@ -18,6 +19,7 @@ function App() {
         <Navbar isAuthed={isAuthed} />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/admin" element={<PrivateRoute isAuthed={isAuthed} />}>
             <Route path="/admin" element={<Admin />} />
           </Route>
