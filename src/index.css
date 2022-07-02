@@ -346,6 +346,85 @@
   color: #f2f4f8;
 }
 
+/* mini info page */
+
+.miniInfo-page-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  justify-content: center;
+}
+
+.miniInfo-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.miniInfo-title {
+  align-self: center;
+  font-size: 28px;
+  padding: 4px;
+  margin-bottom: 20px;
+  background-color: #ff943c;
+  color: #f2f4f8;
+}
+
+.miniInfo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 85%;
+  padding: 8px;
+  align-self: center;
+  border-radius: 4px;
+}
+
+.miniInfo-container {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+}
+
+.miniInfo-info-div {
+  padding: 2px;
+}
+
+.miniInfo-image-div {
+  margin: 12px
+}
+
+.miniInfo-image {
+  width: max-content;
+}
+
+
+/* Spinner */
+.loadingSpinnerContainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loadingSpinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: #00cc66 transparent #00cc66 transparent;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
 
 /* Media Queries */
 
