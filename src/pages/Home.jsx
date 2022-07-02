@@ -1,29 +1,11 @@
 import React from "react";
-import MiniGrid from "../components/MiniGrid";
-import Filter from "../components/Filter";
+import MiniCardGrid from "../components/MiniCardGrid";
 import getMinis from "../helperFunctions/firebaseGetAllMinis";
 
 class Home extends React.Component {
   constructor() {
     super();
-    this.state = { minisList: [], filtersList: [] };
-  }
-
-  addFilter(newFilter) {
-    // add validation to apply filter once
-    const updatedFilteredList = this.state.filtersList;
-    updatedFilteredList.push(newFilter);
-    this.setState({ filtersList: updatedFilteredList });
-  }
-
-  removeFilter(filterToBeRemoved) {
-    const updatedFilteredList = this.state.filtersList.filter((filter) => {
-      return (
-        filter.key !== filterToBeRemoved.key ||
-        filter.value !== filterToBeRemoved.value
-      );
-    });
-    this.setState({ filtersList: updatedFilteredList });
+    this.state = { minisList: [] };
   }
 
   async componentDidMount() {
@@ -35,15 +17,7 @@ class Home extends React.Component {
     return (
       <>
         <div>
-          <Filter
-            displayList={this.state.minisList}
-            addFilter={this.addFilter.bind(this)}
-            removeFilter={this.removeFilter.bind(this)}
-          />
-          <MiniGrid
-            displayList={this.state.minisList}
-            filtersList={this.state.filtersList}
-          />
+          <MiniCardGrid displayList={this.state.minisList} />
         </div>
       </>
     );
