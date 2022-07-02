@@ -16,7 +16,7 @@ const MiniInfo = () => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log(docSnap.data());
+      //console.log(docSnap.data());
       setMiniInfo(docSnap.data());
       setLoading(false);
     }
@@ -30,30 +30,51 @@ const MiniInfo = () => {
     return <Spinner />;
   }
 
-  console.log(miniInfo.statblock);
-
   return (
     <>
       <div className="miniInfo-page-container">
-        <div className="miniInfo-grid shadow-lg">
+        <div className="miniInfo-grid">
           <div className="miniInfo-grid-title">
             <h1>{miniInfo.name}</h1>
           </div>
           <div className="miniInfo-grid-item">
             <div className="miniInfo-details">
-              <p>Name: {miniInfo.name}</p>
-              <p>Rarity: {miniInfo.rarity}</p>
-              <p>Gender: {miniInfo.gender}</p>
-              <p>Race: {miniInfo.race}</p>
-              <p>Size: {miniInfo.size}</p>
-              <p>Set Number: {miniInfo.number}</p>
-              <p>Quantity: {miniInfo.quantity}</p>
-              <p>Maker: {miniInfo.maker}</p>
-              <p>Brand: {miniInfo.brand}</p>
-              <p>Set: {miniInfo.set}</p>
+              <p className="miniInfo-p-name">
+                <b className="miniInfo-b-name">{miniInfo.name}</b>
+              </p>
               <p>
-                Statblock:
-                <a href={miniInfo.satblock}></a>{" "}
+                <b>Rarity:</b> {miniInfo.rarity}
+              </p>
+              <p>
+                <b>Gender:</b> {miniInfo.gender}
+              </p>
+              <p>
+                <b>Race:</b> {miniInfo.race}
+              </p>
+              <p>
+                <b>Size:</b> {miniInfo.size}
+              </p>
+              <p>
+                <b>Set Number:</b> {miniInfo.number}
+              </p>
+              <p>
+                <b>Quantity:</b> {miniInfo.quantity}
+              </p>
+              <p>
+                <b>Maker:</b> {miniInfo.maker}
+              </p>
+              <p>
+                <b>Brand:</b> {miniInfo.brand}
+              </p>
+              <p>
+                <b>Set:</b> {miniInfo.set}
+              </p>
+              <p>
+                <b>Statblock:</b>
+                {"  "}
+                <a href={miniInfo.statblock} target="_blank">
+                  here
+                </a>
               </p>
             </div>
           </div>

@@ -18,6 +18,10 @@
     }
 } 
 
+* body {
+  background-color: #FEFEFC;
+}
+
 .headerOffset {
   width: 100%;
   height: 80px;
@@ -351,11 +355,12 @@
 .miniInfo-page-container {
   display: flex;
   flex-direction: column;
-  margin-top: 40px;
+  margin-top: 60px;
   width: 100%;
   height: 100%;
   padding: 16px;
   align-items: center;
+  background-color: #FEFEFC;
 }
 
 .miniInfo-grid {
@@ -363,11 +368,14 @@
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: 10% 90%;
   gap: 1%;
-  padding: 0 20px 20px 20px;
+  padding: 20px;
   height: fit-content;
   width: 100%;
-  max-width: 1200px;
-  margin-top: 20px;
+  max-width: 980px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  background-color: white;
+  
 }
 
 .miniInfo-grid-title {
@@ -375,9 +383,11 @@
   justify-content: center;
   align-self: center;
   background-color: #ff943c;
-  color: #f2f4f8;
-  font-size: 26px;
+  color: white;
+  font-size: 28px;
   font-weight: 600;
+  padding: 2px 0;
+  border-radius: 4px;
 }
 
 .miniInfo-grid-title:nth-child(1) {
@@ -403,13 +413,29 @@
 .miniInfo-details {
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  padding: 16px 8px;
   width: 100%;
   height: fit-content;
 }
 
+.miniInfo-b-name {
+  font-size: 22px;
+  padding-bottom: 4px;
+}
+
 .miniInfo-details p {
   padding: 4px;
+  font-size: 18px;
+}
+
+.miniInfo-details p:nth {
+  font-weight: 600;
+}
+
+.miniInfo-details a {
+  font-style: italic;
+  text-decoration: underline;
+  color: #0000EE;
 }
 
 .miniInfo-img {
@@ -487,23 +513,6 @@
   }
 }
 
-@media only screen and (max-width: 719px) {
-  .container {
-    max-width: 378px;
-    width: 100%;
-    border-radius: 6px;
-  }
-
-  .card-container {
-    border-radius: 6px;
-  }
-
-  .body-base {
-    width:100vw;
-    height: 100%;
-  }
-}
-
 @media only screen and (max-width: 759px) {
   .miniInfo-grid {
     grid-template-columns: 1fr 1fr;
@@ -534,7 +543,28 @@
   }
 }
 
+@media only screen and (max-width: 719px) {
+  .container {
+    max-width: 378px;
+    width: 100%;
+    border-radius: 6px;
+  }
+
+  .card-container {
+    border-radius: 6px;
+  }
+
+  .body-base {
+    width:100vw;
+    height: 100%;
+  }
+}
+
 @media only screen and (max-width: 708px) {
+  .miniInfo-page-container {
+    margin-top: 20px;
+  }
+
   .miniInfo-grid {
     grid-template-columns: 1fr;
     grid-template-rows: 3fr;
