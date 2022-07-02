@@ -30,29 +30,42 @@ const MiniInfo = () => {
     return <Spinner />;
   }
 
+  console.log(miniInfo.statblock);
+
   return (
     <>
       <div className="miniInfo-page-container">
-        <div className="miniInfo-grid">
+        <div className="miniInfo-grid shadow-lg">
           <div className="miniInfo-grid-title">
             <h1>{miniInfo.name}</h1>
           </div>
           <div className="miniInfo-grid-item">
             <div className="miniInfo-details">
               <p>Name: {miniInfo.name}</p>
-              <p>Gender: {miniInfo.gender}</p>
               <p>Rarity: {miniInfo.rarity}</p>
+              <p>Gender: {miniInfo.gender}</p>
+              <p>Race: {miniInfo.race}</p>
               <p>Size: {miniInfo.size}</p>
               <p>Set Number: {miniInfo.number}</p>
               <p>Quantity: {miniInfo.quantity}</p>
               <p>Maker: {miniInfo.maker}</p>
               <p>Brand: {miniInfo.brand}</p>
               <p>Set: {miniInfo.set}</p>
+              <p>
+                Statblock:
+                <a href={miniInfo.satblock}></a>{" "}
+              </p>
             </div>
           </div>
 
           <div className="miniInfo-grid-item">
-            <div className="miniInfo-img">
+            <div
+              className={
+                miniInfo.set === "Rage of Demons"
+                  ? "miniInfo-img-rod"
+                  : "miniInfo-img"
+              }
+            >
               <img src={miniInfo.imageUrls[0]} alt="" />
             </div>
           </div>

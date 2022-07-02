@@ -13,11 +13,13 @@ const MiniCard = (props) => {
           <p className=" py-1 italic">{props.mini.size}</p>
         </div>
         <div className=" flex justify-center">
-          <img
-            className="w-40 hover:cursor-pointer"
-            src={props.mini.imageUrls[0]}
-            alt="/"
-          />
+          <Link to={`/miniInfo/${props.mini.id}`}>
+            <img
+              className="w-40 hover:cursor-pointer"
+              src={props.mini.imageUrls[0]}
+              alt="/"
+            />
+          </Link>
         </div>
         <div>
           <p className="hover:underline hover:cursor-pointer pt-1 font-semibold">
