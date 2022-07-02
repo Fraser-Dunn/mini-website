@@ -33,40 +33,27 @@ const MiniInfo = () => {
   return (
     <>
       <div className="miniInfo-page-container">
-        <div className="miniInfo-card">
-          <div className="miniInfo-title">
+        <div className="miniInfo-grid">
+          <div className="miniInfo-grid-title">
             <h1>{miniInfo.name}</h1>
           </div>
-          <div className="miniInfo-grid shadow-lg">
-            <div className="miniInfo-container">
-              <div className="miniInfo-info-div">
-                <p>Name: {miniInfo.name}</p>
-              </div>
-              <div className="miniInfo-info-div">
-                <p>Rarity: {miniInfo.rarity}</p>
-              </div>
-              <div className="miniInfo-info-div">
-                <p>Size: {miniInfo.size}</p>
-              </div>
-              <div className="miniInfo-info-div">
-                <p>Set Number: {miniInfo.number}</p>
-              </div>
-              <div className="miniInfo-info-div">
-                <p>Maker: {miniInfo.maker}</p>
-              </div>
-              <div className="miniInfo-info-div">
-                <p>Brand: {miniInfo.brand}</p>
-              </div>
-              <div className="miniInfo-info-div">
-                <p>Set: {miniInfo.set}</p>
-              </div>
+          <div className="miniInfo-grid-item">
+            <div className="miniInfo-details">
+              <p>Name: {miniInfo.name}</p>
+              <p>Gender: {miniInfo.gender}</p>
+              <p>Rarity: {miniInfo.rarity}</p>
+              <p>Size: {miniInfo.size}</p>
+              <p>Set Number: {miniInfo.number}</p>
+              <p>Quantity: {miniInfo.quantity}</p>
+              <p>Maker: {miniInfo.maker}</p>
+              <p>Brand: {miniInfo.brand}</p>
+              <p>Set: {miniInfo.set}</p>
             </div>
-            <div className="miniInfo-image-div">
-              <img
-                className="miniInfo-image"
-                src={miniInfo.imageUrls[0]}
-                alt="/"
-              />
+          </div>
+
+          <div className="miniInfo-grid-item">
+            <div className="miniInfo-img">
+              <img src={miniInfo.imageUrls[0]} alt="" />
             </div>
           </div>
         </div>
