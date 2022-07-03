@@ -9,12 +9,12 @@ const MiniCardGrid = (props) => {
   });
 
   console.log(setList);
-
+  //console.log(props.displayList);
   return (
     <div className="pt-12 pb-24 px-12">
       <div className="grid-container ">
         {[...setList].map((setItem) => {
-          return <MiniSetCard key={setItem} mini={setItem} />;
+          return <MiniSetCard key={setItem} miniSet={setItem} />;
         })}
       </div>
     </div>
