@@ -1,5 +1,5 @@
 import React from "react";
-import MiniCardGrid from "../components/MiniCardGrid";
+import SetCardGrid from "../components/SetCardGrid";
 import getMinis from "../helperFunctions/firebaseGetAllMinis";
 
 class Home extends React.Component {
@@ -17,7 +17,7 @@ class Home extends React.Component {
     return (
       <>
         <div>
-          <MiniCardGrid displayList={this.state.minisList} />
+          <SetCardGrid displayList={this.state.minisList} />
         </div>
       </>
     );

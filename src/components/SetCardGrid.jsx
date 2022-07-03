@@ -1,6 +1,6 @@
-import MiniSetCard from "./MiniSetCard";
+import SetCard from "./SetCard";
 
-const MiniCardGrid = (props) => {
+const SetCardGrid = (props) => {
   const setList = new Set();
 
   props.displayList.forEach((mini) => {
@@ -9,14 +9,14 @@ const MiniCardGrid = (props) => {
   });
 
   return (
-    <div className="pt-12 pb-24 px-12">
-      <div className="grid-container ">
+    <div className="set-card-grid-body">
+      <div className="grid-container-SetCardGrid">
         {[...setList].map((setItem) => {
           const minisOfSet = props.displayList.filter(
             (mini) => mini.set === setItem
           );
           return (
-            <MiniSetCard
+            <SetCard
               key={setItem}
               miniSet={setItem}
               firstOfSetImg={minisOfSet[0].imageUrls[0]}
@@ -28,6 +28,6 @@ const MiniCardGrid = (props) => {
   );
 };
 
-export default MiniCardGrid;
+export default SetCardGrid;
 
 //console.log(props.displayList[1].set);

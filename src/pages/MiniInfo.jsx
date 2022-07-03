@@ -80,13 +80,7 @@ const MiniInfo = () => {
           </div>
 
           <div className="miniInfo-grid-item">
-            <div
-              className={
-                miniInfo.set === "Rage of Demons"
-                  ? "miniInfo-img-rod"
-                  : "miniInfo-img"
-              }
-            >
+            <div className="miniInfo-img">
               <img src={miniInfo.imageUrls[0]} alt="" />
             </div>
           </div>
