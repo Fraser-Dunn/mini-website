@@ -11,7 +11,9 @@ const MiniSetCard = (props) => {
           </h1>
           <p className=" py-1 italic"></p>
         </div>
-        <div className=" flex justify-center"></div>
+        <div className=" flex justify-center">
+          <img src={props.firstOfSetImg} alt="/" />
+        </div>
       </div>
     </>
   );

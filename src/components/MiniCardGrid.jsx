@@ -8,13 +8,20 @@ const MiniCardGrid = (props) => {
     setList.add(miniValue);
   });
 
-  console.log(setList);
-  //console.log(props.displayList);
   return (
     <div className="pt-12 pb-24 px-12">
       <div className="grid-container ">
         {[...setList].map((setItem) => {
-          return <MiniSetCard key={setItem} miniSet={setItem} />;
+          const minisOfSet = props.displayList.filter(
+            (mini) => mini.set === setItem
+          );
+          return (
+            <MiniSetCard
+              key={setItem}
+              miniSet={setItem}
+              firstOfSetImg={minisOfSet[0].imageUrls[0]}
+            />
+          );
         })}
       </div>
     </div>
