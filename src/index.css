@@ -35,10 +35,6 @@
   
 }
 
-.header-link {
-  padding: 0 32px;
-}
-
 /* Nav Bar */
 
 .navbar-background {
@@ -80,6 +76,14 @@
   padding: 0 16px;
 }
 
+.navbar-title ul li a {
+  padding: 8px 32px;
+}
+
+.navbar-title ul li a:hover {
+  text-decoration: underline;
+}
+
 .navbar-search-div {
   justify-items: start;
 }
@@ -116,11 +120,11 @@
   color: white;
   border: none;
   outline: 1px solid #ff943c;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .nav-admin-btn:hover {
-  outline: 1px solid white;
+  text-decoration: underline;
 }
 
 .navbar-small {
@@ -301,6 +305,10 @@
 .logIn-input-img {
   width: 20px;
   padding-top: 4px;
+}
+
+.logIn-input-img:hover {
+  cursor: pointer;
 }
 
 .logIn-button-div {

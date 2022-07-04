@@ -17,19 +17,13 @@ const Navbar = (props) => {
             </Link>
             <ul>
               <li>
-                <Link className="header-link" to="/">
-                  Home
-                </Link>
+                <Link to="/">Home</Link>
               </li>
               <li>
-                <Link className="header-link" to="/newin">
-                  New
-                </Link>
+                <Link to="/newin">New</Link>
               </li>
               <li>
-                <Link className="header-link" to="/gallery">
-                  Gallery
-                </Link>
+                <Link to="/gallery">Gallery</Link>
               </li>
             </ul>
           </div>
