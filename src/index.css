@@ -872,19 +872,10 @@
 }
 
 @media only screen and (max-width: 719px) {
-  .container {
+  .logIn-card-container {
     max-width: 378px;
     width: 100%;
     border-radius: 6px;
-  }
-
-  .card-container {
-    border-radius: 6px;
-  }
-
-  .body-base {
-    width:100vw;
-    height: 100%;
   }
 
   .logIn-img-div {
