@@ -22,7 +22,7 @@ const MiniCard = (props) => {
           </Link>
         </div>
         <div>
-          <p className="hover:underline hover:cursor-pointer pt-1">
+          <p className="pt-1">
             <b className="font-semibold">{props.mini.set}</b> {""} (
             <em>{props.mini.number}</em>)
           </p>

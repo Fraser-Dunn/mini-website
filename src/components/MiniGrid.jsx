@@ -1,12 +1,12 @@
 import MiniCard from "./MiniCard";
 
-const MiniGrid = (props) => {
+const MiniGrid = ({ displayList, filtersList }) => {
   return (
     <div className="pt-12 pb-24 px-12">
       <div className="grid-container ">
-        {props.displayList.map((miniItem) => {
+        {displayList.map((miniItem) => {
           let isRendered = true;
-          props.filtersList.forEach((filter) => {
+          filtersList.forEach((filter) => {
             if (miniItem[filter.key] !== filter.value) {
               isRendered = false;
             }

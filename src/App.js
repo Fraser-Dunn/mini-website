@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import LogIn from "./pages/LogIn";
-import Sets from "./pages/Sets";
 import MiniInfo from "./pages/MiniInfo";
 import Gallery from "./pages/Gallery";
 import PrivateRoute from "./components/PrivateRoute";
@@ -25,7 +24,6 @@ function App() {
             <Route path="/admin" element={<Admin />} />
           </Route>
           <Route path="/login" element={<LogIn setIsAuthed={setIsAuthed} />} />
-          <Route path="/sets/:miniSet" element={<Sets />} />
           <Route path="/miniInfo/:miniId" element={<MiniInfo />} />
         </Routes>
       </Router>

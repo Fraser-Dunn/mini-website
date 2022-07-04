@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { useLocation } from "react-router-dom";
 
 Object.defineProperty(String.prototype, "capitalize", {
   value: function () {
@@ -13,13 +14,17 @@ const sizeOrder = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"];
 const Filter = (props) => {
   const [filterMenu, setFilterMenu] = useState(false);
   const handleClick = () => setFilterMenu(!filterMenu);
-
+  const { search } = useLocation();
   const allFilters = {
     set: new Set(),
     size: new Set(),
     race: new Set(),
     type: new Set(),
   };
+
+  const setFilterVar = new URLSearchParams(search, [search]);
+  //console.log(setFilterVar.get("setFilter"));
+  const setFilterGet = setFilterVar.get("setFilter");
 
   props.displayList.forEach((mini) => {
     Object.entries(allFilters).forEach(([key, value]) => {
@@ -67,6 +72,10 @@ const Filter = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (setFilterGet) onAddFilter("set", setFilterGet);
+  }, [setFilterGet]);
+
   return (
     <>
       <div className="filter-container">
@@ -100,6 +109,11 @@ const Filter = (props) => {
                             type="checkbox"
                             id={filterItem}
                             name={filterItem}
+                            defaultChecked={
+                              key === "set" && filterItem === setFilterGet
+                                ? true
+                                : false
+                            }
                             onChange={(e) => handleChange(e, key, filterItem)}
                           />
                           {filterItem}
