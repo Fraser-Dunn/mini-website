@@ -9,7 +9,7 @@ const Navbar = (props) => {
 
   return (
     <div>
-      <div className=" min-w-fit w-screen h-[80px] z-10 bg-orange-400 fixed drop-shadow-lg ">
+      <div className="navbar-background min-w-fit w-screen h-[80px] z-10 fixed drop-shadow-lg ">
         <div className="px-2 flex justify-between items-center w-full h-full">
           <div className="flex items-center">
             <Link to="/">
@@ -49,8 +49,8 @@ const Navbar = (props) => {
             className="admin-button-nav-hidden"
             to={props.isAuthed ? "/admin" : "/login"}
           >
-            <div className="flex pr-4">
-              <button className="px-4 py-3 ml-6">Admin</button>
+            <div className="nav-admin-btn-div">
+              <button className="nav-admin-btn">Admin</button>
             </div>
           </Link>
 

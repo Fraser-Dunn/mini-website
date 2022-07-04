@@ -3,28 +3,25 @@ import { Link } from "react-router-dom";
 const MiniCard = (props) => {
   return (
     <>
-      <div className="items-center text-center w-[240px] h-[290px] rounded-[2px] px-2 py-2 shadow-lg">
+      <div className="miniCard-main-div shadow-lg">
         <div>
           <Link to={`/miniInfo/${props.mini.id}`}>
-            <h1 className="bg-orange-400 text-lg font-semibold rounded-sm text-white hover:cursor-pointer">
-              {props.mini.name}
-            </h1>
+            <h1>{props.mini.name}</h1>
           </Link>
-          <p className=" py-1 italic">{props.mini.size}</p>
+          <p className="miniCard-size-p">{props.mini.size}</p>
         </div>
-        <div className=" flex justify-center">
+        <div className="miniCard-img-div">
           <Link to={`/miniInfo/${props.mini.id}`}>
             <img
-              className="w-40 hover:cursor-pointer"
+              className="miniCard-img"
               src={props.mini.imageUrls[0]}
               alt="/"
             />
           </Link>
         </div>
         <div>
-          <p className="pt-1">
-            <b className="font-semibold">{props.mini.set}</b> {""} (
-            <em>{props.mini.number}</em>)
+          <p className="miniCard-set-and-number-p">
+            <b>{props.mini.set}</b> {""} (<em>{props.mini.number}</em>)
           </p>
         </div>
       </div>

@@ -14,7 +14,9 @@ const SetCard = (props) => {
         </div>
         <div className="setCard-footer">
           <Link to={`/gallery?setFilter=${props.miniSet}`}>
-            <button className="setCard-footer-button">View Set</button>
+            <button className="setCard-footer-button">
+              <h1>View Set</h1>
+            </button>
           </Link>
         </div>
       </div>
