@@ -146,13 +146,24 @@
 }
 
 .nav-hidden-false li {
+  display: flex;
   border-bottom-width: 2px;
   border-color: white;
   width: 100%;
+  font-size: 18px;
+  font-weight: 400;
+  
+}
+
+.nav-hidden-false a {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
 .nav-hidden-false p {
   color: white;
+  width: max-content;
 }
 
 /* Mini Grid */

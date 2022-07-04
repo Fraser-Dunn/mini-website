@@ -54,10 +54,7 @@ const Navbar = (props) => {
           </div>
         </div>
 
-        <ul
-          onClick={handleClick}
-          className={!nav ? "nav-hidden-true" : "nav-hidden-false"}
-        >
+        <ul className={!nav ? "nav-hidden-true" : "nav-hidden-false"}>
           <li>
             <Link to="/">
               <p>Home</p>
