@@ -1,9 +1,9 @@
 import SetCard from "./SetCard";
 
-const SetCardGrid = (props) => {
+const SetCardGrid = ({ displayList }) => {
   const setList = new Set();
 
-  props.displayList.forEach((mini) => {
+  displayList.forEach((mini) => {
     const miniValue = mini["set"];
     setList.add(miniValue);
   });
@@ -12,13 +12,10 @@ const SetCardGrid = (props) => {
     <div className="set-card-grid-body">
       <div className="grid-container-SetCardGrid">
         {[...setList].map((setItem) => {
-          const minisOfSet = props.displayList.filter(
-            (mini) => mini.set === setItem
-          );
+          const minisOfSet = displayList.filter((mini) => mini.set === setItem);
           //console.log(minisOfSet);
           return (
             <SetCard
-              minis={props.displayList}
               key={setItem}
               miniSet={setItem}
               firstOfSetImg={minisOfSet[0].imageUrls[0]}
@@ -31,5 +28,3 @@ const SetCardGrid = (props) => {
 };
 
 export default SetCardGrid;
-
-//console.log(props.displayList[1].set);

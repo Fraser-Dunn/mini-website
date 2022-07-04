@@ -11,7 +11,7 @@ Object.defineProperty(String.prototype, "capitalize", {
 
 const sizeOrder = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"];
 
-const Filter = (props) => {
+const Filter = ({ displayList, addFilter, removeFilter }) => {
   const [filterMenu, setFilterMenu] = useState(false);
   const handleClick = () => setFilterMenu(!filterMenu);
   const { search } = useLocation();
@@ -26,7 +26,7 @@ const Filter = (props) => {
   //console.log(setFilterVar.get("setFilter"));
   const setFilterGet = setFilterVar.get("setFilter");
 
-  props.displayList.forEach((mini) => {
+  displayList.forEach((mini) => {
     Object.entries(allFilters).forEach(([key, value]) => {
       const miniValue = mini[key];
       value.add(miniValue);
@@ -34,7 +34,7 @@ const Filter = (props) => {
   });
 
   const onAddFilter = (key, value) => {
-    props.addFilter({
+    addFilter({
       key: key,
       value: value,
     });
@@ -58,7 +58,7 @@ const Filter = (props) => {
   };
 
   const onRemoveFilter = (key, value) => {
-    props.removeFilter({
+    removeFilter({
       key: key,
       value: value,
     });
