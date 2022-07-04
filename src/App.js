@@ -25,7 +25,7 @@ function App() {
             <Route path="/admin" element={<Admin />} />
           </Route>
           <Route path="/login" element={<LogIn setIsAuthed={setIsAuthed} />} />
-          <Route path="/" element={<Sets />} />
+          <Route path="/sets/:miniSet" element={<Sets />} />
           <Route path="/miniInfo/:miniId" element={<MiniInfo />} />
         </Routes>
       </Router>

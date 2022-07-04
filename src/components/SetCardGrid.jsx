@@ -15,8 +15,10 @@ const SetCardGrid = (props) => {
           const minisOfSet = props.displayList.filter(
             (mini) => mini.set === setItem
           );
+          //console.log(minisOfSet);
           return (
             <SetCard
+              minis={props.displayList}
               key={setItem}
               miniSet={setItem}
               firstOfSetImg={minisOfSet[0].imageUrls[0]}

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const SetCard = (props) => {
-  //console.log(props.mini);
+  console.log(props.miniSet);
   return (
     <>
       <div className="setCard-main-div shadow-lg">
@@ -13,9 +13,9 @@ const SetCard = (props) => {
           <img className="setCard-img" src={props.firstOfSetImg} alt="/" />
         </div>
         <div className="setCard-footer">
-          <button className="setCard-footer-button">
-            <h1>View Set</h1>
-          </button>
+          <Link to={`/sets/${props.miniSet}`}>
+            <button className="setCard-footer-button">View Set</button>
+          </Link>
         </div>
       </div>
     </>
