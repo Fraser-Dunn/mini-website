@@ -1,4 +1,4 @@
-import { getDocs, doc, collection } from "firebase/firestore";
+import { getDocs, collection } from "firebase/firestore";
 import { db } from "../firebase.config";
 
 const fetchMinis = async () => {

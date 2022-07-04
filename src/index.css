@@ -32,6 +32,11 @@
 .headerOffset {
   width: 100%;
   height: 80px;
+  
+}
+
+.header-link {
+  padding: 0 32px;
 }
 
 /* Nav Bar */
@@ -248,7 +253,6 @@
   height: 100%;
   overflow: auto;
   padding-top: 100px;
-  
 }
 
 .logIn-container {
@@ -318,8 +322,14 @@
   justify-content: center;
 }
 
-.header-link {
-  padding: 0 32px;
+.logIn-img-div {
+  display: flex;
+}
+
+.logIn-img-div img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Admin Form */
@@ -875,6 +885,10 @@
   .body-base {
     width:100vw;
     height: 100%;
+  }
+
+  .logIn-img-div {
+    display: none;
   }
 }
 

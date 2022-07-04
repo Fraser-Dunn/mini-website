@@ -2,7 +2,6 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import ArrowRightIcon from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIconWhite from "../assets/svg/visibilityIconWhite.svg";
 import riseOfTiamat from "../assets/img/riseOfTiamat.jpg";
 
@@ -72,9 +71,9 @@ function LogIn(props) {
                 onChange={onChange}
               />
               <img
+                className="logIn-input-img"
                 src={visibilityIconWhite}
                 alt="show password"
-                className="logIn-input-img"
                 onClick={() => setShowPassword((prevState) => !prevState)}
               />
 
@@ -85,13 +84,8 @@ function LogIn(props) {
               </div>
             </form>
           </div>
-          {/* div needs to be invisible at 270px width*/}
-          <div className="hidden md3:flex">
-            <img
-              className="w-full h-full object-cover"
-              src={riseOfTiamat}
-              alt="/"
-            />
+          <div className="logIn-img-div">
+            <img src={riseOfTiamat} alt="/" />
           </div>
         </div>
       </div>
