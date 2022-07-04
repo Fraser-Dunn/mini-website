@@ -606,18 +606,14 @@
   height: fit-content;
 }
 
-.miniInfo-b-name {
-  font-size: 22px;
-  padding-bottom: 4px;
-}
-
 .miniInfo-details p {
   padding: 4px;
-  font-size: 18px;
+  font-size: 22px;
 }
 
-.miniInfo-details p:nth {
-  font-weight: 600;
+.miniInfo-b-name {
+  font-size: 26px;
+  padding-bottom: 4px;
 }
 
 .miniInfo-details a {
@@ -780,6 +776,7 @@
   .form-content-grid {
     grid-template-columns: 1fr;
   }
+  
 
   .form-submit-button {
     grid-column: span 1;
@@ -806,17 +803,16 @@
   
   .miniInfo-grid-item:nth-child(3) {
     grid-column: span 1;
-
   }
 
   .miniInfo-grid-item:nth-child(3) img {
     width: 100%;
     max-width: 400px;
-    
   }
 
   .miniInfo-details p {
     padding: 1px;
+    font-size: 20px;
   }
 }
 

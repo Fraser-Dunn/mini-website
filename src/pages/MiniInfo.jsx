@@ -39,9 +39,6 @@ const MiniInfo = () => {
           </div>
           <div className="miniInfo-grid-item">
             <div className="miniInfo-details">
-              <p className="miniInfo-p-name">
-                <b className="miniInfo-b-name">{miniInfo.name}</b>
-              </p>
               <p>
                 <b>Rarity:</b> {miniInfo.rarity}
               </p>
