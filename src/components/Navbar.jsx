@@ -9,15 +9,13 @@ const Navbar = (props) => {
 
   return (
     <div>
-      <div className="navbar-background min-w-fit w-screen h-[80px] z-10 fixed drop-shadow-lg ">
-        <div className="px-2 flex justify-between items-center w-full h-full">
-          <div className="flex items-center">
+      <div className="navbar-background drop-shadow-lg">
+        <div className="navbar-container">
+          <div className="navbar-title">
             <Link to="/">
-              <h1 className="text-3xl text-white font-bold mr-8 pl-4 sm:text-4xl">
-                MyMinis
-              </h1>
+              <h1>MyMinis</h1>
             </Link>
-            <ul className="hidden md2:flex text-xl text-white px-4">
+            <ul>
               <li>
                 <Link className="header-link" to="/">
                   Home
@@ -36,66 +34,55 @@ const Navbar = (props) => {
             </ul>
           </div>
           {/* Search Bar */}
-          <div className="justify-items-start">
-            <input
-              className="search-bar-large w-max rounded-md text-lg px-2 py-0.5 outline-none mr-6"
-              type="text"
-              placeholder="Search here..."
-            />
+          <div className="navbar-search-div">
+            <input type="text" placeholder="Search here..." />
           </div>
 
           {/* Admin Button needs to be hidden at 910px */}
-          <Link
-            className="admin-button-nav-hidden"
-            to={props.isAuthed ? "/admin" : "/login"}
-          >
+          <Link to={props.isAuthed ? "/admin" : "/login"}>
             <div className="nav-admin-btn-div">
               <button className="nav-admin-btn">Admin</button>
             </div>
           </Link>
 
-          <div className="md2:hidden mr-4" onClick={handleClick}>
+          <div className="navbar-small" onClick={handleClick}>
             {!nav ? (
-              <MenuIcon className="w-5 text-white" />
+              <MenuIcon className="nav-menu-icon" />
             ) : (
-              <XIcon className="w-5 text-white" />
+              <XIcon className="nav-x-icon" />
             )}
           </div>
         </div>
 
         <ul
-          className={
-            !nav
-              ? "hidden"
-              : "absolute bg-orange-400 w-full px-8 pb-3 flex flex-col"
-          }
+          onClick={handleClick}
+          className={!nav ? "nav-hidden-true" : "nav-hidden-false"}
         >
-          <li className="border-b-2 border-white w-full">
-            <Link className="text-white" to="/">
-              Home
+          <li>
+            <Link to="/">
+              <p>Home</p>
             </Link>
           </li>
-          <li className="border-b-2 border-white w-full">
-            <Link className="text-white" to="/newin">
-              New In
+          <li>
+            <Link to="/newin">
+              <p>New In</p>
             </Link>
           </li>
-          <li className="border-b-2 border-white w-full">
-            <Link className="text-white" to="/gallery">
-              Gallery
+          <li>
+            <Link to="/gallery">
+              <p>Gallery</p>
             </Link>
           </li>
-          <li className="border-b-2 border-white w-full">
+          <li>
             <Link
               onClick={handleClick}
-              className="text-white"
               to={props.isAuthed ? "/admin" : "/login"}
             >
-              Admin
+              <p>Admin</p>
             </Link>
           </li>
           <input
-            className="search-bar-drop px-2 py-1 mb-1 w-max rounded-md outline-none"
+            className="navbar-search-input-drop"
             type="text"
             placeholder="Search here..."
           />
