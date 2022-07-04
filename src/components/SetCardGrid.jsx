@@ -13,7 +13,6 @@ const SetCardGrid = ({ displayList }) => {
       <div className="grid-container-SetCardGrid">
         {[...setList].map((setItem) => {
           const minisOfSet = displayList.filter((mini) => mini.set === setItem);
-          //console.log(minisOfSet);
           return (
             <SetCard
               key={setItem}

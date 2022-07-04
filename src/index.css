@@ -232,7 +232,6 @@
   font-weight: 600;
 }
 
-
 /* Login Card */
 
 .body-prime {
@@ -241,7 +240,7 @@
   box-sizing: border-box;
 }
 
-.body-base {
+.logIn-body {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -252,29 +251,78 @@
   
 }
 
-.container {
+.logIn-container {
  display: flex;
  max-width: 1024px;
- 
 }
 
-.card-container {
+.logIn-card-container {
   max-width: 378px;
   width: 100%;
   min-width: 378px;
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
+  background-color: #ff943c;
+  padding: 144px 28px
 }
 
-.input-w {
+.logIn-title {
+  text-align: center;
+  font-size: 40px;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+.logIn-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.logIn-form label {
+  color: white;
+  padding-top: 32px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.logIn-form input {
   min-width: fit-content;
+  padding: 2px;
+  border-radius: 2px;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.logIn-input-img {
+  width: 20px;
+  padding-top: 4px;
+}
+
+.logIn-button-div {
+  display: flex;
+  align-self: center;
+  margin-top: 20px;
+}
+
+.logIn-button {
+  background: white;
+  width: 120px;
+  padding: 8px;
+}
+
+.logIn-button p {
+  align-items: center;
+  font-size: 22px;
+  font-weight: 600;
+  justify-content: center;
 }
 
 .header-link {
   padding: 0 32px;
 }
 
-/* Form */
+/* Admin Form */
 
 .body-base-form {
   display: flex;
@@ -642,7 +690,6 @@
   align-self: center;
 }
 
-
 /* Spinner */
 .loadingSpinnerContainer {
   position: fixed;
@@ -743,7 +790,6 @@
   padding: 2px;
 }
 
-
 /* Media Queries */
 
 @media only screen and (max-width: 1050px) {
@@ -777,7 +823,6 @@
     grid-template-columns: 1fr;
   }
   
-
   .form-submit-button {
     grid-column: span 1;
   }

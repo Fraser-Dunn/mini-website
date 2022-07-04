@@ -11,7 +11,6 @@ const MiniInfo = () => {
   const params = useParams();
 
   const fetchMiniInfo = async () => {
-    //console.log(params.miniId);
     const docRef = doc(db, "minis", params.miniId);
     const docSnap = await getDoc(docRef);
 

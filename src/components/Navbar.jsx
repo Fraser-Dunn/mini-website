@@ -38,7 +38,7 @@ const Navbar = (props) => {
             <input type="text" placeholder="Search here..." />
           </div>
 
-          {/* Admin Button needs to be hidden at 910px */}
+          {/* Admin Button */}
           <Link to={props.isAuthed ? "/admin" : "/login"}>
             <div className="nav-admin-btn-div">
               <button className="nav-admin-btn">Admin</button>

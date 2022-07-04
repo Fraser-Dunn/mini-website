@@ -23,7 +23,6 @@ const Filter = ({ displayList, addFilter, removeFilter }) => {
   };
 
   const setFilterVar = new URLSearchParams(search, [search]);
-  //console.log(setFilterVar.get("setFilter"));
   const setFilterGet = setFilterVar.get("setFilter");
 
   displayList.forEach((mini) => {

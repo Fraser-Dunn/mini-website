@@ -47,18 +47,15 @@ function LogIn(props) {
 
   return (
     <>
-      <div className="body-base">
-        <div className="container shadow-xl">
-          <div className="card-container bg-orange-400 py-36 px-7 ">
-            <div className="text-center text-3xl text-white font-bold mb-8">
+      <div className="logIn-body">
+        <div className="logIn-container shadow-xl">
+          <div className="logIn-card-container">
+            <div className="logIn-title">
               <h2>Login</h2>
             </div>
-            <form className="flex flex-col" onSubmit={onSubmit}>
-              <label className="text-white pt-4 text-lg font-semibold">
-                Email:
-              </label>
+            <form className="logIn-form" onSubmit={onSubmit}>
+              <label>Email:</label>
               <input
-                className="input-w p-[2px] rounded-sm outline-none"
                 type="email"
                 placeholder=""
                 id="email"
@@ -66,11 +63,8 @@ function LogIn(props) {
                 onChange={onChange}
               />
 
-              <label className="text-white pt-4 text-lg font-semibold">
-                Password:
-              </label>
+              <label>Password:</label>
               <input
-                className="input-w p-[2px] rounded-sm outline-none"
                 type={showPassword ? "text" : "password"}
                 placeholder=""
                 id="password"
@@ -80,16 +74,13 @@ function LogIn(props) {
               <img
                 src={visibilityIconWhite}
                 alt="show password"
-                className="w-5 pt-1"
+                className="logIn-input-img"
                 onClick={() => setShowPassword((prevState) => !prevState)}
               />
 
-              <div className="self-center flex">
-                <p className="items-center text-white text-xl justify-center mr-2">
-                  Sign In
-                </p>
-                <button>
-                  <img className="w-5" src={ArrowRightIcon} alt="arrow" />
+              <div className="logIn-button-div">
+                <button className="logIn-button">
+                  <p>Sign In</p>
                 </button>
               </div>
             </form>
