@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const MiniCard = ({ mini }) => {
   return (
     <>
-      <div className="miniCard-main-div shadow-lg">
+      <div className="miniCard-main-div">
         <div>
           <Link to={`/miniInfo/${mini.id}`}>
             <h1>{mini.name}</h1>

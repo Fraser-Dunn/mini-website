@@ -9,7 +9,7 @@ const Navbar = (props) => {
 
   return (
     <div>
-      <div className="navbar-background drop-shadow-lg">
+      <div className="navbar-background">
         <div className="navbar-container">
           <div className="navbar-title">
             <Link to="/">

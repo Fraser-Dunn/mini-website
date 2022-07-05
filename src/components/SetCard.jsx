@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const SetCard = ({ firstOfSetImg, miniSet }) => {
   return (
     <>
-      <div className="setCard-main-div shadow-lg">
+      <div className="setCard-main-div">
         <div className="setCard-title">
           <h1>{miniSet}</h1>
         </div>

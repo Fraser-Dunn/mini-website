@@ -78,7 +78,7 @@ const Filter = ({ displayList, addFilter, removeFilter }) => {
   return (
     <>
       <div className="filter-container">
-        <div className="filter-body shadow-md">
+        <div className="filter-body">
           <div className="filter-title-div">
             <h1>Filter</h1>
             <div className="filter-menu-click" onClick={handleClick}>

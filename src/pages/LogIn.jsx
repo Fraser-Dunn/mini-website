@@ -47,7 +47,7 @@ function LogIn(props) {
   return (
     <>
       <div className="logIn-body">
-        <div className="logIn-container shadow-xl">
+        <div className="logIn-container">
           <div className="logIn-card-container">
             <div className="logIn-title">
               <h2>Login</h2>
