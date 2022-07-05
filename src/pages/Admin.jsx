@@ -196,7 +196,7 @@ const Admin = () => {
                     id="name"
                     value={name}
                     onChange={onMutate}
-                    maxLength="30"
+                    maxLength="40"
                     minLength="3"
                     required
                   />
@@ -290,7 +290,7 @@ const Admin = () => {
                     value={number}
                     onChange={onMutate}
                     min="1"
-                    max="50"
+                    max="70"
                     required
                   />
                 </div>
