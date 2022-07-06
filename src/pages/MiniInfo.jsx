@@ -71,7 +71,7 @@ const MiniInfo = () => {
               <p>
                 <b>Statblock:</b>
                 {"  "}
-                <a href={miniInfo.statblock} target="_blank">
+                <a href={miniInfo.statblock} target="_blank" rel="noreferrer">
                   here
                 </a>
               </p>
