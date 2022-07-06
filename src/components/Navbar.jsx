@@ -20,7 +20,7 @@ const Navbar = (props) => {
                 <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/newin">New</Link>
+                <Link to="/about">About</Link>
               </li>
               <li>
                 <Link to="/gallery">Gallery</Link>
@@ -55,8 +55,8 @@ const Navbar = (props) => {
             </Link>
           </li>
           <li>
-            <Link to="/newin">
-              <p>New In</p>
+            <Link to="/about">
+              <p>About</p>
             </Link>
           </li>
           <li>

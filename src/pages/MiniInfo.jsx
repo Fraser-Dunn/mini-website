@@ -48,7 +48,7 @@ const MiniInfo = () => {
                 <b>Race:</b> {miniInfo.race}
               </p>
               <p>
-                <b>Race:</b> {miniInfo.type}
+                <b>Type:</b> {miniInfo.type}
               </p>
               <p>
                 <b>Size:</b> {miniInfo.size}
