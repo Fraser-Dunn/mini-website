@@ -50,7 +50,7 @@
   height: 80px;
   z-index: 10;
   position: fixed;
-  box-shadow: 0px 0px 8px 8px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 8px 8px rgba(0,0,0,0.14);
 }
 
 .navbar-container {
