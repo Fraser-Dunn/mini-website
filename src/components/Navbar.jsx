@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
 
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
-const Navbar = (props) => {
+const Navbar = ({ isAuthed }) => {
   const [nav, setNav] = useState(false);
   const handleClick = () => setNav(!nav);
 
@@ -28,16 +29,16 @@ const Navbar = (props) => {
             </ul>
           </div>
           {/* Search Bar */}
-          <div className="navbar-search-div">
-            <input type="text" placeholder="Search here..." />
+          <div className="searchbar-main-div">
+            <SearchBar />
           </div>
 
           {/* Admin Button */}
-          <Link to={props.isAuthed ? "/admin" : "/login"}>
-            <div className="nav-admin-btn-div">
+          <div className="nav-admin-btn-div">
+            <Link to={isAuthed ? "/admin" : "/login"}>
               <button className="nav-admin-btn">Admin</button>
-            </div>
-          </Link>
+            </Link>
+          </div>
 
           <div className="navbar-small" onClick={handleClick}>
             {!nav ? (
@@ -65,18 +66,13 @@ const Navbar = (props) => {
             </Link>
           </li>
           <li>
-            <Link
-              onClick={handleClick}
-              to={props.isAuthed ? "/admin" : "/login"}
-            >
+            <Link onClick={handleClick} to={isAuthed ? "/admin" : "/login"}>
               <p>Admin</p>
             </Link>
           </li>
-          <input
-            className="navbar-search-input-drop"
-            type="text"
-            placeholder="Search here..."
-          />
+          <div className="searchbar-drop-div">
+            <SearchBar />
+          </div>
         </ul>
       </div>
       <div className="headerOffset"></div>
