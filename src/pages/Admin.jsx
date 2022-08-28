@@ -30,7 +30,6 @@ const initialState = {
 };
 
 const Admin = () => {
-  const [_loading, setLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
 
   const {
@@ -74,10 +73,7 @@ const Admin = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
-
     if (images.length > 1) {
-      setLoading(false);
       toast.error("Max 1 image");
       return;
     }
@@ -105,6 +101,8 @@ const Admin = () => {
               case "running":
                 console.log("Upload is running");
                 break;
+              default:
+                break;
             }
           },
           (error) => {
@@ -124,7 +122,6 @@ const Admin = () => {
     const imageUrls = await Promise.all(
       [...images].map((image) => storeImage(image))
     ).catch(() => {
-      setLoading(false);
       toast.error("Images not uploaded");
       return;
     });
@@ -140,10 +137,10 @@ const Admin = () => {
     formDataCopy.quantity = Number(formDataCopy.quantity);
     console.log(formDataCopy);
 
-    const docRef = await addDoc(collection(db, "minis"), formDataCopy);
-    setLoading(false);
+    await addDoc(collection(db, "minis"), formDataCopy);
+
     toast.success("Mini saved");
-    setLoading(false);
+
     setFormData(initialState);
     inputImage.current.value = null;
   };
