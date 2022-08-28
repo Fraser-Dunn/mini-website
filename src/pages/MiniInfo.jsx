@@ -1,29 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { getDoc, doc } from "firebase/firestore";
-import { db } from "../firebase.config";
+
 import Spinner from "../components/Spinner";
 
-const MiniInfo = () => {
-  const [miniInfo, setMiniInfo] = useState(null);
-  const [loading, setLoading] = useState(true);
-
+const MiniInfo = ({ data, loading }) => {
   const params = useParams();
 
-  const fetchMiniInfo = async () => {
-    const docRef = doc(db, "minis", params.miniId);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      //console.log(docSnap.data());
-      setMiniInfo(docSnap.data());
-      setLoading(false);
+  let currentMini = [];
+  data.forEach((mini) => {
+    if (mini.id === params.miniId) {
+      return (currentMini = mini);
     }
-  };
-
-  useEffect(() => {
-    fetchMiniInfo();
-  }, [params.miniId]);
+  });
 
   if (loading) {
     return <Spinner />;
@@ -34,44 +22,48 @@ const MiniInfo = () => {
       <div className="miniInfo-page-container">
         <div className="miniInfo-grid">
           <div className="miniInfo-grid-title">
-            <h1>{miniInfo.name}</h1>
+            <h1>{currentMini.name}</h1>
           </div>
           <div className="miniInfo-grid-item">
             <div className="miniInfo-details">
               <p>
-                <b>Rarity:</b> {miniInfo.rarity}
+                <b>Rarity:</b> {currentMini.rarity}
               </p>
               <p>
-                <b>Gender:</b> {miniInfo.gender}
+                <b>Gender:</b> {currentMini.gender}
               </p>
               <p>
-                <b>Race:</b> {miniInfo.race}
+                <b>Race:</b> {currentMini.race}
               </p>
               <p>
-                <b>Type:</b> {miniInfo.type}
+                <b>Type:</b> {currentMini.type}
               </p>
               <p>
-                <b>Size:</b> {miniInfo.size}
+                <b>Size:</b> {currentMini.size}
               </p>
               <p>
-                <b>Set Number:</b> {miniInfo.number}
+                <b>Set Number:</b> {currentMini.number}
               </p>
               <p>
-                <b>Quantity:</b> {miniInfo.quantity}
+                <b>Quantity:</b> {currentMini.quantity}
               </p>
               <p>
-                <b>Maker:</b> {miniInfo.maker}
+                <b>Maker:</b> {currentMini.maker}
               </p>
               <p>
-                <b>Brand:</b> {miniInfo.brand}
+                <b>Brand:</b> {currentMini.brand}
               </p>
               <p>
-                <b>Set:</b> {miniInfo.set}
+                <b>Set:</b> {currentMini.set}
               </p>
               <p>
                 <b>Statblock:</b>
                 {"  "}
-                <a href={miniInfo.statblock} target="_blank" rel="noreferrer">
+                <a
+                  href={currentMini.statblock}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   here
                 </a>
               </p>
@@ -80,7 +72,7 @@ const MiniInfo = () => {
 
           <div className="miniInfo-grid-item">
             <div className="miniInfo-img">
-              <img src={miniInfo.imageUrls[0]} alt="" />
+              <img src={currentMini.imageUrls[0]} alt="" />
             </div>
           </div>
         </div>

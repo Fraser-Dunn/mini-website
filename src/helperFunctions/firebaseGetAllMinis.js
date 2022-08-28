@@ -1,9 +1,9 @@
-import { getDocs, collection } from "firebase/firestore";
+import { getDocsFromServer, collection } from "firebase/firestore";
 import { db } from "../firebase.config";
 
 const fetchMinis = async () => {
   const docRef = collection(db, "minis");
-  const collectionList = await getDocs(docRef);
+  const collectionList = await getDocsFromServer(docRef);
   return collectionList.docs
     .map((doc) => ({ ...doc.data(), id: doc.id }))
     .sort((a, b) => {
