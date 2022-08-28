@@ -16,10 +16,3 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
-
-// Create a search page
-
-// 1. search input (Done)
-// 2. reroute to search page (Done)
-// 3. grab parameter
-// 4. filter list

@@ -1,46 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import MiniGrid from "../components/MiniGrid";
 import Filter from "../components/Filter";
 
-class Gallery extends React.Component {
-  constructor() {
-    super();
-    this.state = { filtersList: [] };
-  }
+const Gallery = ({ data }) => {
+  const [filtersList, setFiltersList] = useState([]);
 
-  addFilter(newFilter) {
-    const updatedFilteredList = this.state.filtersList;
+  const addFilter = (newFilter) => {
+    const updatedFilteredList = filtersList.slice(0);
     updatedFilteredList.push(newFilter);
-    this.setState({ filtersList: updatedFilteredList });
-  }
+    setFiltersList(updatedFilteredList);
+  };
 
-  removeFilter(filterToBeRemoved) {
-    const updatedFilteredList = this.state.filtersList.filter((filter) => {
+  const removeFilter = (filterToBeRemoved) => {
+    const updatedFilteredList = filtersList.filter((filter) => {
       return (
         filter.key !== filterToBeRemoved.key ||
         filter.value !== filterToBeRemoved.value
       );
     });
-    this.setState({ filtersList: updatedFilteredList });
-  }
+    setFiltersList(updatedFilteredList);
+  };
 
-  render() {
-    return (
-      <>
-        <div>
-          <Filter
-            displayList={this.props.data}
-            addFilter={this.addFilter.bind(this)}
-            removeFilter={this.removeFilter.bind(this)}
-          />
-          <MiniGrid
-            displayList={this.props.data}
-            filtersList={this.state.filtersList}
-          />
-        </div>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <div>
+        <Filter
+          displayList={data}
+          addFilter={addFilter}
+          removeFilter={removeFilter}
+        />
+        <MiniGrid displayList={data} filtersList={filtersList} />
+      </div>
+    </>
+  );
+};
 
 export default Gallery;
