@@ -41,7 +41,10 @@ function App() {
             path="/miniInfo/:miniId"
             element={<MiniInfo data={data} loading={loading} />}
           />
-          <Route path="/search" element={<Search />} />
+          <Route
+            path="/search"
+            element={<Search data={data} loading={loading} />}
+          />
         </Routes>
       </Router>
 

@@ -1,26 +1,31 @@
-import React, { useState } from "react";
-import getMinis from "../helperFunctions/firebaseGetAllMinis";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import MiniGrid from "../components/MiniGrid";
 
-const Search = () => {
-  const [minis, setMinis] = useState(null);
-  const [loading, setLoading] = useState(true);
+const Search = ({ data, loading }) => {
+  const [displayList, setDisplayList] = useState([]);
+  const { search } = useLocation();
+  const searchObject = new URLSearchParams(search, [search]);
+  const searchTerm = searchObject.get("term");
 
-  // const fetchMinis = async () => {
-  //   const data = await getMinis();
-  //   setMinis(data);
-  //   setLoading(false);
-  // };
-  // setTimeout(() => {
-  //   console.log("exited timeout");
-  // }, 5000);
-  // fetchMinis();
+  useEffect(() => {
+    setDisplayList(
+      data.filter((mini) => {
+        return mini.name.toUpperCase().includes(searchTerm.toUpperCase());
+      })
+    );
+  }, [data, searchTerm]);
 
-  //   if (loading) {
-  //     return <Spinner />;
-  //   }
+  if (loading) {
+    return <Spinner />;
+  }
 
-  return <div>Search</div>;
+  return (
+    <div>
+      <MiniGrid filtersList={[]} displayList={displayList} />
+    </div>
+  );
 };
 
 export default Search;
