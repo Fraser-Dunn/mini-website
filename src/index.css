@@ -4,6 +4,12 @@
 
 
 :root {
+
+  --primary: #ff943c;
+  --secondary: white;
+  --background: #FEFEFC;
+
+
     @apply bg-primary text-primary
   }
   
@@ -23,7 +29,7 @@
 
 
 * body {
-  background-color: #FEFEFC;
+  background-color: var(--background);
   font-family: 'Karla', sans-serif;
 }
 
@@ -32,7 +38,6 @@
 .headerOffset {
   width: 100%;
   height: 80px;
-  
 }
 
 /* Search Bar */
@@ -44,7 +49,7 @@
 /* Nav Bar */
 
 .navbar-background {
-  background-color: #ff943c;
+  background-color: var(--primary);
   width: 100%;
   min-width: fit-content;
   height: 80px;
@@ -70,7 +75,7 @@
 .navbar-title h1 {
   font-size: 40px;
   line-height: 36px;
-  color: white;
+  color: var(--secondary);
   margin-right: 32px;
   font-weight: 700;
   padding-left: 16px;
@@ -79,7 +84,7 @@
 .navbar-title ul {
   display: flex;
   font-size: 22px;
-  color: white;
+  color: var(--secondary);
   padding: 0 16px;
 }
 
@@ -123,10 +128,10 @@
 
 .nav-admin-btn {
   padding: 8px 12px;
-  background-color: #ff943c;
-  color: white;
+  background-color: var(--primary);
+  color: var(--secondary);
   border: none;
-  outline: 1px solid #ff943c;
+  outline: 1px solid var(--primary);
   font-size: 22px;
 }
 
@@ -140,12 +145,12 @@
 
 .nav-menu-icon {
   width: 20px;
-  color: white;
+  color: var(--secondary);
 }
 
 .nav-x-icon {
   width: 20px;
-  color: white;
+  color: var(--secondary);
 }
 
 .nav-hidden-true {
@@ -156,7 +161,7 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  background-color: #ff943c;
+  background-color: var(--primary);
   width: 100%;
   padding: 0 32px 20px 32px;
   box-shadow: 0px 15px 11px -7px rgba(0,0,0,0.45);
@@ -165,7 +170,7 @@
 .nav-hidden-false li {
   display: flex;
   border-bottom-width: 2px;
-  border-color: white;
+  border-color: var(--secondary);
   width: 100%;
   font-size: 18px;
   font-weight: 400;
@@ -179,7 +184,7 @@
 }
 
 .nav-hidden-false p {
-  color: white;
+  color: var(--secondary);
   width: max-content;
 }
 
@@ -213,7 +218,7 @@
 .about-page-header h1 {
   font-size: 50px;
   font-weight: 700;
-  color: #ff943c;
+  color: var(--primary);
   padding: 8px;
   margin-bottom: 20px; 
 }
@@ -230,7 +235,7 @@
   padding: 8px;
   width: 100%;
   height: auto;
-  background-color: #ff943c;
+  background-color: var(--primary);
 }
 
 .about-info-item {
@@ -241,14 +246,14 @@
 }
 
 .about-info-item h1 {
-  color: white;
+  color: var(--secondary);
   font-size: 34px;
   font-weight: 600;
   padding: 18px;
 }
 
 .about-info-item p {
-  color: white;
+  color: var(--secondary);
   font-size: 22px;
   text-align: center;
   padding: 18px;
@@ -273,7 +278,7 @@
   flex-direction: column;
   width: 350px;
   height: 420px;
-  background-color: white;
+  background-color: var(--secondary);
   border-radius: 4px;
   box-shadow: 0px 0px 6px 2px rgba(0,0,0,0.2);
 }
@@ -290,12 +295,12 @@
   text-align: center;
   font-size: 40px;
   font-weight: 600;
-  color: #ff943c;
+  color: var(--primary);
   text-decoration: underline;
 }
 
 .about-footer-info p {
-  color: #ff943c;
+  color: var(--primary);
   text-align: center;
   font-size: 22px;
   padding-top: 12px;
@@ -304,7 +309,7 @@
 .about-footer-info-ul {
   display: flex;
   justify-content: center;
-  color: #ff943c;
+  color: var(--primary);
   font-size: 28px;
   font-weight: 600;
   padding-top: 26px;
@@ -339,11 +344,11 @@
 }
 
 .miniCard-main-div h1 {
-  background-color: #ff943c;
+  background-color: var(--primary);
   font-size: 18px;
   font-weight: 500;
   border-radius: 2px;
-  color: white;
+  color: var(--secondary);
   padding: 2px 0;
 }
 
@@ -405,14 +410,14 @@
   max-width: 378px;
   width: 100%;
   min-width: 378px;
-  background-color: #ff943c;
+  background-color: var(--primary);
   padding: 144px 28px;
 }
 
 .logIn-title {
   text-align: center;
   font-size: 40px;
-  color: white;
+  color: var(--secondary);
   font-weight: 700;
   margin-bottom: 32px;
 }
@@ -423,7 +428,7 @@
 }
 
 .logIn-form label {
-  color: white;
+  color: var(--secondary);
   padding-top: 32px;
   font-size: 18px;
   font-weight: 600;
@@ -453,7 +458,7 @@
 }
 
 .logIn-button {
-  background: white;
+  background: var(--secondary);
   width: 120px;
   padding: 8px;
 }
@@ -494,8 +499,10 @@
   justify-content: center;
   width: 100%;
   margin-bottom: 8px;
-  padding: 0 0 20px 0;
+  padding-bottom: 20px;
   max-width: 828px;
+  background-color: var(--primary);
+  border-radius: 6px;
 }
 
 .form-header {
@@ -504,7 +511,7 @@
 
 .form-header h1 {
   font-size: 30px;
-  color: white;
+  color: var(--secondary);
   font-weight: bold;
 }
 
@@ -513,6 +520,7 @@
   place-self: start;
   width:100%;
   padding: 20px;
+  background-color: #f2f4f8;
 }
 
 .form-actual {
@@ -527,6 +535,8 @@
   width: 100%;
   align-items: center;
   justify-items: center;
+  background-color: #f2f4f8;
+  border-radius: 6px;
 }
 
 .name-div {
@@ -552,12 +562,13 @@
   margin-right: 4px;
   width: 100%;
   background-color: #f2f4f8;
+  border-radius: 6px;
 }
 
 .form-name-label {
   font-size: 22px;
   font-weight: 600;
-  color: #ff943c;
+  color: var(--primary);
   padding-bottom: 4px;
   width: 80%;
 }
@@ -565,28 +576,29 @@
 .form-name-input {
   padding: 4px;
   outline: none;
+  border-radius: 6px;
 }
 
 .form-name-input-image {
   padding: 2px;
   outline: none;
-  color: #ff943c;
+  color: var(--primary);
   font-weight: 600;
   font-size: 18px;
   width: 100%;
 }
 
 .form-name-input-image::-webkit-file-upload-button {
-  background-color: #ff943c ;
-  color: white;
+  background-color: var(--primary) ;
+  color: var(--secondary);
   border: 0;
   font-size: 18px;
   margin-right: 20px;
 }
 
 .form-name-input-image::-webkit-file-upload-button:hover {
-  background-color: white;
-  color: #ff943c;
+  background-color: var(--secondary);
+  color: var(--primary);
 }
 
 .form-button-div {
@@ -595,36 +607,36 @@
 }
 
 .form-button {
-  color: white;
-  background-color: #ff943c;
+  color: var(--secondary);
+  background-color: var(--primary);
   width: 100%;
   margin: 2px;
 }
 
 .form-button-inactive {
   color:black;
-  background-color: white;
+  background-color: var(--secondary);
   border: none;
   width: 100%;
   margin: 2px;
 }
 
 .form-button:hover {
-  color: white;
-  background-color: #ff943c;
+  color: var(--secondary);
+  background-color: var(--primary);
 }
 
 .form-button-inactive:hover {
-  color: #ff943c;
-  background-color: white;
-  border: 1px solid #ff943c;
+  color: var(--primary);
+  background-color: var(--secondary);
+  border: 1px solid var(--primary);
   width: 100%;
   margin: 2px; 
 }
 
 .form-submit-button {
-  background-color: #ff943c;
-  color: white;
+  background-color: var(--primary);
+  color: var(--secondary);
   width: 80%;
   height: 60px;
   margin-top: 30px;
@@ -635,9 +647,9 @@
 }
 
 .form-submit-button:hover {
-  background-color: white;
-  color: #ff943c;
-  border: 2px solid #ff943c;
+  background-color: var(--secondary);
+  color: var(--primary);
+  border: 2px solid var(--primary);
 }
 
 .form-size-select {
@@ -712,7 +724,7 @@
   display: flex;
   justify-content: center;
   margin-bottom: 8px;
-  background-color: #ff943c;
+  background-color: var(--primary);
   border-radius: 4px;
 }
 
@@ -734,12 +746,12 @@
 }
 
 .filter-button {
-  background-color: #ff943c;
+  background-color: var(--primary);
   color: #f2f4f8;
 }
 
 .filter-button:hover {
-  background-color: #ff943c;
+  background-color: var(--primary);
   color: #f2f4f8;
 }
 
@@ -753,7 +765,7 @@
   height: 100%;
   padding: 16px;
   align-items: center;
-  background-color: #FEFEFC;
+  background-color: var(--background);
 }
 
 .miniInfo-grid {
@@ -767,7 +779,7 @@
   max-width: 980px;
   border-radius: 8px;
   box-shadow: 0px 4px 16px 0px rgba(0,0,0,0.3);
-  background-color: white;
+  background-color: var(--secondary);
   
 }
 
@@ -775,8 +787,8 @@
   display: flex;
   justify-content: center;
   align-self: center;
-  background-color: #ff943c;
-  color: white;
+  background-color: var(--primary);
+  color: var(--secondary);
   font-size: 28px;
   font-weight: 600;
   padding: 2px 0;
@@ -900,15 +912,15 @@
   height: 400px;
   border-radius: 2px;
   padding: 8px;
-  background-color: white;
+  background-color: var(--secondary);
   box-shadow: 0px 0px 6px 2px rgba(0,0,0,0.2);
 }
 
 .setCard-title {
   width: 100%;
   padding: 4px;
-  background-color: #ff943c;
-  color: white;
+  background-color: var(--primary);
+  color: var(--secondary);
   border-radius: 2px;
   margin-bottom: 10px;
 }
@@ -941,9 +953,9 @@
 }
 
 .setCard-footer-button:hover {
-  color: #ff943c;
-  background-color: white;
-  text-decoration: underline 2px solid #ff943c;
+  color: var(--primary);
+  background-color: var(--secondary);
+  text-decoration: underline 2px solid var(--primary);
 }
 
 .setCard-footer h1 {

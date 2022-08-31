@@ -174,21 +174,21 @@ const Admin = () => {
 
   return (
     <div className="body-base-form ">
-      <div className="form-container bg-orange-400 shadow-lg rounded-md">
+      <div className="form-container shadow-lg">
         <header className="form-header ">
           <h1>Upload a Mini</h1>
         </header>
 
-        <main className="form-main bg-[#f2f4f8]">
+        <main className="form-main">
           <form className="form-actual" onSubmit={onSubmit}>
-            <div className="form-content-grid bg-[#f2f4f8] rounded-md ">
+            <div className="form-content-grid">
               {/* name */}
               <div className="name-div">
-                <div className="form-name-label-div bg-[#f2f4f8] rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Name</label>
                   <input
                     placeholder="Enter name here..."
-                    className="form-name-input rounded-md"
+                    className="form-name-input"
                     type="text"
                     id="name"
                     value={name}
@@ -202,7 +202,7 @@ const Admin = () => {
 
               {/* size */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Size</label>
                   <select
                     className="form-size-select"
@@ -223,11 +223,11 @@ const Admin = () => {
 
               {/* type */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Creature Type</label>
                   <input
                     placeholder="Enter creature type here..."
-                    className="form-name-input rounded-md"
+                    className="form-name-input"
                     type="text"
                     id="type"
                     value={type}
@@ -241,11 +241,11 @@ const Admin = () => {
 
               {/* race */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Race</label>
                   <input
                     placeholder="Enter race here..."
-                    className="form-name-input rounded-md"
+                    className="form-name-input"
                     type="text"
                     id="race"
                     value={race}
@@ -259,11 +259,11 @@ const Admin = () => {
 
               {/* gender */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Gender</label>
                   <input
                     placeholder="Enter gender here..."
-                    className="form-name-input rounded-md"
+                    className="form-name-input"
                     type="text"
                     id="gender"
                     value={gender}
@@ -277,11 +277,11 @@ const Admin = () => {
 
               {/* number */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Number</label>
                   <input
                     placeholder="Enter set number here..."
-                    className="form-name-input rounded-md"
+                    className="form-name-input"
                     type="number"
                     id="number"
                     value={number}
@@ -295,11 +295,11 @@ const Admin = () => {
 
               {/* set */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Set</label>
                   <input
                     placeholder="Enter set here..."
-                    className="form-name-input rounded-md"
+                    className="form-name-input"
                     type="text"
                     id="set"
                     value={set}
@@ -312,11 +312,11 @@ const Admin = () => {
 
               {/* rarity */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Rarity</label>
                   <input
                     placeholder="Enter rarity here..."
-                    className="form-name-input rounded-md"
+                    className="form-name-input"
                     type="text"
                     id="rarity"
                     value={rarity}
@@ -330,11 +330,11 @@ const Admin = () => {
 
               {/* quantity */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Quantity</label>
                   <input
                     placeholder="Enter quantity here..."
-                    className="form-name-input rounded-md"
+                    className="form-name-input"
                     type="number"
                     id="quantity"
                     value={quantity}
@@ -348,11 +348,11 @@ const Admin = () => {
 
               {/* maker */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Maker</label>
                   <input
                     placeholder="Enter maker here..."
-                    className="form-name-input rounded-md"
+                    className="form-name-input"
                     type="text"
                     id="maker"
                     value={maker}
@@ -366,11 +366,11 @@ const Admin = () => {
 
               {/* brand */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Brand</label>
                   <input
                     placeholder="Enter brand here..."
-                    className="form-name-input rounded-md"
+                    className="form-name-input"
                     type="text"
                     id="brand"
                     value={brand}
@@ -384,7 +384,7 @@ const Admin = () => {
 
               {/* damaged */}
               <div className="name-div-damaged">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Damaged</label>
                   <div className="form-button-div">
                     {/* yes */}
@@ -423,11 +423,11 @@ const Admin = () => {
 
               {/* statblock */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Statblock</label>
                   <input
                     placeholder="Enter statblock link here..."
-                    className="form-name-input rounded-md"
+                    className="form-name-input"
                     type="text"
                     id="statblock"
                     value={statblock}
@@ -441,7 +441,7 @@ const Admin = () => {
 
               {/* image */}
               <div className="name-div">
-                <div className="form-name-label-div rounded-md">
+                <div className="form-name-label-div">
                   <label className="form-name-label">Image</label>
                   <input
                     className="form-name-input-image "
@@ -451,7 +451,6 @@ const Admin = () => {
                     onChange={onMutate}
                     max="1"
                     accept=".jpg,.png,.jpeg"
-                    //multiple
                     required
                   />
                 </div>
