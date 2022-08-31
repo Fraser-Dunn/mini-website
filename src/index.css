@@ -4,29 +4,16 @@
 
 
 :root {
-
   --primary: #ff943c;
   --secondary: white;
   --background: #FEFEFC;
-
-
-    @apply bg-primary text-primary
-  }
-  
-  .rounded-div {
-    @apply border border-secondary rounded-2xl shadow-xl bg-primary px-2 max-w-[1140px] w-full mx-auto
-  }
-  
-  
-  @layer base {
-    button {
-        @apply text-orange-400 border text-lg bg-white border-white hover:bg-transparent hover:text-white rounded-md
-    }
-} 
+  --background-2: #f2f4f8;
+  --button-inactive: black;
+  --external-link: #0000EE;
+  --spinner-color: #00cc66;
+}
 
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
-
-
 
 * body {
   background-color: var(--background);
@@ -34,20 +21,17 @@
 }
 
 /* Header */
-
 .headerOffset {
   width: 100%;
   height: 80px;
 }
 
 /* Search Bar */
-
 .searchbar-drop-div {
   display: none;
 }
 
 /* Nav Bar */
-
 .navbar-background {
   background-color: var(--primary);
   width: 100%;
@@ -189,13 +173,12 @@
 }
 
 /* About Page  */
-
 .about-page-container {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: auto;
-  background-color: #f2f4f8;
+  background-color: var(--background-2);
 }
 
 .about-page-header-container {
@@ -203,7 +186,7 @@
   width: 100%;
   justify-content: center;
   margin-top: 40px;
-  background-color: #f2f4f8;
+  background-color: var(--background-2);
 }
 
 .about-page-header {
@@ -316,7 +299,6 @@
 }
 
 /* Mini Grid */
-
 .miniGrid-body {
   padding: 48px 48px 48px;
 }
@@ -332,7 +314,6 @@
 }
 
 /* Mini Card */
-
 .miniCard-main-div {
   align-items: center;
   text-align: center;
@@ -383,7 +364,6 @@
 }
 
 /* Login Card */
-
 .body-prime {
   margin: 0;
   padding: 0;
@@ -461,13 +441,24 @@
   background: var(--secondary);
   width: 120px;
   padding: 8px;
+  border-radius: 6px;
+}
+
+.logIn-button:hover {
+  background: var(--primary);
+  outline: 2px solid var(--secondary);
 }
 
 .logIn-button p {
+  color: var(--primary);
   align-items: center;
   font-size: 22px;
   font-weight: 600;
   justify-content: center;
+}
+
+.logIn-button:hover p {
+  color: var(--secondary);
 }
 
 .logIn-img-div {
@@ -481,7 +472,6 @@
 }
 
 /* Admin Form */
-
 .body-base-form {
   display: flex;
   flex-direction: column;
@@ -520,7 +510,7 @@
   place-self: start;
   width:100%;
   padding: 20px;
-  background-color: #f2f4f8;
+  background-color: var(--background-2);
 }
 
 .form-actual {
@@ -535,7 +525,7 @@
   width: 100%;
   align-items: center;
   justify-items: center;
-  background-color: #f2f4f8;
+  background-color: var(--background-2);
   border-radius: 6px;
 }
 
@@ -561,7 +551,7 @@
   padding: 8px;
   margin-right: 4px;
   width: 100%;
-  background-color: #f2f4f8;
+  background-color: var(--background-2);
   border-radius: 6px;
 }
 
@@ -614,7 +604,7 @@
 }
 
 .form-button-inactive {
-  color:black;
+  color: var(--button-inactive);
   background-color: var(--secondary);
   border: none;
   width: 100%;
@@ -729,7 +719,7 @@
 }
 
 .filter-sets-title h1 {
- color: #f2f4f8;
+ color: var(--background-2);
  font-weight: 500;
  padding: 2px;
 }
@@ -742,21 +732,19 @@
   padding: 4px;
   max-height: 200px;
   overflow-y: auto;
-
 }
 
 .filter-button {
   background-color: var(--primary);
-  color: #f2f4f8;
+  color: var(--background-2);
 }
 
 .filter-button:hover {
   background-color: var(--primary);
-  color: #f2f4f8;
+  color: var(--background-2);
 }
 
 /* mini info page */
-
 .miniInfo-page-container {
   display: flex;
   flex-direction: column;
@@ -828,7 +816,6 @@
 .miniInfo-details p {
   padding: 4px;
   font-size: 22px;
-  
 }
 
 .miniInfo-b-name {
@@ -839,7 +826,7 @@
 .miniInfo-details a {
   font-style: italic;
   text-decoration: underline;
-  color: #0000EE;
+  color: var(--external-link);
 }
 
 .miniInfo-img {
@@ -880,13 +867,12 @@
   width: 64px;
   height: 64px;
   border: 8px solid;
-  border-color: #00cc66 transparent #00cc66 transparent;
+  border-color: var(--spinner-color) transparent var(--spinner-color) transparent;
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
 }
 
 /* SetCardGrid*/
-
 .set-card-grid-body {
   padding: 48px 0;
 }
@@ -902,7 +888,6 @@
 }
 
 /* SetCard */
-
 .setCard-main-div {
   display: flex;
   flex-direction: column;
@@ -945,6 +930,7 @@
 .setCard-footer {
   width: 80%;
   margin-top: 12px;
+  margin-bottom: 4px;
   padding: 4px;
 }
 
@@ -959,13 +945,13 @@
 }
 
 .setCard-footer h1 {
+  color: var(--primary);
   font-size: 24px;
   font-weight: 600;
   padding: 2px;
 }
 
 /* Media Queries */
-
 @media only screen and (max-width: 1250px) {
   .about-footer-body {
     width: 100%;
