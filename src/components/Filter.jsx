@@ -83,9 +83,9 @@ const Filter = ({ displayList, addFilter, removeFilter }) => {
             <h1>Filter</h1>
             <div className="filter-menu-click" onClick={handleClick}>
               {!filterMenu ? (
-                <MenuIcon className="w-5 text-black" />
+                <MenuIcon className="filter-menu-icons" />
               ) : (
-                <XIcon className="w-5 text-black" />
+                <XIcon className="filter-menu-icons" />
               )}
             </div>
           </div>
