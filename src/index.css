@@ -398,7 +398,7 @@
 .logIn-container {
  display: flex;
  max-width: 1024px;
- box-shadow: 0px 7px 29px 10px rgba(0,0,0,0.36);
+ box-shadow: 0px 7px 29px 10px rgba(0,0,0,0.3);
 }
 
 .logIn-card-container {
@@ -1072,6 +1072,13 @@
     display: flex;
     height: fit-content;
   }
+}
+
+@media only screen and (max-width: 550px) {
+  .filter-div {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
 }
 
 @media only screen and (max-width: 535px) {
