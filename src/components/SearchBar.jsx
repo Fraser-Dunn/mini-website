@@ -10,7 +10,11 @@ const SearchBar = () => {
 
   return (
     <div className="navbar-search-div">
-      <input onKeyUp={enterCheck} type="text" placeholder="Search here..." />
+      <input
+        onKeyUp={enterCheck}
+        type="text"
+        placeholder="Search by name of mini"
+      />
     </div>
   );
 };

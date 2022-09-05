@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import MiniGrid from "../components/MiniGrid";
+import NoResults from "../components/NoResults";
 
 const Search = ({ data, loading }) => {
   const [displayList, setDisplayList] = useState([]);
@@ -19,6 +20,10 @@ const Search = ({ data, loading }) => {
 
   if (loading) {
     return <Spinner />;
+  }
+
+  if (displayList.length < 1) {
+    return <NoResults />;
   }
 
   return (
