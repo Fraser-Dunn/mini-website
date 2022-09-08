@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -12,11 +12,13 @@ import Search from "./pages/Search";
 import PrivateRoute from "./components/PrivateRoute";
 import { ToastContainer } from "react-toastify";
 import getMinis from "./helperFunctions/firebaseGetAllMinis";
+import { allThemes } from "./assets/allThemes";
 
 function App() {
   const [isAuthed, setIsAuthed] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setIsLoading] = useState(true);
+  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
     getMinis().then((response) => {
@@ -25,10 +27,16 @@ function App() {
     });
   }, []);
 
+  useLayoutEffect(() => {
+    console.log(localStorage.getItem("theme"));
+    const localStorageTheme = localStorage.getItem("theme");
+    if (localStorageTheme) setTheme(localStorageTheme);
+  }, []);
+
   return (
-    <>
+    <div style={allThemes[theme]}>
       <Router>
-        <Navbar isAuthed={isAuthed} />
+        <Navbar isAuthed={isAuthed} theme={theme} setTheme={setTheme} />
         <Routes>
           <Route path="/" element={<Home data={data} />} />
           <Route path="/about" element={<About />} />
@@ -49,7 +57,7 @@ function App() {
       </Router>
 
       <ToastContainer />
-    </>
+    </div>
   );
 }
 

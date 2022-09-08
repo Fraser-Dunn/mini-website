@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import SearchBar from "./SearchBar";
+import ThemeToggle from "./ThemeToggle";
 import { Link } from "react-router-dom";
-
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
-const Navbar = ({ isAuthed }) => {
+const Navbar = ({ isAuthed, theme, setTheme }) => {
   const [nav, setNav] = useState(false);
   const handleClick = () => setNav(!nav);
 
@@ -75,7 +75,9 @@ const Navbar = ({ isAuthed }) => {
           </div>
         </ul>
       </div>
+
       <div className="headerOffset"></div>
+      <ThemeToggle theme={theme} setTheme={setTheme} />
     </div>
   );
 };
