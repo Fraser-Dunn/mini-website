@@ -1,5 +1,6 @@
 import React from "react";
-import darkmode from "../assets/svg/darkmode.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
 const ThemeToggle = ({ theme, setTheme }) => {
   const handleClick = () => {
@@ -13,15 +14,19 @@ const ThemeToggle = ({ theme, setTheme }) => {
   };
 
   return (
-    <div className="theme-toggle-body">
-      <div className="theme-toggle-img-div">
-        <img
-          onClick={handleClick}
-          className="theme-toggle-img"
-          src={darkmode}
-          alt=""
-        />
-      </div>
+    <div>
+      <input
+        checked={theme !== "light"}
+        onChange={handleClick}
+        type="checkbox"
+        className="checkbox"
+        id="checkbox"
+      />
+      <label htmlFor="checkbox" className="label">
+        <FontAwesomeIcon icon={faMoon} />
+        <FontAwesomeIcon icon={faSun} />
+        <div className="ball" />
+      </label>
     </div>
   );
 };
