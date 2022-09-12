@@ -39,6 +39,7 @@ const Navbar = ({ isAuthed, theme, setTheme }) => {
               <button className="nav-admin-btn">Admin</button>
             </Link>
           </div>
+          <ThemeToggle theme={theme} setTheme={setTheme} />
 
           <div className="navbar-small" onClick={handleClick}>
             {!nav ? (
@@ -77,7 +78,6 @@ const Navbar = ({ isAuthed, theme, setTheme }) => {
       </div>
 
       <div className="headerOffset"></div>
-      <ThemeToggle theme={theme} setTheme={setTheme} />
     </div>
   );
 };

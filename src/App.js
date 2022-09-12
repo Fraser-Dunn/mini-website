@@ -34,7 +34,7 @@ function App() {
   }, []);
 
   return (
-    <div style={allThemes[theme]}>
+    <div className="background-main" style={allThemes[theme]}>
       <Router>
         <Navbar isAuthed={isAuthed} theme={theme} setTheme={setTheme} />
         <Routes>
