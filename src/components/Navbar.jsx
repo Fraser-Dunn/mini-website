@@ -39,6 +39,8 @@ const Navbar = ({ isAuthed, theme, setTheme }) => {
               <button className="nav-admin-btn">Admin</button>
             </Link>
           </div>
+
+          {/* Theme Toggle */}
           <ThemeToggle theme={theme} setTheme={setTheme} />
 
           <div className="navbar-small" onClick={handleClick}>

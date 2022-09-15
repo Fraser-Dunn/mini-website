@@ -14,7 +14,7 @@ const ThemeToggle = ({ theme, setTheme }) => {
   };
 
   return (
-    <div>
+    <div className="toggle-div">
       <input
         checked={theme !== "light"}
         onChange={handleClick}

@@ -25,6 +25,10 @@
 }
 
 /* dark mode component */
+.toggle-div {
+  margin-right: 10px;
+}
+
 .checkbox {
   opacity: 0;
   position: absolute;
@@ -33,7 +37,7 @@
 .label {
   width: 50px;
   height: 26px;
-  background-color:#111;
+  background-color: var(--background-2);
   display: flex;
   border-radius:50px;
   align-items: center;
@@ -46,7 +50,7 @@
 .ball {
   width: 20px;
   height: 20px;
-  background-color: white;
+  background-color: var(--primary);
   position: absolute;
   top: 3px;
   left: 2px;
@@ -60,11 +64,11 @@
 }
 
 .fa-moon {
-  color: pink;
+  color: #FFFFFF;
 }
 
 .fa-sun {
-  color: yellow;
+  color: #FF8F33;
 }
 
 /* Background */
