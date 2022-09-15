@@ -14,6 +14,7 @@
   --offset-background: #ffffff;
   --button-text-color: #FFFFFF;
   --icons: #ffffff;
+  --about-page-h1: #ff943c;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
@@ -269,7 +270,7 @@
 .about-page-header h1 {
   font-size: 50px;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--about-page-h1);
   padding: 8px;
   margin-bottom: 20px; 
 }
@@ -806,7 +807,7 @@
 }
 
 .filter-sets-title h1 {
- color: var(--background-2);
+ color: var(--secondary);
  font-weight: 500;
  padding: 2px;
 }

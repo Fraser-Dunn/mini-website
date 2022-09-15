@@ -1,6 +1,6 @@
 export const allThemes = {
   dark: {
-    "--primary": "#F05454",
+    "--primary": "#67000B",
     "--secondary": "#FFFFFF",
     "--background": "#222831",
     "--background-2": "#222831",
@@ -10,6 +10,7 @@ export const allThemes = {
     "--offset-background": "#30475E",
     "--button-text-color": "#FFFFFF",
     "--icons": "#FFFFFF",
+    "--about-page-h1": "#FFFFFF",
   },
   light: {
     "--primary": "#ff943c",
@@ -22,5 +23,6 @@ export const allThemes = {
     "--offset-background": "#FFFFFF",
     "--button-text-color": "black",
     "--icons": "black",
+    "--about-page-h1": "#ff943c",
   },
 };
