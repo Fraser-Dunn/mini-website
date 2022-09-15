@@ -27,6 +27,7 @@
 /* dark mode component */
 .toggle-div {
   margin-right: 10px;
+  padding: 0 10px;
 }
 
 .checkbox {
@@ -102,11 +103,15 @@
 
 .navbar-container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 100%;
   padding: 8px;
+}
+
+.navbar-first-half {
+  margin-right: 16px;
 }
 
 .navbar-title {
@@ -136,6 +141,13 @@
 
 .navbar-title ul li a:hover {
   text-decoration: underline;
+}
+
+.navbar-second-half {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 50%;
 }
 
 .navbar-search-div {
@@ -215,7 +227,6 @@
   width: 100%;
   font-size: 18px;
   font-weight: 400;
-  
 }
 
 .nav-hidden-false a {
@@ -228,10 +239,6 @@
   color: var(--secondary);
   width: max-content;
 }
-
-/* .theme-toggle-body {
-  background-color: var(--background);
-} */
 
 /* About Page  */
 .about-page-container {
@@ -1087,6 +1094,12 @@ box-shadow: 0px 0px 13px -2px rgba(0,0,0,0.42);
   }
 }
 
+@media only screen and (max-width: 1075px) {
+  .navbar-title ul li a {
+    padding: 8px 20px;
+  }
+}
+
 @media only screen and (max-width: 1050px) {
   .header-link {
     padding: 0 16px;
@@ -1123,6 +1136,14 @@ box-shadow: 0px 0px 13px -2px rgba(0,0,0,0.42);
 
   .about-info-item h1 {
     text-align: center;
+  }
+
+  .navbar-first-half {
+    margin-right: unset;
+  }
+
+  .navbar-title h1 {
+    margin-right: 20px;
   }
 }
 
@@ -1208,7 +1229,7 @@ box-shadow: 0px 0px 13px -2px rgba(0,0,0,0.42);
   
 }
 
-@media only screen and (max-width: 535px) {
+@media only screen and (max-width: 630px) {
   .searchbar-main-div {
     display: none;
   }
@@ -1225,6 +1246,14 @@ box-shadow: 0px 0px 13px -2px rgba(0,0,0,0.42);
     outline: 2px solid transparent;
     outline-offset: 2px;
     border-radius: 6px;
+  }
+
+  .navbar-second-half {
+    justify-content: flex-end;
+  }
+
+  .toggle-div {
+    padding-right: 22px;
   }
 }
 

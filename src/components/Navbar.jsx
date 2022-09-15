@@ -12,36 +12,40 @@ const Navbar = ({ isAuthed, theme, setTheme }) => {
     <div>
       <div className="navbar-background">
         <div className="navbar-container">
-          <div className="navbar-title">
-            <Link to="/">
-              <h1>MyMinis</h1>
-            </Link>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/gallery">Gallery</Link>
-              </li>
-            </ul>
+          <div className="navbar-first-half">
+            <div className="navbar-title">
+              <Link to="/">
+                <h1>MyMinis</h1>
+              </Link>
+              <ul>
+                <li>
+                  <Link to="/">Home</Link>
+                </li>
+                <li>
+                  <Link to="/about">About</Link>
+                </li>
+                <li>
+                  <Link to="/gallery">Gallery</Link>
+                </li>
+              </ul>
+            </div>
           </div>
-          {/* Search Bar */}
-          <div className="searchbar-main-div">
-            <SearchBar />
-          </div>
+          <div className="navbar-second-half">
+            {/* Search Bar */}
+            <div className="searchbar-main-div">
+              <SearchBar />
+            </div>
 
-          {/* Admin Button */}
-          <div className="nav-admin-btn-div">
-            <Link to={isAuthed ? "/admin" : "/login"}>
-              <button className="nav-admin-btn">Admin</button>
-            </Link>
-          </div>
+            {/* Theme Toggle */}
+            <ThemeToggle theme={theme} setTheme={setTheme} />
 
-          {/* Theme Toggle */}
-          <ThemeToggle theme={theme} setTheme={setTheme} />
+            {/* Admin Button */}
+            <div className="nav-admin-btn-div">
+              <Link to={isAuthed ? "/admin" : "/login"}>
+                <button className="nav-admin-btn">Admin</button>
+              </Link>
+            </div>
+          </div>
 
           <div className="navbar-small" onClick={handleClick}>
             {!nav ? (
