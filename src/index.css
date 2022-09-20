@@ -4,20 +4,81 @@
 
 
 :root {
-  --primary: #FF8F33;
+  --primary: #ff943c;
   --secondary: #ffffff;
   --background: #FEFEFC;
   --background-2: #f2f4f8;
   --button-inactive: black;
   --external-link: #0000EE;
   --spinner-color: #00cc66;
+  --offset-background: #ffffff;
+  --button-text-color: #FFFFFF;
+  --icons: #ffffff;
+  --about-page-h1: #ff943c;
+  --form-name-color: #ff943c;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
 
 * body {
-  background-color: var(--background);
+  /* background-color: var(--background); */
   font-family: 'Karla', sans-serif;
+  
+}
+
+/* dark mode component */
+.toggle-div {
+  margin-right: 10px;
+  padding: 0 10px;
+}
+
+.checkbox {
+  opacity: 0;
+  position: absolute;
+}
+
+.label {
+  width: 50px;
+  height: 26px;
+  background-color: var(--background-2);
+  display: flex;
+  border-radius:50px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  position: relative;
+  transform: scale(1.5);
+}
+
+.ball {
+  width: 20px;
+  height: 20px;
+  background-color: var(--primary);
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  border-radius: 50%;
+  transition: transform 0.2s linear;
+}
+
+/*  target the elemenent after the label*/
+.checkbox:checked + .label .ball{
+  transform: translateX(24px);
+}
+
+.fa-moon {
+  color: #FFFFFF;
+}
+
+.fa-sun {
+  color: #FF8F33;
+}
+
+/* Background */
+.background-main {
+  background-color: var(--background);
+  height: 100%;
+  min-height: 100vh;
 }
 
 /* Header */
@@ -44,11 +105,15 @@
 
 .navbar-container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 100%;
   padding: 8px;
+}
+
+.navbar-first-half {
+  margin-right: 16px;
 }
 
 .navbar-title {
@@ -80,6 +145,13 @@
   text-decoration: underline;
 }
 
+.navbar-second-half {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 50%;
+}
+
 .navbar-search-div {
   justify-items: start;
 }
@@ -106,7 +178,6 @@
 
 .nav-admin-btn-div {
   display: flex;
-  margin-right: 20px;
   padding: 16px 0;
 }
 
@@ -158,7 +229,6 @@
   width: 100%;
   font-size: 18px;
   font-weight: 400;
-  
 }
 
 .nav-hidden-false a {
@@ -201,7 +271,7 @@
 .about-page-header h1 {
   font-size: 50px;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--about-page-h1);
   padding: 8px;
   margin-bottom: 20px; 
 }
@@ -559,7 +629,7 @@
 .form-name-label {
   font-size: 22px;
   font-weight: 600;
-  color: var(--primary);
+  color: var(--form-name-color);
   padding-bottom: 4px;
   width: 80%;
 }
@@ -657,13 +727,17 @@
 }
 
 /* Filter */
+.filter-main  {
+  height: auto;
+}
+
+
 .filter-container {
   display: flex;
   height: auto;
   width: 100%;
-  padding: 4px;
+  padding: 12px 4px 4px 4px;
   justify-content: center;
-  margin-top: 8px;
 }
 
 .filter-container input {
@@ -680,11 +754,12 @@
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
   box-shadow: 0px 6px 6px 2px rgba(0,0,0,0.2);
+  background-color: var(--offset-background);
 }
 
 .filter-menu-icons {
   width: 20px;
-  color: black;
+  color: var(--icons)
 }
 
 .filter-menu-click {
@@ -699,6 +774,7 @@
 .filter-body h1 {
   padding: 4px;
   font-size: 26px;
+  color: var(--button-text-color);
 }
 
 .filter-title-div {
@@ -732,7 +808,7 @@
 }
 
 .filter-sets-title h1 {
- color: var(--background-2);
+ color: var(--secondary);
  font-weight: 500;
  padding: 2px;
 }
@@ -745,6 +821,7 @@
   padding: 4px;
   max-height: 200px;
   overflow-y: auto;
+  color: var(--button-text-color);
 }
 
 .filter-button {
@@ -1019,6 +1096,12 @@ box-shadow: 0px 0px 13px -2px rgba(0,0,0,0.42);
   }
 }
 
+@media only screen and (max-width: 1075px) {
+  .navbar-title ul li a {
+    padding: 8px 20px;
+  }
+}
+
 @media only screen and (max-width: 1050px) {
   .header-link {
     padding: 0 16px;
@@ -1055,6 +1138,14 @@ box-shadow: 0px 0px 13px -2px rgba(0,0,0,0.42);
 
   .about-info-item h1 {
     text-align: center;
+  }
+
+  .navbar-first-half {
+    margin-right: unset;
+  }
+
+  .navbar-title h1 {
+    margin-right: 20px;
   }
 }
 
@@ -1140,7 +1231,7 @@ box-shadow: 0px 0px 13px -2px rgba(0,0,0,0.42);
   
 }
 
-@media only screen and (max-width: 535px) {
+@media only screen and (max-width: 630px) {
   .searchbar-main-div {
     display: none;
   }
@@ -1157,6 +1248,14 @@ box-shadow: 0px 0px 13px -2px rgba(0,0,0,0.42);
     outline: 2px solid transparent;
     outline-offset: 2px;
     border-radius: 6px;
+  }
+
+  .navbar-second-half {
+    justify-content: flex-end;
+  }
+
+  .toggle-div {
+    padding-right: 22px;
   }
 }
 

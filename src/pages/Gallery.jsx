@@ -23,7 +23,7 @@ const Gallery = ({ data }) => {
 
   return (
     <>
-      <div>
+      <div className="filter-main">
         <Filter
           displayList={data}
           addFilter={addFilter}
