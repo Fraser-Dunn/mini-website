@@ -11,6 +11,7 @@ export const allThemes = {
     "--button-text-color": "#FFFFFF",
     "--icons": "#FFFFFF",
     "--about-page-h1": "#FFFFFF",
+    "--form-name-color": "#FFFFFF",
   },
   light: {
     "--primary": "#ff943c",
@@ -24,5 +25,6 @@ export const allThemes = {
     "--button-text-color": "black",
     "--icons": "black",
     "--about-page-h1": "#ff943c",
+    "--form-name-color": "#ff943c",
   },
 };
