@@ -35,7 +35,7 @@ function App() {
 
   return (
     <div className="background-main" style={allThemes[theme]}>
-      <Router>
+      <Router basename="/mini-website">
         <Navbar isAuthed={isAuthed} theme={theme} setTheme={setTheme} />
         <Routes>
           <Route path="/" element={<Home data={data} />} />
