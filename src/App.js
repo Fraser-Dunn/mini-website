@@ -28,7 +28,6 @@ function App() {
   }, []);
 
   useLayoutEffect(() => {
-    console.log(localStorage.getItem("theme"));
     const localStorageTheme = localStorage.getItem("theme");
     if (localStorageTheme) setTheme(localStorageTheme);
   }, []);
