@@ -16,7 +16,12 @@
   --icons: #ffffff;
   --about-page-h1: #ff943c;
   --form-name-color: #ff943c;
+  --form-name-image-color: #ff943c;
   --no-mini-h1: #FFFFFF;
+  --notFound-text: black;
+  --notFound-button: #ff943c;
+  --notFound-button-hover: #FFFFFF;
+  --notFound-button-text: #ff943c;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
@@ -24,7 +29,68 @@
 * body {
   /* background-color: var(--background); */
   font-family: 'Karla', sans-serif;
-  
+}
+
+/* Not Found */
+.notFound-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  padding-top: 100px;
+  height: calc(100vh - 180px);
+  background-color: var(--background-2);
+}
+
+.notFound-body {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  width: auto;
+  height: auto;
+  color: var();
+}
+
+.notFound-body h1 {
+  align-self: center;
+  font-size: 60px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--notFound-text);
+}
+
+.notFound-body p {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: var(--notFound-text);
+}
+
+.notFound-icon {
+  font-size: 20px;
+  padding-right: 4px;
+}
+
+.notFound-body a {
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.notFound-button {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  padding: 8px 10px;
+  color: var(--notFound-button-hover);
+  background-color: var(--notFound-button);
+  border-radius: 4px;
+}
+
+.notFound-button:hover {
+  background-color: var(--notFound-button-hover);
+  outline: 2px solid var(--notFound-button);
+  color: var(--notFound-button-text );
 }
 
 /* dark mode component */
@@ -644,7 +710,7 @@
 .form-name-input-image {
   padding: 2px;
   outline: none;
-  color: var(--primary);
+  color: var(--form-name-image-color);
   font-weight: 600;
   font-size: 18px;
   width: 100%;
