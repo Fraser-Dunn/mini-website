@@ -40,7 +40,7 @@ function LogIn(props) {
         navigate("/admin");
       }
     } catch (error) {
-      toast.error("Bad User Credentials");
+      toast.error(`Bad User Credentials: ${error.message} `);
     }
   };
 
