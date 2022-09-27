@@ -3,6 +3,7 @@ import { useState, useEffect, useLayoutEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
 import LogIn from "./pages/LogIn";
@@ -38,6 +39,8 @@ function App() {
         <Navbar isAuthed={isAuthed} theme={theme} setTheme={setTheme} />
         <Routes>
           <Route path="/" element={<Home data={data} />} />
+          <Route path="/notfound" element={<NotFound />} />
+          <Route path="/*" element={<NotFound />} />
           <Route path="/about" element={<About />} />
           <Route path="/gallery" element={<Gallery data={data} />} />
           <Route path="/admin" element={<PrivateRoute isAuthed={isAuthed} />}>
