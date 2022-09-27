@@ -9,14 +9,16 @@ const SetCard = ({ firstOfSetImg, miniSet }) => {
           <h1>{miniSet}</h1>
         </div>
         <div className="setCard-img-div">
+        <Link to={`/gallery?setFilter=${miniSet}`}>
           <img className="setCard-img" src={firstOfSetImg} alt="/" />
+          </Link> 
         </div>
         <div className="setCard-footer">
           <Link to={`/gallery?setFilter=${miniSet}`}>
             <button className="setCard-footer-button">
               <h1>View Set</h1>
             </button>
-          </Link>
+          </Link> 
         </div>
       </div>
     </>
