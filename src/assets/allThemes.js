@@ -12,6 +12,7 @@ export const allThemes = {
     "--icons": "#FFFFFF",
     "--about-page-h1": "#FFFFFF",
     "--form-name-color": "#FFFFFF",
+    "--no-mini-h1": "#FFFFFF",
   },
   light: {
     "--primary": "#ff943c",
@@ -26,5 +27,6 @@ export const allThemes = {
     "--icons": "black",
     "--about-page-h1": "#ff943c",
     "--form-name-color": "#ff943c",
+    "--no-mini-h1": "#FFFFFF",
   },
 };
