@@ -18,7 +18,7 @@ function App() {
   const [isAuthed, setIsAuthed] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setIsLoading] = useState(true);
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("light"); 
 
   useEffect(() => {
     getMinis().then((response) => {
