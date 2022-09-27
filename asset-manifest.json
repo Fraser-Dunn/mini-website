@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/mini-website/static/css/main.f77be3da.css",
-    "main.js": "/mini-website/static/js/main.943ca0fc.js",
+    "main.css": "/mini-website/static/css/main.7b3c41d7.css",
+    "main.js": "/mini-website/static/js/main.d3fabc6d.js",
     "static/js/787.adc1abb5.chunk.js": "/mini-website/static/js/787.adc1abb5.chunk.js",
     "static/media/riseOfTiamat.jpg": "/mini-website/static/media/riseOfTiamat.3e11ca475b6b7af0b9a8.jpg",
     "index.html": "/mini-website/index.html",
     "static/media/visibilityIconWhite.svg": "/mini-website/static/media/visibilityIconWhite.d094f1f49d59b58ddb085efc3acba87d.svg",
-    "main.f77be3da.css.map": "/mini-website/static/css/main.f77be3da.css.map",
-    "main.943ca0fc.js.map": "/mini-website/static/js/main.943ca0fc.js.map",
+    "main.7b3c41d7.css.map": "/mini-website/static/css/main.7b3c41d7.css.map",
+    "main.d3fabc6d.js.map": "/mini-website/static/js/main.d3fabc6d.js.map",
     "787.adc1abb5.chunk.js.map": "/mini-website/static/js/787.adc1abb5.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f77be3da.css",
-    "static/js/main.943ca0fc.js"
+    "static/css/main.7b3c41d7.css",
+    "static/js/main.d3fabc6d.js"
   ]
 }
