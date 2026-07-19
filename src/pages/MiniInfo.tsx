@@ -1,9 +1,7 @@
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import type { Mini } from "../types/mini";
 
 interface MiniInfoProps {
@@ -21,7 +19,6 @@ const stats: { label: string; key: keyof Mini }[] = [
   { label: "Quantity", key: "quantity" },
   { label: "Maker", key: "maker" },
   { label: "Brand", key: "brand" },
-  { label: "Set", key: "set" },
 ];
 
 const MiniInfo = ({ data, loading }: MiniInfoProps) => {
@@ -38,50 +35,54 @@ const MiniInfo = ({ data, loading }: MiniInfoProps) => {
   }
 
   return (
-    <div className="container max-w-4xl py-8">
-      <Card className="overflow-hidden">
-        <CardHeader className="bg-primary text-primary-foreground">
-          <CardTitle className="text-2xl">{currentMini.name}</CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
-          <dl className="space-y-2">
-            {stats.map(({ label, key }) => (
-              <div key={key}>
-                <div className="flex justify-between py-1 text-sm">
-                  <dt className="font-semibold">{label}</dt>
-                  <dd className="text-muted-foreground">{String(currentMini[key])}</dd>
-                </div>
-                <Separator />
-              </div>
-            ))}
-            <div className="flex items-center justify-between py-1 text-sm">
-              <dt className="font-semibold">Statblock</dt>
-              <dd>
-                <a
-                  href={currentMini.statblock}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-primary underline underline-offset-2"
-                >
-                  View
-                </a>
-              </dd>
-            </div>
-            {currentMini.damaged && (
-              <Badge variant="destructive" className="mt-2">
-                Damaged
-              </Badge>
-            )}
-          </dl>
-          <AspectRatio ratio={1} className="overflow-hidden rounded-md border">
+    <div className="container max-w-5xl py-14">
+      <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
+        {currentMini.set}
+      </p>
+      <div className="mt-2 flex flex-wrap items-center gap-3">
+        <h1 className="text-balance font-display text-4xl font-bold uppercase leading-[1.02] tracking-wide">
+          {currentMini.name}
+        </h1>
+        {currentMini.damaged && <Badge variant="destructive">Damaged</Badge>}
+      </div>
+
+      <div className="mt-10 grid items-start gap-10 md:grid-cols-[minmax(0,26rem)_1fr]">
+        <div className="overflow-hidden rounded-sm border border-primary/15">
+          <AspectRatio ratio={4 / 5} className="bg-plate">
             <img
               src={currentMini.imageUrls[0]}
               alt={currentMini.name}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain p-6"
             />
           </AspectRatio>
-        </CardContent>
-      </Card>
+        </div>
+
+        <dl className="divide-y divide-border">
+          {stats.map(({ label, key }) => (
+            <div key={key} className="flex items-center justify-between py-3 text-sm">
+              <dt className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
+                {label}
+              </dt>
+              <dd className="font-medium">{String(currentMini[key])}</dd>
+            </div>
+          ))}
+          <div className="flex items-center justify-between py-3 text-sm">
+            <dt className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
+              Statblock
+            </dt>
+            <dd>
+              <a
+                href={currentMini.statblock}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"
+              >
+                View reference
+              </a>
+            </dd>
+          </div>
+        </dl>
+      </div>
     </div>
   );
 };

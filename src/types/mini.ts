@@ -26,5 +26,3 @@ export interface FilterEntry {
   key: FilterKey;
   value: string;
 }
-
-export type Theme = "light" | "dark";

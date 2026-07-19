@@ -26,7 +26,22 @@ const Gallery = ({ data }: GalleryProps) => {
 
   return (
     <>
-      <Filter displayList={data} addFilter={addFilter} removeFilter={removeFilter} />
+      <div className="border-b border-primary/15">
+        <div className="container max-w-3xl py-12">
+          <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
+            The gallery
+          </p>
+          <h1 className="mt-3 font-display text-3xl font-bold uppercase leading-tight tracking-wide sm:text-4xl">
+            All miniatures
+          </h1>
+        </div>
+      </div>
+      <Filter
+        displayList={data}
+        filtersList={filtersList}
+        addFilter={addFilter}
+        removeFilter={removeFilter}
+      />
       <MiniGrid displayList={data} filtersList={filtersList} />
     </>
   );

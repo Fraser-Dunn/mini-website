@@ -6,7 +6,6 @@ import { login } from "../services/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
 import riseOfTiamat from "../assets/img/riseOfTiamat.jpg";
 
 interface LogInProps {
@@ -45,35 +44,31 @@ function LogIn({ setIsAuthed }: LogInProps) {
   };
 
   return (
-    <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center py-12">
-      <Card className="grid w-full max-w-3xl grid-cols-1 overflow-hidden md:grid-cols-2">
-        <div className="flex flex-col justify-center gap-4 bg-primary p-8 text-primary-foreground">
-          <h2 className="text-2xl font-bold">Login</h2>
+    <div className="container flex min-h-[calc(100vh-5rem)] items-center justify-center py-12">
+      <div className="grid w-full max-w-3xl grid-cols-1 overflow-hidden rounded-sm border border-primary/15 bg-card md:grid-cols-2">
+        <div className="flex flex-col justify-center gap-5 p-8">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
+              Restricted
+            </p>
+            <h1 className="mt-2 font-display text-3xl font-bold uppercase tracking-wide">
+              Admin Access
+            </h1>
+          </div>
           <form className="flex flex-col gap-4" onSubmit={onSubmit}>
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-primary-foreground">
-                Email
-              </Label>
-              <Input
-                type="email"
-                id="email"
-                value={email}
-                onChange={onChange}
-                className="bg-background text-foreground"
-                required
-              />
+              <Label htmlFor="email">Email</Label>
+              <Input type="email" id="email" value={email} onChange={onChange} required />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-primary-foreground">
-                Password
-              </Label>
+              <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <Input
                   type={showPassword ? "text" : "password"}
                   id="password"
                   value={password}
                   onChange={onChange}
-                  className="bg-background pr-10 text-foreground"
+                  className="pr-10"
                   required
                 />
                 <button
@@ -86,7 +81,7 @@ function LogIn({ setIsAuthed }: LogInProps) {
                 </button>
               </div>
             </div>
-            <Button type="submit" variant="secondary" className="mt-2">
+            <Button type="submit" className="mt-2">
               Sign In
             </Button>
           </form>
@@ -94,7 +89,7 @@ function LogIn({ setIsAuthed }: LogInProps) {
         <div className="hidden md:block">
           <img src={riseOfTiamat} alt="" className="h-full w-full object-cover" />
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

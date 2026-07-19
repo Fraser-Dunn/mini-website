@@ -31,7 +31,24 @@ const Search = ({ data, loading }: SearchProps) => {
     return <NoResults />;
   }
 
-  return <MiniGrid filtersList={[]} displayList={displayList} />;
+  return (
+    <>
+      <div className="border-b border-primary/15">
+        <div className="container max-w-3xl py-12">
+          <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
+            Search results
+          </p>
+          <h1 className="mt-3 font-display text-3xl font-bold uppercase leading-tight tracking-wide sm:text-4xl">
+            &ldquo;{searchTerm}&rdquo;
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {displayList.length} {displayList.length === 1 ? "match" : "matches"}
+          </p>
+        </div>
+      </div>
+      <MiniGrid filtersList={[]} displayList={displayList} />
+    </>
+  );
 };
 
 export default Search;

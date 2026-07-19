@@ -13,8 +13,8 @@ const SetCardGrid = ({ displayList }: SetCardGridProps) => {
   });
 
   return (
-    <div className="container py-12">
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="container py-10">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {[...setList].map((setItem) => {
           const minisOfSet = displayList.filter((mini) => mini.set === setItem);
           return (
@@ -22,6 +22,7 @@ const SetCardGrid = ({ displayList }: SetCardGridProps) => {
               key={setItem}
               miniSet={setItem}
               firstOfSetImg={minisOfSet[0].imageUrls[0]}
+              count={minisOfSet.length}
             />
           );
         })}

@@ -34,7 +34,7 @@ function App() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Router basename="/mini-website">
-        <Navbar isAuthed={isAuthed} />
+        <Navbar isAuthed={isAuthed} data={data} />
         <Routes>
           <Route path="/" element={<Home data={data} />} />
           <Route path="/notfound" element={<NotFound />} />

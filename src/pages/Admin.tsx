@@ -5,12 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -143,13 +137,13 @@ const Admin = () => {
   };
 
   return (
-    <div className="container max-w-3xl py-8">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Upload a Mini</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form className="grid grid-cols-1 gap-4 sm:grid-cols-2" onSubmit={onSubmit}>
+    <div className="container max-w-3xl py-14">
+      <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">New entry</p>
+      <h1 className="mt-2 font-display text-3xl font-bold uppercase tracking-wide">
+        Catalogue a Miniature
+      </h1>
+      <div className="mt-8 rounded-sm border border-primary/15 bg-card p-6">
+        <form className="grid grid-cols-1 gap-4 sm:grid-cols-2" onSubmit={onSubmit}>
             <div className="space-y-1.5">
               <Label htmlFor="name">Name</Label>
               <Input
@@ -339,9 +333,8 @@ const Admin = () => {
             <Button type="submit" disabled={submitting} className="sm:col-span-2">
               {submitting ? "Uploading..." : "Upload Mini"}
             </Button>
-          </form>
-        </CardContent>
-      </Card>
+        </form>
+      </div>
     </div>
   );
 };
