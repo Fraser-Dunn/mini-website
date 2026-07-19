@@ -1,7 +1,10 @@
-import { useState, useEffect, type ChangeEvent } from "react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { capitalize } from "../utils/capitalize";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import type { Mini, FilterKey, FilterEntry } from "../types/mini";
 
 const sizeOrder = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"];
@@ -55,11 +58,11 @@ const Filter = ({ displayList, addFilter, removeFilter }: FilterProps) => {
   };
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement>,
+    checked: boolean,
     key: FilterKey,
     value: string
   ) => {
-    if (e.target.checked) {
+    if (checked) {
       onAddFilter(key, value);
     } else {
       onRemoveFilter(key, value);
@@ -72,55 +75,49 @@ const Filter = ({ displayList, addFilter, removeFilter }: FilterProps) => {
   }, [setFilterGet]);
 
   return (
-    <>
-      <div className="filter-container">
-        <div className="filter-body">
-          <div className="filter-title-div">
-            <h1>Filter</h1>
-            <div className="filter-menu-click" onClick={handleClick}>
-              {!filterMenu ? (
-                <Bars3Icon className="filter-menu-icons" />
-              ) : (
-                <XMarkIcon className="filter-menu-icons" />
-              )}
-            </div>
-          </div>
+    <div className="container pt-6">
+      <div className="mx-auto max-w-5xl rounded-lg border bg-card">
+        <div className="flex items-center justify-between border-b p-4">
+          <h1 className="text-lg font-semibold">Filter</h1>
+          <Button variant="ghost" size="icon" onClick={handleClick} aria-label="Toggle filters">
+            {!filterMenu ? <Menu className="h-5 w-5" /> : <X className="h-5 w-5" />}
+          </Button>
+        </div>
 
-          <div className={!filterMenu ? "hidden" : "filter-div"}>
-            {filterSort(allFilters).map(([key, value]) => {
-              return (
-                <div key={key} className="filter-sets-title-div">
-                  <div className="filter-sets-title">
-                    <h1>{capitalize(key)}s</h1>
-                  </div>
-                  <div className="filter-sets-div">
-                    {value.map((filterItem) => {
-                      return (
-                        <label
-                          key={key + "-" + filterItem}
-                          htmlFor={filterItem}
-                        >
-                          <input
-                            type="checkbox"
-                            id={filterItem}
-                            name={filterItem}
-                            defaultChecked={
-                              key === "set" && filterItem === setFilterGet
-                            }
-                            onChange={(e) => handleChange(e, key, filterItem)}
-                          />
-                          {filterItem}
-                        </label>
-                      );
-                    })}
-                  </div>
+        <div className={!filterMenu ? "hidden" : "grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 lg:grid-cols-4"}>
+          {filterSort(allFilters).map(([key, value]) => {
+            return (
+              <div key={key}>
+                <div className="mb-2 rounded-md bg-primary px-2 py-1">
+                  <h2 className="text-sm font-semibold text-primary-foreground">
+                    {capitalize(key)}s
+                  </h2>
                 </div>
-              );
-            })}
-          </div>
+                <div className="grid max-h-48 grid-cols-2 gap-2 overflow-y-auto">
+                  {value.map((filterItem) => {
+                    const inputId = `${key}-${filterItem}`;
+                    return (
+                      <div key={inputId} className="flex items-center gap-2">
+                        <Checkbox
+                          id={inputId}
+                          defaultChecked={key === "set" && filterItem === setFilterGet}
+                          onCheckedChange={(checked) =>
+                            handleChange(checked === true, key, filterItem)
+                          }
+                        />
+                        <Label htmlFor={inputId} className="cursor-pointer text-sm font-normal">
+                          {filterItem}
+                        </Label>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

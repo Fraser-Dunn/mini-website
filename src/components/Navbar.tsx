@@ -1,97 +1,93 @@
-import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Menu } from "lucide-react";
 import SearchBar from "./SearchBar";
 import ThemeToggle from "./ThemeToggle";
-import { Link } from "react-router-dom";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import type { Theme } from "../types/mini";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetClose,
+} from "@/components/ui/sheet";
 
 interface NavbarProps {
   isAuthed: boolean;
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
 }
 
-const Navbar = ({ isAuthed, theme, setTheme }: NavbarProps) => {
-  const [nav, setNav] = useState(false);
-  const handleClick = () => setNav(!nav);
+const navLinks = [
+  { to: "/", label: "Home" },
+  { to: "/about", label: "About" },
+  { to: "/gallery", label: "Gallery" },
+];
 
+const Navbar = ({ isAuthed }: NavbarProps) => {
   return (
-    <div>
-      <div className="navbar-background">
-        <div className="navbar-container">
-          <div className="navbar-first-half">
-            <div className="navbar-title">
-              <Link to="/">
-                <h1>MyMinis</h1>
+    <header className="sticky top-0 z-40 border-b bg-primary text-primary-foreground shadow-sm">
+      <div className="container flex h-16 items-center justify-between gap-4">
+        <div className="flex items-center gap-8">
+          <Link to="/" className="text-2xl font-bold tracking-tight">
+            MyMinis
+          </Link>
+          <nav className="hidden items-center gap-6 md:flex">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-sm font-medium transition-opacity hover:opacity-80"
+              >
+                {link.label}
               </Link>
-              <ul>
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li>
-                  <Link to="/about">About</Link>
-                </li>
-                <li>
-                  <Link to="/gallery">Gallery</Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="navbar-second-half">
-            {/* Search Bar */}
-            <div className="searchbar-main-div">
-              <SearchBar />
-            </div>
-
-            {/* Theme Toggle */}
-            <ThemeToggle theme={theme} setTheme={setTheme} />
-
-            {/* Admin Button */}
-            <div className="nav-admin-btn-div">
-              <Link to={isAuthed ? "/admin" : "/login"}>
-                <button className="nav-admin-btn">Admin</button>
-              </Link>
-            </div>
-          </div>
-
-          <div className="navbar-small" onClick={handleClick}>
-            {!nav ? (
-              <Bars3Icon className="nav-menu-icon" />
-            ) : (
-              <XMarkIcon className="nav-x-icon" />
-            )}
-          </div>
+            ))}
+          </nav>
         </div>
 
-        <ul className={!nav ? "nav-hidden-true" : "nav-hidden-false"}>
-          <li>
-            <Link to="/">
-              <p>Home</p>
-            </Link>
-          </li>
-          <li>
-            <Link to="/about">
-              <p>About</p>
-            </Link>
-          </li>
-          <li>
-            <Link to="/gallery">
-              <p>Gallery</p>
-            </Link>
-          </li>
-          <li>
-            <Link onClick={handleClick} to={isAuthed ? "/admin" : "/login"}>
-              <p>Admin</p>
-            </Link>
-          </li>
-          <div className="searchbar-drop-div">
-            <SearchBar />
-          </div>
-        </ul>
-      </div>
+        <div className="hidden items-center gap-4 md:flex">
+          <SearchBar />
+          <ThemeToggle />
+          <Button asChild variant="secondary">
+            <Link to={isAuthed ? "/admin" : "/login"}>Admin</Link>
+          </Button>
+        </div>
 
-      <div className="headerOffset"></div>
-    </div>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" aria-label="Open menu">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+              <SheetHeader>
+                <SheetTitle>Menu</SheetTitle>
+              </SheetHeader>
+              <nav className="mt-6 flex flex-col gap-4">
+                {navLinks.map((link) => (
+                  <SheetClose asChild key={link.to}>
+                    <Link to={link.to} className="text-base font-medium">
+                      {link.label}
+                    </Link>
+                  </SheetClose>
+                ))}
+                <SheetClose asChild>
+                  <Link
+                    to={isAuthed ? "/admin" : "/login"}
+                    className="text-base font-medium"
+                  >
+                    Admin
+                  </Link>
+                </SheetClose>
+                <div className="pt-2">
+                  <SearchBar />
+                </div>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+    </header>
   );
 };
 

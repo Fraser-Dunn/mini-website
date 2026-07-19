@@ -1,11 +1,28 @@
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import type { Mini } from "../types/mini";
 
 interface MiniInfoProps {
   data: Mini[];
   loading: boolean;
 }
+
+const stats: { label: string; key: keyof Mini }[] = [
+  { label: "Rarity", key: "rarity" },
+  { label: "Gender", key: "gender" },
+  { label: "Race", key: "race" },
+  { label: "Type", key: "type" },
+  { label: "Size", key: "size" },
+  { label: "Set Number", key: "number" },
+  { label: "Quantity", key: "quantity" },
+  { label: "Maker", key: "maker" },
+  { label: "Brand", key: "brand" },
+  { label: "Set", key: "set" },
+];
 
 const MiniInfo = ({ data, loading }: MiniInfoProps) => {
   const params = useParams<{ miniId: string }>();
@@ -21,66 +38,51 @@ const MiniInfo = ({ data, loading }: MiniInfoProps) => {
   }
 
   return (
-    <>
-      <div className="miniInfo-page-container">
-        <div className="miniInfo-grid">
-          <div className="miniInfo-grid-title">
-            <h1>{currentMini.name}</h1>
-          </div>
-          <div className="miniInfo-grid-item">
-            <div className="miniInfo-details">
-              <p>
-                <b>Rarity:</b> {currentMini.rarity}
-              </p>
-              <p>
-                <b>Gender:</b> {currentMini.gender}
-              </p>
-              <p>
-                <b>Race:</b> {currentMini.race}
-              </p>
-              <p>
-                <b>Type:</b> {currentMini.type}
-              </p>
-              <p>
-                <b>Size:</b> {currentMini.size}
-              </p>
-              <p>
-                <b>Set Number:</b> {currentMini.number}
-              </p>
-              <p>
-                <b>Quantity:</b> {currentMini.quantity}
-              </p>
-              <p>
-                <b>Maker:</b> {currentMini.maker}
-              </p>
-              <p>
-                <b>Brand:</b> {currentMini.brand}
-              </p>
-              <p>
-                <b>Set:</b> {currentMini.set}
-              </p>
-              <p>
-                <b>Statblock:</b>
-                {"  "}
+    <div className="container max-w-4xl py-8">
+      <Card className="overflow-hidden">
+        <CardHeader className="bg-primary text-primary-foreground">
+          <CardTitle className="text-2xl">{currentMini.name}</CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
+          <dl className="space-y-2">
+            {stats.map(({ label, key }) => (
+              <div key={key}>
+                <div className="flex justify-between py-1 text-sm">
+                  <dt className="font-semibold">{label}</dt>
+                  <dd className="text-muted-foreground">{String(currentMini[key])}</dd>
+                </div>
+                <Separator />
+              </div>
+            ))}
+            <div className="flex items-center justify-between py-1 text-sm">
+              <dt className="font-semibold">Statblock</dt>
+              <dd>
                 <a
                   href={currentMini.statblock}
                   target="_blank"
                   rel="noreferrer"
+                  className="text-primary underline underline-offset-2"
                 >
-                  here
+                  View
                 </a>
-              </p>
+              </dd>
             </div>
-          </div>
-
-          <div className="miniInfo-grid-item">
-            <div className="miniInfo-img">
-              <img src={currentMini.imageUrls[0]} alt="" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+            {currentMini.damaged && (
+              <Badge variant="destructive" className="mt-2">
+                Damaged
+              </Badge>
+            )}
+          </dl>
+          <AspectRatio ratio={1} className="overflow-hidden rounded-md border">
+            <img
+              src={currentMini.imageUrls[0]}
+              alt={currentMini.name}
+              className="h-full w-full object-cover"
+            />
+          </AspectRatio>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

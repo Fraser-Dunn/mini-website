@@ -1,38 +1,20 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
-import type { Theme } from "../types/mini";
+import { Moon, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useTheme } from "@/components/theme-provider";
 
-interface ThemeToggleProps {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-}
-
-const ThemeToggle = ({ theme, setTheme }: ThemeToggleProps) => {
-  const handleClick = () => {
-    if (theme === "light") {
-      setTheme("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      setTheme("light");
-      localStorage.setItem("theme", "light");
-    }
-  };
+const ThemeToggle = () => {
+  const { theme, setTheme } = useTheme();
 
   return (
-    <div className="toggle-div">
-      <input
-        checked={theme !== "light"}
-        onChange={handleClick}
-        type="checkbox"
-        className="checkbox"
-        id="checkbox"
-      />
-      <label htmlFor="checkbox" className="label">
-        <FontAwesomeIcon icon={faMoon} />
-        <FontAwesomeIcon icon={faSun} />
-        <div className="ball" />
-      </label>
-    </div>
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      aria-label="Toggle theme"
+    >
+      <Sun className="h-5 w-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+      <Moon className="absolute h-5 w-5 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+    </Button>
   );
 };
 

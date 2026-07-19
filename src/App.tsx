@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState, useEffect, useLayoutEffect, type CSSProperties } from "react";
-import "react-toastify/dist/ReactToastify.css";
+import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
@@ -11,17 +10,15 @@ import MiniInfo from "./pages/MiniInfo";
 import Gallery from "./pages/Gallery";
 import Search from "./pages/Search";
 import PrivateRoute from "./components/PrivateRoute";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "./components/ui/sonner";
 import { getAllMinis } from "./services/minisApi";
 import { isAuthenticated } from "./services/auth";
-import { allThemes } from "./assets/allThemes";
-import type { Mini, Theme } from "./types/mini";
+import type { Mini } from "./types/mini";
 
 function App() {
   const [isAuthed, setIsAuthed] = useState(false);
   const [data, setData] = useState<Mini[]>([]);
   const [loading, setIsLoading] = useState(true);
-  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     getAllMinis().then((response) => {
@@ -34,20 +31,10 @@ function App() {
     isAuthenticated().then(setIsAuthed);
   }, []);
 
-  useLayoutEffect(() => {
-    const localStorageTheme = localStorage.getItem("theme");
-    if (localStorageTheme === "light" || localStorageTheme === "dark") {
-      setTheme(localStorageTheme);
-    }
-  }, []);
-
   return (
-    <div
-      className="background-main"
-      style={allThemes[theme] as CSSProperties}
-    >
+    <div className="min-h-screen bg-background text-foreground">
       <Router basename="/mini-website">
-        <Navbar isAuthed={isAuthed} theme={theme} setTheme={setTheme} />
+        <Navbar isAuthed={isAuthed} />
         <Routes>
           <Route path="/" element={<Home data={data} />} />
           <Route path="/notfound" element={<NotFound />} />
@@ -69,7 +56,7 @@ function App() {
         </Routes>
       </Router>
 
-      <ToastContainer />
+      <Toaster />
     </div>
   );
 }

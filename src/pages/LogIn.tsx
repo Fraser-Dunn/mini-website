@@ -1,8 +1,12 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import { login } from "../services/auth";
-import visibilityIconWhite from "../assets/svg/visibilityIconWhite.svg";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
 import riseOfTiamat from "../assets/img/riseOfTiamat.jpg";
 
 interface LogInProps {
@@ -36,56 +40,62 @@ function LogIn({ setIsAuthed }: LogInProps) {
       navigate("/admin");
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Bad User Credentials: ${message} `);
+      toast.error(`Bad User Credentials: ${message}`);
     }
   };
 
   return (
-    <>
-      <div className="logIn-body">
-        <div className="logIn-container">
-          <div className="logIn-card-container">
-            <div className="logIn-title">
-              <h2>Login</h2>
-            </div>
-            <form className="logIn-form" onSubmit={onSubmit}>
-              <label>Email:</label>
-              <input
+    <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center py-12">
+      <Card className="grid w-full max-w-3xl grid-cols-1 overflow-hidden md:grid-cols-2">
+        <div className="flex flex-col justify-center gap-4 bg-primary p-8 text-primary-foreground">
+          <h2 className="text-2xl font-bold">Login</h2>
+          <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-primary-foreground">
+                Email
+              </Label>
+              <Input
                 type="email"
-                placeholder=""
                 id="email"
                 value={email}
                 onChange={onChange}
+                className="bg-background text-foreground"
+                required
               />
-
-              <label>Password:</label>
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder=""
-                id="password"
-                value={password}
-                onChange={onChange}
-              />
-              <img
-                className="logIn-input-img"
-                src={visibilityIconWhite}
-                alt="show password"
-                onClick={() => setShowPassword((prevState) => !prevState)}
-              />
-
-              <div className="logIn-button-div">
-                <button className="logIn-button">
-                  <p>Sign In</p>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-primary-foreground">
+                Password
+              </Label>
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={onChange}
+                  className="bg-background pr-10 text-foreground"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prevState) => !prevState)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
-            </form>
-          </div>
-          <div className="logIn-img-div">
-            <img src={riseOfTiamat} alt="/" />
-          </div>
+            </div>
+            <Button type="submit" variant="secondary" className="mt-2">
+              Sign In
+            </Button>
+          </form>
         </div>
-      </div>
-    </>
+        <div className="hidden md:block">
+          <img src={riseOfTiamat} alt="" className="h-full w-full object-cover" />
+        </div>
+      </Card>
+    </div>
   );
 }
 

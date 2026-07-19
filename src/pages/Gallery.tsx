@@ -26,14 +26,8 @@ const Gallery = ({ data }: GalleryProps) => {
 
   return (
     <>
-      <div className="filter-main">
-        <Filter
-          displayList={data}
-          addFilter={addFilter}
-          removeFilter={removeFilter}
-        />
-        <MiniGrid displayList={data} filtersList={filtersList} />
-      </div>
+      <Filter displayList={data} addFilter={addFilter} removeFilter={removeFilter} />
+      <MiniGrid displayList={data} filtersList={filtersList} />
     </>
   );
 };

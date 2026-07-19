@@ -6,13 +6,7 @@ interface HomeProps {
 }
 
 const Home = ({ data }: HomeProps) => {
-  return (
-    <>
-      <div>
-        <SetCardGrid displayList={data} />
-      </div>
-    </>
-  );
+  return <SetCardGrid displayList={data} />;
 };
 
 export default Home;

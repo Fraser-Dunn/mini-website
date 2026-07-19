@@ -31,11 +31,7 @@ const Search = ({ data, loading }: SearchProps) => {
     return <NoResults />;
   }
 
-  return (
-    <div>
-      <MiniGrid filtersList={[]} displayList={displayList} />
-    </div>
-  );
+  return <MiniGrid filtersList={[]} displayList={displayList} />;
 };
 
 export default Search;
