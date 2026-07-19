@@ -1,14 +1,40 @@
-# Welcome to your CDK TypeScript project
+# mini-website backend
 
-This is a blank project for CDK development with TypeScript.
+AWS CDK app (TypeScript) that provisions the backend for the mini-website
+frontend: DynamoDB + S3 + Lambda + API Gateway + Cognito, deployed to
+`eu-west-2`.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Stacks
 
-## Useful commands
+- **`MiniWebsiteDataStack`** ([`lib/data-stack.ts`](lib/data-stack.ts)) —
+  the `Minis` DynamoDB table and the S3 bucket holding mini images (public
+  read on `images/*` only). Stateful resources, `RemovalPolicy.RETAIN`.
+- **`MiniWebsiteApiStack`** ([`lib/api-stack.ts`](lib/api-stack.ts)) — a
+  Cognito User Pool (single admin user, no self sign-up), four Lambdas
+  (`lambdas/listMinis`, `getMiniById`, `createMini`, `getUploadUrl`), and
+  an HTTP API in front of them. Write routes require a valid Cognito JWT.
 
-* `npm run build`   type-check the project
-* `npm run watch`   watch for changes and type-check
-* `npm run test`    perform the jest unit tests
-* `npx cdk deploy`  deploy this stack to your default AWS account/region
-* `npx cdk diff`    compare deployed stack with current state
-* `npx cdk synth`   emits the synthesized CloudFormation template
+## Commands
+
+```
+npm install
+npm run build            # type-check
+npx cdk synth             # render the CloudFormation templates
+npx cdk deploy --all      # deploy both stacks
+npx cdk diff              # compare deployed stacks with current code
+```
+
+First-time setup in a fresh AWS account/region needs `npx cdk bootstrap
+aws://<account-id>/eu-west-2` once.
+
+## Migration script
+
+[`scripts/migrate.ts`](scripts/migrate.ts) is a one-off script (not part of
+the deployed app) used to migrate data from the original Firebase backend
+into DynamoDB/S3. Not needed again unless re-running a migration.
+
+```
+npm run migrate -- --dry-run       # preview only, no AWS writes
+npm run migrate                    # full run: all minis + images
+npm run migrate -- --only-missing  # retry only images still on Firebase
+```
