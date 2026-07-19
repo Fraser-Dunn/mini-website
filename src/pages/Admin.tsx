@@ -1,22 +1,28 @@
-import { useState, useEffect, useRef } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-  getStorage,
-} from "firebase/storage";
+  useState,
+  useEffect,
+  useRef,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db } from "../firebase.config";
+import { db, getFirebaseAuth, getFirebaseStorage } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
+import type { Mini } from "../types/mini";
 
-const initialState = {
+type AdminFormState = Omit<Mini, "id" | "imageUrls" | "timestamp"> & {
+  images: FileList | null;
+};
+
+const initialState: AdminFormState = {
   brand: "",
   damaged: false,
   gender: "",
-  images: {},
+  images: null,
   maker: "",
   name: "",
   number: 0,
@@ -30,7 +36,7 @@ const initialState = {
 };
 
 const Admin = () => {
-  const [formData, setFormData] = useState(initialState);
+  const [formData, setFormData] = useState<AdminFormState>(initialState);
 
   const {
     brand,
@@ -49,42 +55,46 @@ const Admin = () => {
     type,
   } = formData;
 
-  const auth = getAuth();
   const navigate = useNavigate();
-  const isMounted = useRef(true);
-  const inputImage = useRef(null);
+  const inputImage = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isMounted) {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setFormData({ ...formData, userRef: user.uid });
-        } else {
-          navigate("/login");
-        }
-      });
-    }
+    const unsubscribe = onAuthStateChanged(getFirebaseAuth(), (user) => {
+      if (user) {
+        setFormData((prevState) => ({ ...prevState, userRef: user.uid }));
+      } else {
+        navigate("/login");
+      }
+    });
 
-    return () => {
-      isMounted.current = false;
-    };
-  }, [isMounted]);
+    return unsubscribe;
+  }, [navigate]);
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!images) {
+      toast.error("Please select an image");
+      return;
+    }
 
     if (images.length > 1) {
       toast.error("Max 1 image");
       return;
     }
 
-    // Store Images in firebase
-    const storeImage = async (image) => {
-      return new Promise((resolve, reject) => {
-        const storage = getStorage();
-        const fileName = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`;
+    const uid = getFirebaseAuth().currentUser?.uid;
+    if (!uid) {
+      toast.error("You must be signed in to upload a mini");
+      return;
+    }
 
-        const storageRef = ref(storage, "images/" + fileName);
+    // Store Images in firebase
+    const storeImage = async (image: File): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        const fileName = `${uid}-${image.name}-${uuidv4()}`;
+
+        const storageRef = ref(getFirebaseStorage(), "images/" + fileName);
 
         const uploadTask = uploadBytesResumable(storageRef, image);
 
@@ -110,7 +120,6 @@ const Admin = () => {
           },
           () => {
             // Handle successful uploads on complete
-            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
               resolve(downloadURL);
             });
@@ -123,53 +132,58 @@ const Admin = () => {
       [...images].map((image) => storeImage(image))
     ).catch(() => {
       toast.error("Images not uploaded");
-      return;
+      return undefined;
     });
 
-    const formDataCopy = {
-      ...formData,
+    if (!imageUrls) {
+      return;
+    }
+
+    const { images: _images, ...restFormData } = formData;
+
+    const docToSave = {
+      ...restFormData,
+      userRef: uid,
       imageUrls,
+      number: Number(number),
+      quantity: Number(quantity),
       timestamp: serverTimestamp(),
     };
 
-    delete formDataCopy.images;
-    formDataCopy.number = Number(formDataCopy.number);
-    formDataCopy.quantity = Number(formDataCopy.quantity);
-    console.log(formDataCopy);
-
-    await addDoc(collection(db, "minis"), formDataCopy);
+    await addDoc(collection(db, "minis"), docToSave);
 
     toast.success("Mini saved");
 
     setFormData(initialState);
-    inputImage.current.value = null;
+    if (inputImage.current) {
+      inputImage.current.value = "";
+    }
   };
 
-  const onMutate = (e) => {
-    let boolean = null;
-
-    if (e.target.value === "true") {
-      boolean = true;
-    }
-    if (e.target.value === "false") {
-      boolean = false;
-    }
+  const onMutate = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const target = e.target;
 
     // Files
-    if (e.target.files) {
+    if (target instanceof HTMLInputElement && target.files) {
       setFormData((prevState) => ({
         ...prevState,
-        images: e.target.files,
+        images: target.files,
       }));
+      return;
     }
 
-    // Text/Booleans/Numbers
-    if (!e.target.files) {
-      setFormData((prevState) => ({
-        ...prevState,
-        [e.target.id]: boolean ?? e.target.value,
-      }));
-    }
+    // Text/Numbers/Select
+    setFormData(
+      (prevState) =>
+        ({
+          ...prevState,
+          [target.id]: target.value,
+        }) as AdminFormState
+    );
+  };
+
+  const onDamagedChange = (value: boolean) => {
+    setFormData((prevState) => ({ ...prevState, damaged: value }));
   };
 
   return (
@@ -193,8 +207,8 @@ const Admin = () => {
                     id="name"
                     value={name}
                     onChange={onMutate}
-                    maxLength="40"
-                    minLength="3"
+                    maxLength={40}
+                    minLength={3}
                     required
                   />
                 </div>
@@ -232,8 +246,8 @@ const Admin = () => {
                     id="type"
                     value={type}
                     onChange={onMutate}
-                    maxLength="30"
-                    minLength="3"
+                    maxLength={30}
+                    minLength={3}
                     required
                   />
                 </div>
@@ -250,8 +264,8 @@ const Admin = () => {
                     id="race"
                     value={race}
                     onChange={onMutate}
-                    maxLength="30"
-                    minLength="3"
+                    maxLength={30}
+                    minLength={3}
                     required
                   />
                 </div>
@@ -268,8 +282,8 @@ const Admin = () => {
                     id="gender"
                     value={gender}
                     onChange={onMutate}
-                    maxLength="30"
-                    minLength="3"
+                    maxLength={30}
+                    minLength={3}
                     required
                   />
                 </div>
@@ -304,8 +318,8 @@ const Admin = () => {
                     id="set"
                     value={set}
                     onChange={onMutate}
-                    maxLength="60"
-                    minLength="3"
+                    maxLength={60}
+                    minLength={3}
                   />
                 </div>
               </div>
@@ -321,8 +335,8 @@ const Admin = () => {
                     id="rarity"
                     value={rarity}
                     onChange={onMutate}
-                    maxLength="30"
-                    minLength="3"
+                    maxLength={30}
+                    minLength={3}
                     required
                   />
                 </div>
@@ -357,8 +371,8 @@ const Admin = () => {
                     id="maker"
                     value={maker}
                     onChange={onMutate}
-                    maxLength="30"
-                    minLength="3"
+                    maxLength={30}
+                    minLength={3}
                     required
                   />
                 </div>
@@ -375,8 +389,8 @@ const Admin = () => {
                     id="brand"
                     value={brand}
                     onChange={onMutate}
-                    maxLength="30"
-                    minLength="3"
+                    maxLength={30}
+                    minLength={3}
                     required
                   />
                 </div>
@@ -394,26 +408,18 @@ const Admin = () => {
                       }
                       type="button"
                       id="damaged"
-                      value={true}
-                      onClick={onMutate}
-                      min="1"
-                      max="50"
+                      onClick={() => onDamagedChange(true)}
                     >
                       Yes
                     </button>
                     {/* no */}
                     <button
                       className={
-                        !damaged && damaged !== null
-                          ? "form-button"
-                          : "form-button-inactive"
+                        !damaged ? "form-button" : "form-button-inactive"
                       }
                       type="button"
                       id="damaged"
-                      value={false}
-                      onClick={onMutate}
-                      min="1"
-                      max="50"
+                      onClick={() => onDamagedChange(false)}
                     >
                       No
                     </button>
@@ -432,8 +438,8 @@ const Admin = () => {
                     id="statblock"
                     value={statblock}
                     onChange={onMutate}
-                    maxLength="100"
-                    minLength="3"
+                    maxLength={100}
+                    minLength={3}
                     required
                   />
                 </div>
@@ -449,7 +455,6 @@ const Admin = () => {
                     id="images"
                     ref={inputImage}
                     onChange={onMutate}
-                    max="1"
                     accept=".jpg,.png,.jpeg"
                     required
                   />

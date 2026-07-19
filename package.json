@@ -3,41 +3,27 @@
   "name": "mini-website",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.2.0",
-    "@fortawesome/fontawesome-svg-core": "^6.2.0",
-    "@fortawesome/free-solid-svg-icons": "^6.2.0",
-    "@fortawesome/react-fontawesome": "^0.2.0",
-    "@heroicons/react": "^1.0.6",
-    "@mui/material": "^5.8.3",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
-    "firebase": "^9.8.2",
-    "install": "^0.13.0",
-    "npm": "^8.19.1",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
-    "react-scroll": "^1.8.7",
-    "react-toastify": "^9.0.4",
-    "uuid": "^8.3.2",
-    "web-vitals": "^2.1.4"
+    "@fortawesome/fontawesome-free": "^7.3.1",
+    "@fortawesome/fontawesome-svg-core": "^7.3.1",
+    "@fortawesome/free-solid-svg-icons": "^7.3.1",
+    "@fortawesome/react-fontawesome": "^3.4.0",
+    "@heroicons/react": "^2.2.0",
+    "firebase": "^12.16.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.1",
+    "react-toastify": "^11.1.0",
+    "uuid": "^14.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "oxlint",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "deploy": "gh-pages -d dist"
   },
   "browserslist": {
     "production": [
@@ -52,9 +38,19 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.7",
-    "gh-pages": "^4.0.0",
-    "postcss": "^8.4.14",
-    "tailwindcss": "^3.1.2"
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "autoprefixer": "^10.5.4",
+    "gh-pages": "^6.3.0",
+    "oxlint": "^1.74.0",
+    "postcss": "^8.5.20",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^7.0.2",
+    "vite": "^8.1.5"
+  },
+  "optionalDependencies": {
+    "@rolldown/binding-win32-x64-msvc": "^1.1.5"
   }
 }

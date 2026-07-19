@@ -1,11 +1,15 @@
 import SetCard from "./SetCard";
+import type { Mini } from "../types/mini";
 
-const SetCardGrid = ({ displayList }) => {
-  const setList = new Set();
+interface SetCardGridProps {
+  displayList: Mini[];
+}
+
+const SetCardGrid = ({ displayList }: SetCardGridProps) => {
+  const setList = new Set<string>();
 
   displayList.forEach((mini) => {
-    const miniValue = mini["set"];
-    setList.add(miniValue);
+    setList.add(mini.set);
   });
 
   return (

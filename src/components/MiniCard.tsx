@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import type { Mini } from "../types/mini";
 
-const MiniCard = ({ mini }) => {
+interface MiniCardProps {
+  mini: Mini;
+}
+
+const MiniCard = ({ mini }: MiniCardProps) => {
   return (
     <>
       <div className="miniCard-main-div">

@@ -1,7 +1,11 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
-const SetCard = ({ firstOfSetImg, miniSet }) => {
+interface SetCardProps {
+  firstOfSetImg: string;
+  miniSet: string;
+}
+
+const SetCard = ({ firstOfSetImg, miniSet }: SetCardProps) => {
   return (
     <>
       <div className="setCard-main-div">
@@ -9,16 +13,16 @@ const SetCard = ({ firstOfSetImg, miniSet }) => {
           <h1>{miniSet}</h1>
         </div>
         <div className="setCard-img-div">
-        <Link to={`/gallery?setFilter=${miniSet}`}>
-          <img className="setCard-img" src={firstOfSetImg} alt="/" />
-          </Link> 
+          <Link to={`/gallery?setFilter=${miniSet}`}>
+            <img className="setCard-img" src={firstOfSetImg} alt="/" />
+          </Link>
         </div>
         <div className="setCard-footer">
           <Link to={`/gallery?setFilter=${miniSet}`}>
             <button className="setCard-footer-button">
               <h1>View Set</h1>
             </button>
-          </Link> 
+          </Link>
         </div>
       </div>
     </>

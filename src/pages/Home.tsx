@@ -1,7 +1,11 @@
-import React from "react";
 import SetCardGrid from "../components/SetCardGrid";
+import type { Mini } from "../types/mini";
 
-const Home = ({ data }) => {
+interface HomeProps {
+  data: Mini[];
+}
+
+const Home = ({ data }: HomeProps) => {
   return (
     <>
       <div>

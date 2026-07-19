@@ -1,8 +1,13 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import type { Theme } from "../types/mini";
 
-const ThemeToggle = ({ theme, setTheme }) => {
+interface ThemeToggleProps {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+}
+
+const ThemeToggle = ({ theme, setTheme }: ThemeToggleProps) => {
   const handleClick = () => {
     if (theme === "light") {
       setTheme("dark");

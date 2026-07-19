@@ -1,5 +1,3 @@
-import React from "react"
-
 const About = () => {
   return (
     <div className="about-page-container">
@@ -62,7 +60,7 @@ const About = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default About
+export default About;

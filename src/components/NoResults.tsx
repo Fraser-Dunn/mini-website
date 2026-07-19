@@ -1,5 +1,3 @@
-import React from "react";
-
 const NoResults = () => {
   return (
     <div className="noresults-body">

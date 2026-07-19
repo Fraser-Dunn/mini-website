@@ -1,4 +1,6 @@
-export const allThemes = {
+import type { Theme } from "../types/mini";
+
+export const allThemes: Record<Theme, Record<string, string>> = {
   dark: {
     "--primary": "#67000B",
     "--secondary": "#FFFFFF",

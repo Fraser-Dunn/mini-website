@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { getFirebaseAuth } from "../firebase.config";
 import visibilityIconWhite from "../assets/svg/visibilityIconWhite.svg";
 import riseOfTiamat from "../assets/img/riseOfTiamat.jpg";
 
-function LogIn(props) {
+interface LogInProps {
+  setIsAuthed: (isAuthed: boolean) => void;
+}
+
+function LogIn({ setIsAuthed }: LogInProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -16,31 +21,30 @@ function LogIn(props) {
 
   const navigate = useNavigate();
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const auth = getAuth();
-
       const userCredential = await signInWithEmailAndPassword(
-        auth,
+        getFirebaseAuth(),
         email,
         password
       );
 
       if (userCredential.user) {
-        props.setIsAuthed(true);
+        setIsAuthed(true);
         navigate("/admin");
       }
     } catch (error) {
-      toast.error(`Bad User Credentials: ${error.message} `);
+      const message = error instanceof Error ? error.message : "Unknown error";
+      toast.error(`Bad User Credentials: ${message} `);
     }
   };
 

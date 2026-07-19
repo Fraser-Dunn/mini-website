@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import MiniGrid from "../components/MiniGrid";
 import NoResults from "../components/NoResults";
+import type { Mini } from "../types/mini";
 
-const Search = ({ data, loading }) => {
-  const [displayList, setDisplayList] = useState([]);
+interface SearchProps {
+  data: Mini[];
+  loading: boolean;
+}
+
+const Search = ({ data, loading }: SearchProps) => {
+  const [displayList, setDisplayList] = useState<Mini[]>([]);
   const { search } = useLocation();
-  const searchObject = new URLSearchParams(search, [search]);
-  const searchTerm = searchObject.get("term");
+  const searchTerm = new URLSearchParams(search).get("term") ?? "";
 
   useEffect(() => {
     setDisplayList(

@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect, useLayoutEffect, type CSSProperties } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -14,12 +14,13 @@ import PrivateRoute from "./components/PrivateRoute";
 import { ToastContainer } from "react-toastify";
 import getMinis from "./helperFunctions/firebaseGetAllMinis";
 import { allThemes } from "./assets/allThemes";
+import type { Mini, Theme } from "./types/mini";
 
 function App() {
   const [isAuthed, setIsAuthed] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Mini[]>([]);
   const [loading, setIsLoading] = useState(true);
-  const [theme, setTheme] = useState("light"); 
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     getMinis().then((response) => {
@@ -30,11 +31,16 @@ function App() {
 
   useLayoutEffect(() => {
     const localStorageTheme = localStorage.getItem("theme");
-    if (localStorageTheme) setTheme(localStorageTheme);
+    if (localStorageTheme === "light" || localStorageTheme === "dark") {
+      setTheme(localStorageTheme);
+    }
   }, []);
 
   return (
-    <div className="background-main" style={allThemes[theme]}>
+    <div
+      className="background-main"
+      style={allThemes[theme] as CSSProperties}
+    >
       <Router basename="/mini-website">
         <Navbar isAuthed={isAuthed} theme={theme} setTheme={setTheme} />
         <Routes>

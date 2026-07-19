@@ -1,8 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-// import Spinner from "./Spinner";
+interface PrivateRouteProps {
+  isAuthed: boolean;
+}
 
-const PrivateRoute = ({ isAuthed }) => {
+const PrivateRoute = ({ isAuthed }: PrivateRouteProps) => {
   return isAuthed ? <Outlet /> : <Navigate to="/login" />;
 };
 

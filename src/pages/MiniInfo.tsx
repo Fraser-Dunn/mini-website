@@ -1,19 +1,23 @@
 import { useParams } from "react-router-dom";
-
 import Spinner from "../components/Spinner";
+import type { Mini } from "../types/mini";
 
-const MiniInfo = ({ data, loading }) => {
-  const params = useParams();
+interface MiniInfoProps {
+  data: Mini[];
+  loading: boolean;
+}
 
-  let currentMini = [];
-  data.forEach((mini) => {
-    if (mini.id === params.miniId) {
-      return (currentMini = mini);
-    }
-  });
+const MiniInfo = ({ data, loading }: MiniInfoProps) => {
+  const params = useParams<{ miniId: string }>();
 
   if (loading) {
     return <Spinner />;
+  }
+
+  const currentMini = data.find((mini) => mini.id === params.miniId);
+
+  if (!currentMini) {
+    return null;
   }
 
   return (

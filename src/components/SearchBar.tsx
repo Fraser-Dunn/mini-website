@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import type { KeyboardEvent } from "react";
 
 const SearchBar = () => {
   const navigate = useNavigate();
-  const enterCheck = (e) => {
+  const enterCheck = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      navigate(`/search?term=${e.target.value}`);
+      navigate(`/search?term=${e.currentTarget.value}`);
     }
   };
 

@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SearchBar from "./SearchBar";
 import ThemeToggle from "./ThemeToggle";
 import { Link } from "react-router-dom";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import type { Theme } from "../types/mini";
 
-const Navbar = ({ isAuthed, theme, setTheme }) => {
+interface NavbarProps {
+  isAuthed: boolean;
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+}
+
+const Navbar = ({ isAuthed, theme, setTheme }: NavbarProps) => {
   const [nav, setNav] = useState(false);
   const handleClick = () => setNav(!nav);
 
@@ -49,9 +56,9 @@ const Navbar = ({ isAuthed, theme, setTheme }) => {
 
           <div className="navbar-small" onClick={handleClick}>
             {!nav ? (
-              <MenuIcon className="nav-menu-icon" />
+              <Bars3Icon className="nav-menu-icon" />
             ) : (
-              <XIcon className="nav-x-icon" />
+              <XMarkIcon className="nav-x-icon" />
             )}
           </div>
         </div>
