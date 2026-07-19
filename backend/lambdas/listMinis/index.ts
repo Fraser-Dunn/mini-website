@@ -16,7 +16,7 @@ export const handler: APIGatewayProxyHandlerV2 = async () => {
   );
 
   const minis: Mini[] = (result.Items ?? []).map((item) => {
-    const { PK, SK, ...rest } = item;
+    const { PK: _PK, SK, ...rest } = item;
     return { ...rest, id: SK } as Mini;
   });
 

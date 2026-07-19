@@ -1,8 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { getFirebaseAuth } from "../firebase.config";
+import { login } from "../services/auth";
 import visibilityIconWhite from "../assets/svg/visibilityIconWhite.svg";
 import riseOfTiamat from "../assets/img/riseOfTiamat.jpg";
 
@@ -32,16 +31,9 @@ function LogIn({ setIsAuthed }: LogInProps) {
     e.preventDefault();
 
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        getFirebaseAuth(),
-        email,
-        password
-      );
-
-      if (userCredential.user) {
-        setIsAuthed(true);
-        navigate("/admin");
-      }
+      await login(email, password);
+      setIsAuthed(true);
+      navigate("/admin");
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
       toast.error(`Bad User Credentials: ${message} `);

@@ -1,20 +1,12 @@
-import {
-  useState,
-  useEffect,
-  useRef,
-  type ChangeEvent,
-  type FormEvent,
-} from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db, getFirebaseAuth, getFirebaseStorage } from "../firebase.config";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef, type ChangeEvent, type FormEvent } from "react";
 import { toast } from "react-toastify";
-import { v4 as uuidv4 } from "uuid";
+import { createMini, getUploadUrl, uploadImageToS3 } from "../services/minisApi";
 import type { Mini } from "../types/mini";
 
-type AdminFormState = Omit<Mini, "id" | "imageUrls" | "timestamp"> & {
+type AdminFormState = Omit<
+  Mini,
+  "id" | "imageUrls" | "timestamp" | "userRef"
+> & {
   images: FileList | null;
 };
 
@@ -37,6 +29,7 @@ const initialState: AdminFormState = {
 
 const Admin = () => {
   const [formData, setFormData] = useState<AdminFormState>(initialState);
+  const [submitting, setSubmitting] = useState(false);
 
   const {
     brand,
@@ -55,25 +48,12 @@ const Admin = () => {
     type,
   } = formData;
 
-  const navigate = useNavigate();
   const inputImage = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(getFirebaseAuth(), (user) => {
-      if (user) {
-        setFormData((prevState) => ({ ...prevState, userRef: user.uid }));
-      } else {
-        navigate("/login");
-      }
-    });
-
-    return unsubscribe;
-  }, [navigate]);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!images) {
+    if (!images || images.length < 1) {
       toast.error("Please select an image");
       return;
     }
@@ -83,80 +63,43 @@ const Admin = () => {
       return;
     }
 
-    const uid = getFirebaseAuth().currentUser?.uid;
-    if (!uid) {
-      toast.error("You must be signed in to upload a mini");
-      return;
-    }
+    const image = images[0];
+    setSubmitting(true);
 
-    // Store Images in firebase
-    const storeImage = async (image: File): Promise<string> => {
-      return new Promise((resolve, reject) => {
-        const fileName = `${uid}-${image.name}-${uuidv4()}`;
+    try {
+      const { uploadUrl, publicUrl } = await getUploadUrl(
+        image.name,
+        image.type
+      );
+      await uploadImageToS3(uploadUrl, image);
 
-        const storageRef = ref(getFirebaseStorage(), "images/" + fileName);
-
-        const uploadTask = uploadBytesResumable(storageRef, image);
-
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
-            switch (snapshot.state) {
-              case "paused":
-                console.log("Upload is paused");
-                break;
-              case "running":
-                console.log("Upload is running");
-                break;
-              default:
-                break;
-            }
-          },
-          (error) => {
-            reject(error);
-          },
-          () => {
-            // Handle successful uploads on complete
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              resolve(downloadURL);
-            });
-          }
-        );
+      await createMini({
+        name,
+        brand,
+        maker,
+        set,
+        number: Number(number),
+        quantity: Number(quantity),
+        race,
+        gender,
+        type,
+        size,
+        rarity,
+        damaged,
+        statblock,
+        imageUrls: [publicUrl],
       });
-    };
 
-    const imageUrls = await Promise.all(
-      [...images].map((image) => storeImage(image))
-    ).catch(() => {
-      toast.error("Images not uploaded");
-      return undefined;
-    });
-
-    if (!imageUrls) {
-      return;
-    }
-
-    const { images: _images, ...restFormData } = formData;
-
-    const docToSave = {
-      ...restFormData,
-      userRef: uid,
-      imageUrls,
-      number: Number(number),
-      quantity: Number(quantity),
-      timestamp: serverTimestamp(),
-    };
-
-    await addDoc(collection(db, "minis"), docToSave);
-
-    toast.success("Mini saved");
-
-    setFormData(initialState);
-    if (inputImage.current) {
-      inputImage.current.value = "";
+      toast.success("Mini saved");
+      setFormData(initialState);
+      if (inputImage.current) {
+        inputImage.current.value = "";
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      toast.error(`Failed to save mini: ${message}`);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -461,8 +404,12 @@ const Admin = () => {
                 </div>
               </div>
               {/* submit form button */}
-              <button className="form-submit-button" type="submit">
-                Upload Mini
+              <button
+                className="form-submit-button"
+                type="submit"
+                disabled={submitting}
+              >
+                {submitting ? "Uploading..." : "Upload Mini"}
               </button>
             </div>
           </form>

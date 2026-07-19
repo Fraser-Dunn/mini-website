@@ -12,7 +12,8 @@ import Gallery from "./pages/Gallery";
 import Search from "./pages/Search";
 import PrivateRoute from "./components/PrivateRoute";
 import { ToastContainer } from "react-toastify";
-import getMinis from "./helperFunctions/firebaseGetAllMinis";
+import { getAllMinis } from "./services/minisApi";
+import { isAuthenticated } from "./services/auth";
 import { allThemes } from "./assets/allThemes";
 import type { Mini, Theme } from "./types/mini";
 
@@ -23,10 +24,14 @@ function App() {
   const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
-    getMinis().then((response) => {
+    getAllMinis().then((response) => {
       setData(response);
       setIsLoading(false);
     });
+  }, []);
+
+  useEffect(() => {
+    isAuthenticated().then(setIsAuthed);
   }, []);
 
   useLayoutEffect(() => {

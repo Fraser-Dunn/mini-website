@@ -10,12 +10,11 @@
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@fortawesome/react-fontawesome": "^3.4.0",
     "@heroicons/react": "^2.2.0",
-    "firebase": "^12.16.0",
+    "amazon-cognito-identity-js": "^6.3.20",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.18.1",
-    "react-toastify": "^11.1.0",
-    "uuid": "^14.0.1"
+    "react-toastify": "^11.1.0"
   },
   "scripts": {
     "dev": "vite",

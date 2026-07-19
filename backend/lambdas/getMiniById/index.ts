@@ -23,7 +23,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     return jsonResponse(404, { message: "Mini not found" });
   }
 
-  const { PK, SK, ...rest } = result.Item;
+  const { PK: _PK, SK, ...rest } = result.Item;
   const mini = { ...rest, id: SK } as Mini;
 
   return jsonResponse(200, mini);
