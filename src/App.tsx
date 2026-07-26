@@ -36,11 +36,11 @@ function App() {
       <Router basename="/mini-website">
         <Navbar isAuthed={isAuthed} data={data} />
         <Routes>
-          <Route path="/" element={<Home data={data} />} />
+          <Route path="/" element={<Home data={data} loading={loading} />} />
           <Route path="/notfound" element={<NotFound />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/about" element={<About />} />
-          <Route path="/gallery" element={<Gallery data={data} />} />
+          <Route path="/gallery" element={<Gallery data={data} loading={loading} />} />
           <Route path="/admin" element={<PrivateRoute isAuthed={isAuthed} />}>
             <Route path="/admin" element={<Admin />} />
           </Route>

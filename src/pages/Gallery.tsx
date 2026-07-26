@@ -1,14 +1,20 @@
 import { useState } from "react";
 import MiniGrid from "../components/MiniGrid";
 import Filter from "../components/Filter";
+import Spinner from "../components/Spinner";
 import type { Mini, FilterEntry } from "../types/mini";
 
 interface GalleryProps {
   data: Mini[];
+  loading: boolean;
 }
 
-const Gallery = ({ data }: GalleryProps) => {
+const Gallery = ({ data, loading }: GalleryProps) => {
   const [filtersList, setFiltersList] = useState<FilterEntry[]>([]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   const addFilter = (newFilter: FilterEntry) => {
     setFiltersList((prevState) => [...prevState, newFilter]);

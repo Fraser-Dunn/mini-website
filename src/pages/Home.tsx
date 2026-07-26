@@ -1,12 +1,18 @@
 import SetCardGrid from "../components/SetCardGrid";
+import Spinner from "../components/Spinner";
 import type { Mini } from "../types/mini";
 
 interface HomeProps {
   data: Mini[];
+  loading: boolean;
 }
 
-const Home = ({ data }: HomeProps) => {
+const Home = ({ data, loading }: HomeProps) => {
   const setCount = new Set(data.map((mini) => mini.set)).size;
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <>
