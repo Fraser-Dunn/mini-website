@@ -39,7 +39,7 @@ function App() {
           <Route path="/" element={<Home data={data} loading={loading} />} />
           <Route path="/notfound" element={<NotFound />} />
           <Route path="/*" element={<NotFound />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/about" element={<About data={data} loading={loading} />} />
           <Route path="/gallery" element={<Gallery data={data} loading={loading} />} />
           <Route path="/admin" element={<PrivateRoute isAuthed={isAuthed} />}>
             <Route path="/admin" element={<Admin />} />
