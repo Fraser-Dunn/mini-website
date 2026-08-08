@@ -1,8 +1,11 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { Pencil } from "lucide-react";
 import Spinner from "../components/Spinner";
 import PegBoard from "../components/PegBoard";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { swatchFor, tagColourFor } from "@/lib/tag-colours";
 import {
   PEG_BOARD_LOCATION,
   PEG_BOARD_ROWS,
@@ -14,6 +17,7 @@ import {
 interface PaintsProps {
   data: Paint[];
   loading: boolean;
+  isAuthed: boolean;
 }
 
 type SortKey = "name" | "brand" | "type" | "count" | "location";
@@ -29,7 +33,7 @@ const columns: [SortKey, string][] = [
 
 const TOTAL_SLOTS = (PEG_BOARD_ROWS - 1) * PEG_BOARD_SLOTS_PER_ROW + PEG_BOARD_LAST_ROW_SLOTS;
 
-const Paints = ({ data, loading }: PaintsProps) => {
+const Paints = ({ data, loading, isAuthed }: PaintsProps) => {
   const [view, setView] = useState<View>("table");
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("name");
@@ -97,8 +101,8 @@ const Paints = ({ data, loading }: PaintsProps) => {
         </div>
       </div>
 
-      <div className="container py-10">
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+      <div className="py-10">
+        <div className="container mb-6 flex flex-wrap items-center justify-between gap-4">
           <ToggleGroup
             type="single"
             variant="outline"
@@ -109,18 +113,25 @@ const Paints = ({ data, loading }: PaintsProps) => {
             <ToggleGroupItem value="board">Peg Board</ToggleGroupItem>
           </ToggleGroup>
 
-          {view === "table" && (
+          {view === "table" ? (
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name..."
               className="max-w-xs"
             />
+          ) : (
+            <Input
+              value={boardSearch}
+              onChange={(e) => setBoardSearch(e.target.value)}
+              placeholder="Find a paint on the board..."
+              className="max-w-xs"
+            />
           )}
         </div>
 
         {view === "table" ? (
-          <div className="overflow-x-auto rounded-sm border border-primary/15">
+          <div className="container overflow-x-auto rounded-sm border border-primary/15">
             <table className="w-full min-w-[760px] border-collapse text-sm">
               <thead>
                 <tr className="border-b border-primary/15 bg-card text-left">
@@ -140,38 +151,73 @@ const Paints = ({ data, loading }: PaintsProps) => {
                       Colours
                     </span>
                   </th>
+                  {isAuthed && <th className="px-4 py-3" />}
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((paint) => (
-                  <tr key={paint.id} className="border-b border-primary/10 last:border-0">
-                    <td className="px-4 py-3 font-medium">{paint.name}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{paint.brand}</td>
-                    <td className="px-4 py-3">
-                      <span className="rounded-sm border border-primary/20 px-2 py-0.5 text-xs text-muted-foreground">
-                        {paint.type}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 tabular-nums">{paint.count}</td>
-                    <td className="px-4 py-3 text-muted-foreground">
-                      {paint.location === PEG_BOARD_LOCATION
-                        ? `Peg board — row ${paint.pegRow}, slot ${paint.pegSlot}`
-                        : paint.location}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-wrap gap-1">
-                        {paint.parentColours.map((colour) => (
-                          <span
-                            key={colour}
-                            className="rounded-sm border border-primary/20 px-2 py-0.5 text-xs text-muted-foreground"
+                {filtered.map((paint) => {
+                  const brandColour = tagColourFor(paint.brand);
+                  const typeColour = tagColourFor(paint.type);
+                  return (
+                    <tr key={paint.id} className="border-b border-primary/10 last:border-0">
+                      <td className="px-4 py-3 font-medium">
+                        <span
+                          className="mr-2 inline-block h-2.5 w-2.5 rounded-full align-middle"
+                          style={{
+                            backgroundColor: paint.hex ?? swatchFor(paint.parentColours[0]),
+                          }}
+                        />
+                        {paint.name}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span
+                          className="rounded-sm px-2 py-0.5 text-xs font-medium"
+                          style={{ backgroundColor: brandColour.bg, color: brandColour.text }}
+                        >
+                          {paint.brand}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span
+                          className="rounded-sm px-2 py-0.5 text-xs font-medium"
+                          style={{ backgroundColor: typeColour.bg, color: typeColour.text }}
+                        >
+                          {paint.type}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 tabular-nums">{paint.count}</td>
+                      <td className="px-4 py-3 text-muted-foreground">
+                        {paint.location === PEG_BOARD_LOCATION
+                          ? `Peg board — row ${paint.pegRow}, slot ${paint.pegSlot}`
+                          : paint.location}
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex flex-wrap gap-1">
+                          {paint.parentColours.map((colour) => (
+                            <span
+                              key={colour}
+                              className="rounded-sm px-2 py-0.5 text-xs font-medium text-white shadow-sm"
+                              style={{ backgroundColor: swatchFor(colour) }}
+                            >
+                              {colour}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      {isAuthed && (
+                        <td className="px-4 py-3 text-right">
+                          <Link
+                            to={`/admin/paints/${paint.id}`}
+                            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
                           >
-                            {colour}
-                          </span>
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                            <Pencil className="h-3.5 w-3.5" />
+                            Edit
+                          </Link>
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
             {filtered.length === 0 && (
@@ -183,28 +229,22 @@ const Paints = ({ data, loading }: PaintsProps) => {
             )}
           </div>
         ) : (
-          <div className="rounded-sm border border-primary/15 bg-card p-6">
-            <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
-              <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
+          <div className="mx-auto w-full max-w-[1800px] px-4 sm:px-6 lg:px-8">
+            <div className="rounded-sm border border-primary/15 bg-card p-6">
+              <p className="mb-2 font-mono text-xs uppercase tracking-[0.14em] text-primary">
                 Peg board · {pegBoardPaints.length}/{TOTAL_SLOTS} slots
               </p>
-              <Input
-                value={boardSearch}
-                onChange={(e) => setBoardSearch(e.target.value)}
-                placeholder="Find a paint on the board..."
-                className="max-w-xs"
-              />
+              {boardSearchTerm && (
+                <p className="mb-4 text-xs text-muted-foreground">
+                  {!boardMatch
+                    ? `No paint named “${boardSearchTerm}” found.`
+                    : boardMatch.location !== PEG_BOARD_LOCATION
+                      ? `“${boardMatch.name}” isn't on the peg board (${boardMatch.location}).`
+                      : `Found “${boardMatch.name}” — row ${boardMatch.pegRow}, slot ${boardMatch.pegSlot}.`}
+                </p>
+              )}
+              <PegBoard paints={pegBoardPaints} highlightedPaintId={highlightedPaintId} />
             </div>
-            {boardSearchTerm && (
-              <p className="mb-4 text-xs text-muted-foreground">
-                {!boardMatch
-                  ? `No paint named “${boardSearchTerm}” found.`
-                  : boardMatch.location !== PEG_BOARD_LOCATION
-                    ? `“${boardMatch.name}” isn't on the peg board (${boardMatch.location}).`
-                    : `Found “${boardMatch.name}” — row ${boardMatch.pegRow}, slot ${boardMatch.pegSlot}.`}
-              </p>
-            )}
-            <PegBoard paints={pegBoardPaints} highlightedPaintId={highlightedPaintId} />
           </div>
         )}
       </div>

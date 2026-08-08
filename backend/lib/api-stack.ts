@@ -97,12 +97,25 @@ export class ApiStack extends cdk.Stack {
     });
     table.grant(createPaintFn, "dynamodb:PutItem");
 
+    const updatePaintFn = new nodejs.NodejsFunction(this, "UpdatePaintFunction", {
+      entry: path.join(__dirname, "../lambdas/updatePaint/index.ts"),
+      handler: "handler",
+      runtime: lambda.Runtime.NODEJS_22_X,
+      environment: { TABLE_NAME: table.tableName },
+      bundling,
+    });
+    table.grant(updatePaintFn, "dynamodb:GetItem", "dynamodb:PutItem");
+
     // --- HTTP API ---
     const httpApi = new apigwv2.HttpApi(this, "HttpApi", {
       apiName: "mini-website-api",
       corsPreflight: {
         allowOrigins: [GITHUB_PAGES_ORIGIN, LOCAL_DEV_ORIGIN],
-        allowMethods: [apigwv2.CorsHttpMethod.GET, apigwv2.CorsHttpMethod.POST],
+        allowMethods: [
+          apigwv2.CorsHttpMethod.GET,
+          apigwv2.CorsHttpMethod.POST,
+          apigwv2.CorsHttpMethod.PUT,
+        ],
         allowHeaders: ["Content-Type", "Authorization"],
       },
     });
@@ -166,6 +179,16 @@ export class ApiStack extends cdk.Stack {
       integration: new integrations.HttpLambdaIntegration(
         "CreatePaintIntegration",
         createPaintFn
+      ),
+      authorizer,
+    });
+
+    httpApi.addRoutes({
+      path: "/paints/{id}",
+      methods: [apigwv2.HttpMethod.PUT],
+      integration: new integrations.HttpLambdaIntegration(
+        "UpdatePaintIntegration",
+        updatePaintFn
       ),
       authorizer,
     });

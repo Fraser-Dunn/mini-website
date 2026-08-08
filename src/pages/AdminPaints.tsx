@@ -1,7 +1,8 @@
-import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import AdminNav from "../components/AdminNav";
-import { createPaint } from "../services/paintsApi";
+import { createPaint, updatePaint } from "../services/paintsApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +23,7 @@ import {
 
 interface AdminPaintsProps {
   paints: Paint[];
+  onSaved: () => Promise<void>;
 }
 
 interface AdminPaintFormState {
@@ -31,6 +33,7 @@ interface AdminPaintFormState {
   type: string;
   count: number;
   location: string;
+  hex: string;
   pegRow: number | null;
   pegSlot: number | null;
 }
@@ -42,17 +45,42 @@ const initialState: AdminPaintFormState = {
   type: "",
   count: 1,
   location: "",
+  hex: "",
   pegRow: null,
   pegSlot: null,
 };
 
+const HEX_PATTERN = /^#[0-9a-fA-F]{6}$/;
+
 const pegRows = Array.from({ length: PEG_BOARD_ROWS }, (_, i) => i + 1);
 
-const AdminPaints = ({ paints }: AdminPaintsProps) => {
+const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
+  const { paintId } = useParams<{ paintId?: string }>();
+  const navigate = useNavigate();
+  const editingPaint = paintId ? paints.find((p) => p.id === paintId) : undefined;
+  const isEditing = Boolean(paintId);
+
   const [formData, setFormData] = useState<AdminPaintFormState>(initialState);
   const [submitting, setSubmitting] = useState(false);
 
-  const { brand, name, parentColours, type, count, location, pegRow, pegSlot } =
+  useEffect(() => {
+    if (editingPaint) {
+      setFormData({
+        brand: editingPaint.brand,
+        name: editingPaint.name,
+        parentColours: editingPaint.parentColours,
+        type: editingPaint.type,
+        count: editingPaint.count,
+        location: editingPaint.location,
+        hex: editingPaint.hex ?? "",
+        pegRow: editingPaint.pegRow ?? null,
+        pegSlot: editingPaint.pegSlot ?? null,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editingPaint?.id]);
+
+  const { brand, name, parentColours, type, count, location, hex, pegRow, pegSlot } =
     formData;
 
   const isPegBoard = location === PEG_BOARD_LOCATION;
@@ -104,6 +132,10 @@ const AdminPaints = ({ paints }: AdminPaintsProps) => {
     setFormData((prevState) => ({ ...prevState, pegSlot: Number(value) }));
   };
 
+  const onHexChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevState) => ({ ...prevState, hex: e.target.value }));
+  };
+
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -117,21 +149,37 @@ const AdminPaints = ({ paints }: AdminPaintsProps) => {
       return;
     }
 
+    const trimmedHex = hex.trim();
+    if (trimmedHex && !HEX_PATTERN.test(trimmedHex)) {
+      toast.error("Colour must be a hex code like #8f1f1f");
+      return;
+    }
+
+    const payload = {
+      brand,
+      name,
+      parentColours,
+      type,
+      count: Number(count),
+      location,
+      ...(trimmedHex ? { hex: trimmedHex } : {}),
+      ...(isPegBoard ? { pegRow: pegRow!, pegSlot: pegSlot! } : {}),
+    };
+
     setSubmitting(true);
 
     try {
-      await createPaint({
-        brand,
-        name,
-        parentColours,
-        type,
-        count: Number(count),
-        location,
-        ...(isPegBoard ? { pegRow: pegRow!, pegSlot: pegSlot! } : {}),
-      });
-
-      toast.success("Paint saved");
-      setFormData(initialState);
+      if (isEditing && paintId) {
+        await updatePaint(paintId, payload);
+        await onSaved();
+        toast.success("Paint updated");
+        navigate("/paints");
+      } else {
+        await createPaint(payload);
+        await onSaved();
+        toast.success("Paint saved");
+        setFormData(initialState);
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
       toast.error(`Failed to save paint: ${message}`);
@@ -143,9 +191,11 @@ const AdminPaints = ({ paints }: AdminPaintsProps) => {
   return (
     <div className="container max-w-3xl py-14">
       <AdminNav />
-      <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">New entry</p>
+      <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
+        {isEditing ? "Editing" : "New entry"}
+      </p>
       <h1 className="mt-2 font-display text-3xl font-bold uppercase tracking-wide">
-        Catalogue a Paint
+        {isEditing ? "Edit Paint" : "Catalogue a Paint"}
       </h1>
       <div className="mt-8 rounded-sm border border-primary/15 bg-card p-6">
         <form className="grid grid-cols-1 gap-4 sm:grid-cols-2" onSubmit={onSubmit}>
@@ -226,6 +276,28 @@ const AdminPaints = ({ paints }: AdminPaintsProps) => {
           </div>
 
           <div className="space-y-1.5 sm:col-span-2">
+            <Label htmlFor="hexText">True Colour (optional)</Label>
+            <div className="flex items-center gap-2">
+              <input
+                id="hexPicker"
+                type="color"
+                value={HEX_PATTERN.test(hex) ? hex : "#808080"}
+                onChange={onHexChange}
+                aria-label="Pick true colour"
+                className="h-9 w-12 flex-none cursor-pointer rounded-sm border border-input bg-transparent p-1"
+              />
+              <Input
+                id="hexText"
+                value={hex}
+                onChange={onHexChange}
+                placeholder="#8f1f1f"
+                maxLength={7}
+                className="font-mono"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1.5 sm:col-span-2">
             <Label htmlFor="location">Location</Label>
             <Input
               id="location"
@@ -281,7 +353,7 @@ const AdminPaints = ({ paints }: AdminPaintsProps) => {
           )}
 
           <Button type="submit" disabled={submitting} className="sm:col-span-2">
-            {submitting ? "Saving..." : "Save Paint"}
+            {submitting ? "Saving..." : isEditing ? "Save Changes" : "Save Paint"}
           </Button>
         </form>
       </div>

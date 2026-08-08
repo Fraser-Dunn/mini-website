@@ -33,11 +33,14 @@ function App() {
     });
   }, []);
 
-  useEffect(() => {
+  const refetchPaints = () =>
     getAllPaints().then((response) => {
       setPaints(response);
       setPaintsLoading(false);
     });
+
+  useEffect(() => {
+    refetchPaints();
   }, []);
 
   useEffect(() => {
@@ -54,10 +57,20 @@ function App() {
           <Route path="/*" element={<NotFound />} />
           <Route path="/about" element={<About data={data} loading={loading} />} />
           <Route path="/gallery" element={<Gallery data={data} loading={loading} />} />
-          <Route path="/paints" element={<Paints data={paints} loading={paintsLoading} />} />
+          <Route
+            path="/paints"
+            element={<Paints data={paints} loading={paintsLoading} isAuthed={isAuthed} />}
+          />
           <Route path="/admin" element={<PrivateRoute isAuthed={isAuthed} />}>
             <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/paints" element={<AdminPaints paints={paints} />} />
+            <Route
+              path="/admin/paints"
+              element={<AdminPaints paints={paints} onSaved={refetchPaints} />}
+            />
+            <Route
+              path="/admin/paints/:paintId"
+              element={<AdminPaints paints={paints} onSaved={refetchPaints} />}
+            />
           </Route>
           <Route path="/login" element={<LogIn setIsAuthed={setIsAuthed} />} />
           <Route

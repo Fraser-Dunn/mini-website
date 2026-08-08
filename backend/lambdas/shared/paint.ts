@@ -12,6 +12,10 @@ export const CreatePaintSchema = z
     type: z.string().min(1).max(20),
     count: z.number().int().min(0).max(99),
     location: z.string().min(1).max(60),
+    hex: z
+      .string()
+      .regex(/^#[0-9a-fA-F]{6}$/, "hex must look like #8f1f1f")
+      .optional(),
     pegRow: z.number().int().min(1).max(40).optional(),
     pegSlot: z.number().int().min(1).max(15).optional(),
   })

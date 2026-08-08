@@ -6,6 +6,7 @@ export interface Paint {
   type: string;
   count: number;
   location: string;
+  hex?: string;
   pegRow?: number;
   pegSlot?: number;
   timestamp?: string;

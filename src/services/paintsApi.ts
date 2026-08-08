@@ -29,3 +29,20 @@ export async function createPaint(payload: CreatePaintPayload): Promise<Paint> {
   }
   return res.json();
 }
+
+export async function updatePaint(id: string, payload: CreatePaintPayload): Promise<Paint> {
+  const idToken = await getIdToken();
+  const res = await fetch(`${API_BASE_URL}/paints/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${idToken}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}) as { message?: string });
+    throw new Error(body.message ?? `Failed to update paint: ${res.status}`);
+  }
+  return res.json();
+}
