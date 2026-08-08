@@ -61,6 +61,21 @@ export default {
         display: ["'Big Shoulders Display'", "sans-serif"],
         mono: ["'JetBrains Mono'", "ui-monospace", "monospace"],
       },
+      keyframes: {
+        "pulse-glow": {
+          "0%, 100%": {
+            boxShadow:
+              "0 0 0 2px rgb(var(--primary)), 0 0 12px 4px rgb(var(--primary) / 0.5)",
+          },
+          "50%": {
+            boxShadow:
+              "0 0 0 3px rgb(var(--primary)), 0 0 22px 8px rgb(var(--primary) / 0.85)",
+          },
+        },
+      },
+      animation: {
+        "pulse-glow": "pulse-glow 1.4s ease-in-out infinite",
+      },
     },
   },
   plugins: [tailwindcssAnimate],

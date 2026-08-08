@@ -20,6 +20,7 @@ interface NavbarProps {
 const navLinks = [
   { to: "/", label: "Home" },
   { to: "/gallery", label: "Gallery" },
+  { to: "/paints", label: "Paints" },
   { to: "/about", label: "About" },
 ];
 

@@ -1,5 +1,6 @@
 import { useState, useRef, type ChangeEvent, type FormEvent } from "react";
 import { toast } from "sonner";
+import AdminNav from "../components/AdminNav";
 import { createMini, getUploadUrl, uploadImageToS3 } from "../services/minisApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -138,6 +139,7 @@ const Admin = () => {
 
   return (
     <div className="container max-w-3xl py-14">
+      <AdminNav />
       <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">New entry</p>
       <h1 className="mt-2 font-display text-3xl font-bold uppercase tracking-wide">
         Catalogue a Miniature

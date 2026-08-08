@@ -79,6 +79,24 @@ export class ApiStack extends cdk.Stack {
     });
     imagesBucket.grantPut(getUploadUrlFn, "images/*");
 
+    const listPaintsFn = new nodejs.NodejsFunction(this, "ListPaintsFunction", {
+      entry: path.join(__dirname, "../lambdas/listPaints/index.ts"),
+      handler: "handler",
+      runtime: lambda.Runtime.NODEJS_22_X,
+      environment: { TABLE_NAME: table.tableName },
+      bundling,
+    });
+    table.grant(listPaintsFn, "dynamodb:Query");
+
+    const createPaintFn = new nodejs.NodejsFunction(this, "CreatePaintFunction", {
+      entry: path.join(__dirname, "../lambdas/createPaint/index.ts"),
+      handler: "handler",
+      runtime: lambda.Runtime.NODEJS_22_X,
+      environment: { TABLE_NAME: table.tableName },
+      bundling,
+    });
+    table.grant(createPaintFn, "dynamodb:PutItem");
+
     // --- HTTP API ---
     const httpApi = new apigwv2.HttpApi(this, "HttpApi", {
       apiName: "mini-website-api",
@@ -129,6 +147,25 @@ export class ApiStack extends cdk.Stack {
       integration: new integrations.HttpLambdaIntegration(
         "GetUploadUrlIntegration",
         getUploadUrlFn
+      ),
+      authorizer,
+    });
+
+    httpApi.addRoutes({
+      path: "/paints",
+      methods: [apigwv2.HttpMethod.GET],
+      integration: new integrations.HttpLambdaIntegration(
+        "ListPaintsIntegration",
+        listPaintsFn
+      ),
+    });
+
+    httpApi.addRoutes({
+      path: "/paints",
+      methods: [apigwv2.HttpMethod.POST],
+      integration: new integrations.HttpLambdaIntegration(
+        "CreatePaintIntegration",
+        createPaintFn
       ),
       authorizer,
     });
