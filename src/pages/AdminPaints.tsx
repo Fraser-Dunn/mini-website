@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import AdminNav from "../components/AdminNav";
-import { createPaint, deletePaint, updatePaint } from "../services/paintsApi";
+import { createPaint, deletePaint, updatePaint, type CreatePaintPayload } from "../services/paintsApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -128,6 +128,50 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
     }));
   };
 
+  // Detect other records that already track this same paint (by name), so we
+  // can steer towards bumping an existing stash or flag a peg-board clash
+  // instead of silently creating a confusing near-duplicate.
+  const nameMatches = useMemo(() => {
+    const trimmed = name.trim().toLowerCase();
+    if (!trimmed) return [];
+    return paints.filter((p) => {
+      if (p.id === editingPaint?.id) return false;
+      if (p.id === duplicateSource?.id) return false;
+      return p.name.trim().toLowerCase() === trimmed;
+    });
+  }, [paints, name, editingPaint?.id, duplicateSource?.id]);
+
+  const trimmedLocation = location.trim().toLowerCase();
+  const pegBoardMatch = isPegBoard
+    ? nameMatches.find((p) => p.location === PEG_BOARD_LOCATION)
+    : undefined;
+  const stashMatch =
+    !isPegBoard && trimmedLocation
+      ? nameMatches.find((p) => p.location.trim().toLowerCase() === trimmedLocation)
+      : undefined;
+
+  const [bumping, setBumping] = useState(false);
+
+  const bumpStashCount = async (match: Paint) => {
+    const { id, timestamp, userRef, ...rest } = match;
+    void timestamp;
+    void userRef;
+    const payload: CreatePaintPayload = { ...rest, count: rest.count + 1 };
+
+    setBumping(true);
+    try {
+      await updatePaint(id, payload);
+      await onSaved();
+      toast.success(`Added to existing "${match.location}" stash (now ${payload.count})`);
+      setFormData(initialState);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      toast.error(`Failed to update stash: ${message}`);
+    } finally {
+      setBumping(false);
+    }
+  };
+
   const brandSuggestions = useMemo(
     () => [...new Set(paints.map((p) => p.brand))].sort(),
     [paints]
@@ -188,6 +232,11 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
 
     if (isPegBoard && (!pegRow || !pegSlot)) {
       toast.error("Pick a row and slot for the peg board");
+      return;
+    }
+
+    if (pegBoardMatch) {
+      toast.error(`${pegBoardMatch.name} is already on the peg board — pick a different location`);
       return;
     }
 
@@ -385,6 +434,47 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
               ))}
             </datalist>
           </div>
+
+          {nameMatches.length > 0 && (
+            <div
+              className={`space-y-2 rounded-sm border px-3 py-2 text-sm sm:col-span-2 ${
+                pegBoardMatch
+                  ? "border-destructive/40 bg-destructive/10 text-destructive"
+                  : "border-primary/15 bg-background/40 text-muted-foreground"
+              }`}
+            >
+              <p className="font-mono text-xs uppercase tracking-[0.1em]">
+                {pegBoardMatch
+                  ? "Already on the peg board"
+                  : `Already tracking "${name.trim()}"`}
+              </p>
+              <ul className="space-y-1">
+                {nameMatches.map((match) => (
+                  <li key={match.id}>
+                    {match.brand} · {match.location}
+                    {match.location === PEG_BOARD_LOCATION
+                      ? ` (Row ${match.pegRow}, Slot ${match.pegSlot})`
+                      : ""}{" "}
+                    · count {match.count}
+                  </li>
+                ))}
+              </ul>
+              {pegBoardMatch && (
+                <p>Pick a different location for this pot — a peg slot can only hold one.</p>
+              )}
+              {stashMatch && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={bumping}
+                  onClick={() => bumpStashCount(stashMatch)}
+                >
+                  {bumping ? "Adding..." : `Add 1 to "${stashMatch.location}" instead`}
+                </Button>
+              )}
+            </div>
+          )}
 
           {isPegBoard && suggestedSlot && (
             <div className="flex items-center justify-between gap-4 rounded-sm border border-primary/15 bg-background/40 px-3 py-2 sm:col-span-2">
