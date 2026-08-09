@@ -1,12 +1,14 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { Pencil, Trash2 } from "lucide-react";
+import { ArrowRight, Pencil, Trash2 } from "lucide-react";
 import Spinner from "../components/Spinner";
 import PegBoard from "../components/PegBoard";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { swatchFor, tagColourFor } from "@/lib/tag-colours";
+import { computeIdealLayout } from "@/lib/paint-layout";
 import { deletePaint, updatePaint, type CreatePaintPayload } from "../services/paintsApi";
 import {
   PEG_BOARD_LOCATION,
@@ -29,7 +31,7 @@ function toPayload(paint: Paint): CreatePaintPayload {
 }
 
 type SortKey = "name" | "brand" | "type" | "count" | "location";
-type View = "table" | "board";
+type View = "table" | "board" | "reorganize";
 
 const columns: [SortKey, string][] = [
   ["name", "Name"],
@@ -77,6 +79,16 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
       return sortDir === "asc" ? cmp : -cmp;
     });
   }, [data, search, sortKey, sortDir]);
+
+  const idealLayout = useMemo(() => computeIdealLayout(data), [data]);
+  const misplaced = useMemo(
+    () =>
+      idealLayout.filter(
+        (entry) => entry.paint.pegRow !== entry.idealRow || entry.paint.pegSlot !== entry.idealSlot
+      ),
+    [idealLayout]
+  );
+  const [applying, setApplying] = useState(false);
 
   const toggleSort = (key: SortKey) => {
     if (key === sortKey) {
@@ -138,6 +150,33 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
     }
   };
 
+  const handleApplyIdealLayout = async () => {
+    if (misplaced.length === 0) return;
+    if (
+      !window.confirm(
+        `Move ${misplaced.length} paint${misplaced.length === 1 ? "" : "s"} to their ideal slots? Update the physical board to match afterwards.`
+      )
+    ) {
+      return;
+    }
+
+    setApplying(true);
+    try {
+      await Promise.all(
+        misplaced.map(({ paint, idealRow, idealSlot }) =>
+          updatePaint(paint.id, { ...toPayload(paint), pegRow: idealRow, pegSlot: idealSlot })
+        )
+      );
+      await onPaintsChanged();
+      toast.success(`Updated ${misplaced.length} paint${misplaced.length === 1 ? "" : "s"}`);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      toast.error(`Failed to apply layout: ${message}`);
+    } finally {
+      setApplying(false);
+    }
+  };
+
   if (loading) {
     return <Spinner />;
   }
@@ -170,16 +209,18 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
           >
             <ToggleGroupItem value="table">Table</ToggleGroupItem>
             <ToggleGroupItem value="board">Peg Board</ToggleGroupItem>
+            {isAuthed && <ToggleGroupItem value="reorganize">Reorganize</ToggleGroupItem>}
           </ToggleGroup>
 
-          {view === "table" ? (
+          {view === "table" && (
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name..."
               className="max-w-xs"
             />
-          ) : (
+          )}
+          {view === "board" && (
             <Input
               value={boardSearch}
               onChange={(e) => setBoardSearch(e.target.value)}
@@ -299,7 +340,7 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
             )}
           </div>
           </div>
-        ) : (
+        ) : view === "board" ? (
           <div className="mx-auto w-full max-w-[1800px] px-4 sm:px-6 lg:px-8">
             <div className="rounded-sm border border-primary/15 bg-card p-6">
               <p className="mb-2 font-mono text-xs uppercase tracking-[0.14em] text-primary">
@@ -320,6 +361,101 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
                 isAuthed={isAuthed}
                 onDropPaint={handleDropPaint}
               />
+            </div>
+          </div>
+        ) : (
+          <div className="container">
+            <div className="rounded-sm border border-primary/15 bg-card p-6">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+                <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
+                  {misplaced.length === 0
+                    ? `All ${idealLayout.length} paints are in their ideal spot`
+                    : `${misplaced.length} of ${idealLayout.length} paints need to move`}
+                </p>
+                <Button
+                  size="sm"
+                  disabled={misplaced.length === 0 || applying}
+                  onClick={handleApplyIdealLayout}
+                >
+                  {applying ? "Applying..." : "Apply ideal layout"}
+                </Button>
+              </div>
+
+              {misplaced.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  Nothing to do — the board already matches the ideal type-then-alphabetical
+                  order.
+                </p>
+              ) : (
+                <div className="overflow-x-auto rounded-sm border border-primary/15">
+                  <table className="w-full min-w-[560px] border-collapse text-sm">
+                    <thead>
+                      <tr className="border-b border-primary/15 bg-card text-left">
+                        <th className="px-4 py-3">
+                          <span className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
+                            Paint
+                          </span>
+                        </th>
+                        <th className="px-4 py-3">
+                          <span className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
+                            Type
+                          </span>
+                        </th>
+                        <th className="px-4 py-3 text-right">
+                          <span className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
+                            Current
+                          </span>
+                        </th>
+                        <th className="px-4 py-3 text-right">
+                          <span className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
+                            Ideal
+                          </span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {misplaced.map(({ paint, idealRow, idealSlot }) => {
+                        const typeColour = tagColourFor(paint.type);
+                        return (
+                          <tr key={paint.id} className="border-b border-primary/10 last:border-0">
+                            <td className="px-4 py-3 font-medium">
+                              <span
+                                className="mr-2 inline-block h-2.5 w-2.5 rounded-full align-middle"
+                                style={{
+                                  backgroundColor: paint.hex ?? swatchFor(paint.parentColours[0]),
+                                }}
+                              />
+                              {paint.name}
+                            </td>
+                            <td className="px-4 py-3">
+                              <span
+                                className="rounded-sm px-2 py-0.5 text-xs font-medium"
+                                style={{
+                                  backgroundColor: typeColour.bg,
+                                  color: typeColour.text,
+                                }}
+                              >
+                                {paint.type}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-right text-muted-foreground">
+                              {paint.pegRow && paint.pegSlot
+                                ? `Row ${paint.pegRow}, Slot ${paint.pegSlot}`
+                                : "Not on board"}
+                            </td>
+                            <td className="px-4 py-3">
+                              <span className="flex items-center justify-end gap-2 text-foreground">
+                                <ArrowRight className="h-3.5 w-3.5 text-primary" />
+                                Row {idealRow}, Slot {idealSlot}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
         )}
