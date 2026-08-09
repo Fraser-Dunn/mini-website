@@ -22,6 +22,18 @@ export function swatchFor(colour?: string): string {
   return COLOUR_SWATCHES[colour.toLowerCase()] ?? FALLBACK_SWATCH;
 }
 
+// Picks readable text colour (dark or light) for a given swatch background,
+// via relative luminance - so a pale swatch like White/Yellow gets dark text
+// instead of unreadable white-on-white.
+export function textColourFor(hex: string): string {
+  const [r, g, b] = (hex.match(/[0-9a-fA-F]{2}/g) ?? ["00", "00", "00"])
+    .slice(0, 3)
+    .map((part) => parseInt(part, 16) / 255)
+    .map((c) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)));
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luminance > 0.5 ? "#242220" : "#f1e7d8";
+}
+
 // Consistent display casing for a colour name, regardless of how it was
 // typed - "green", "GREEN", "gReEn" all become "Green".
 export function normalizeColourName(value: string): string {

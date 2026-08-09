@@ -6,22 +6,10 @@ import { createPaint, deletePaint, updatePaint, type CreatePaintPayload } from "
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { TagInput } from "@/components/ui/tag-input";
-import { computeSuggestedSlot } from "@/lib/paint-layout";
+import { getNextAvailableSlot } from "@/lib/paint-layout";
 import { normalizeColourName } from "@/lib/tag-colours";
-import {
-  PEG_BOARD_LOCATION,
-  PEG_BOARD_ROWS,
-  slotsInRow,
-  type Paint,
-} from "../types/paint";
+import { PEG_BOARD_LOCATION, type Paint } from "../types/paint";
 
 interface AdminPaintsProps {
   paints: Paint[];
@@ -53,8 +41,6 @@ const initialState: AdminPaintFormState = {
 };
 
 const HEX_PATTERN = /^#[0-9a-fA-F]{6}$/;
-
-const pegRows = Array.from({ length: PEG_BOARD_ROWS }, (_, i) => i + 1);
 
 const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
   const { paintId } = useParams<{ paintId?: string }>();
@@ -105,28 +91,18 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
     formData;
 
   const isPegBoard = location === PEG_BOARD_LOCATION;
-  const pegSlots = Array.from({ length: slotsInRow(pegRow ?? 1) }, (_, i) => i + 1);
 
-  const suggestedSlot = useMemo(() => {
-    if (!isPegBoard || !name.trim() || !type.trim()) return null;
-    return computeSuggestedSlot(
-      paints,
-      { name: name.trim(), type: type.trim() },
-      editingPaint?.id
-    );
-  }, [paints, isPegBoard, name, type, editingPaint?.id]);
+  // A pot newly arriving on the board (new entry, or an edit that's just
+  // switched location to the peg board) gets dropped in the next free slot
+  // automatically - Reorganize is what tidies up ideal ordering afterwards.
+  // A pot already on the board that's being edited without changing location
+  // keeps its existing row/slot; move it by dragging on the board instead.
+  const needsAutoAssign = isPegBoard && (!editingPaint || editingPaint.location !== PEG_BOARD_LOCATION);
 
-  const suggestionApplied =
-    suggestedSlot !== null && pegRow === suggestedSlot.row && pegSlot === suggestedSlot.slot;
-
-  const applySuggestedSlot = () => {
-    if (!suggestedSlot) return;
-    setFormData((prevState) => ({
-      ...prevState,
-      pegRow: suggestedSlot.row,
-      pegSlot: suggestedSlot.slot,
-    }));
-  };
+  const nextAvailableSlot = useMemo(() => {
+    if (!needsAutoAssign) return null;
+    return getNextAvailableSlot(paints, editingPaint?.id);
+  }, [paints, needsAutoAssign, editingPaint?.id]);
 
   // Detect other records that already track this same paint (by name), so we
   // can steer towards bumping an existing stash or flag a peg-board clash
@@ -205,19 +181,6 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
     }));
   };
 
-  const onPegRowChange = (value: string) => {
-    const row = Number(value);
-    setFormData((prevState) => ({
-      ...prevState,
-      pegRow: row,
-      pegSlot: prevState.pegSlot && prevState.pegSlot <= slotsInRow(row) ? prevState.pegSlot : null,
-    }));
-  };
-
-  const onPegSlotChange = (value: string) => {
-    setFormData((prevState) => ({ ...prevState, pegSlot: Number(value) }));
-  };
-
   const onHexChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({ ...prevState, hex: e.target.value }));
   };
@@ -230,14 +193,20 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
       return;
     }
 
-    if (isPegBoard && (!pegRow || !pegSlot)) {
-      toast.error("Pick a row and slot for the peg board");
-      return;
-    }
-
     if (pegBoardMatch) {
       toast.error(`${pegBoardMatch.name} is already on the peg board — pick a different location`);
       return;
+    }
+
+    let assignedRow = pegRow;
+    let assignedSlot = pegSlot;
+    if (isPegBoard && needsAutoAssign) {
+      if (!nextAvailableSlot) {
+        toast.error("Peg board is full — no free slot available");
+        return;
+      }
+      assignedRow = nextAvailableSlot.row;
+      assignedSlot = nextAvailableSlot.slot;
     }
 
     const trimmedHex = hex.trim();
@@ -254,7 +223,7 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
       count: Number(count),
       location,
       ...(trimmedHex ? { hex: trimmedHex } : {}),
-      ...(isPegBoard ? { pegRow: pegRow!, pegSlot: pegSlot! } : {}),
+      ...(isPegBoard ? { pegRow: assignedRow!, pegSlot: assignedSlot! } : {}),
     };
 
     setSubmitting(true);
@@ -476,57 +445,28 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
             </div>
           )}
 
-          {isPegBoard && suggestedSlot && (
-            <div className="flex items-center justify-between gap-4 rounded-sm border border-primary/15 bg-background/40 px-3 py-2 sm:col-span-2">
-              <span className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
-                Suggested slot: Row {suggestedSlot.row}, Slot {suggestedSlot.slot}
+          {isPegBoard && needsAutoAssign && (
+            <div
+              className={`flex items-center gap-2 rounded-sm border px-3 py-2 text-sm sm:col-span-2 ${
+                nextAvailableSlot
+                  ? "border-primary/15 bg-background/40 text-muted-foreground"
+                  : "border-destructive/40 bg-destructive/10 text-destructive"
+              }`}
+            >
+              <span className="font-mono text-xs uppercase tracking-[0.1em]">
+                {nextAvailableSlot
+                  ? `Will be placed at Row ${nextAvailableSlot.row}, Slot ${nextAvailableSlot.slot}`
+                  : "Peg board is full — no free slot available"}
               </span>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={suggestionApplied}
-                onClick={applySuggestedSlot}
-              >
-                {suggestionApplied ? "Applied" : "Use this"}
-              </Button>
             </div>
           )}
 
-          {isPegBoard && (
-            <>
-              <div className="space-y-1.5">
-                <Label htmlFor="pegRow">Peg Row</Label>
-                <Select value={pegRow ? String(pegRow) : ""} onValueChange={onPegRowChange}>
-                  <SelectTrigger id="pegRow">
-                    <SelectValue placeholder="Row" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {pegRows.map((row) => (
-                      <SelectItem key={row} value={String(row)}>
-                        Row {row}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="pegSlot">Peg Slot</Label>
-                <Select value={pegSlot ? String(pegSlot) : ""} onValueChange={onPegSlotChange}>
-                  <SelectTrigger id="pegSlot">
-                    <SelectValue placeholder="Slot" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {pegSlots.map((slot) => (
-                      <SelectItem key={slot} value={String(slot)}>
-                        Slot {slot}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </>
+          {isPegBoard && !needsAutoAssign && pegRow && pegSlot && (
+            <div className="flex items-center gap-2 rounded-sm border border-primary/15 bg-background/40 px-3 py-2 text-sm sm:col-span-2">
+              <span className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
+                Currently at Row {pegRow}, Slot {pegSlot} — drag it on the board to move it
+              </span>
+            </div>
           )}
 
           <div className="flex gap-3 sm:col-span-2">

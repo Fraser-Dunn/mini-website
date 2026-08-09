@@ -61,29 +61,22 @@ export interface SuggestedSlot {
   slot: number;
 }
 
-// Where a not-yet-saved paint would land if it were added to the board right
-// now, given the other paints already there. `excludeId` drops the paint
-// currently being edited from the comparison set, so re-suggesting a slot
-// for it isn't skewed by its own old entry.
-export function computeSuggestedSlot(
+// The first physically-empty slot on the board, in reading order. New paints
+// get dropped here rather than at their "ideal" sorted position, since the
+// board is rarely fully reorganized - the Reorganize tool is what moves
+// things to their ideal spot later. `excludeId` drops the paint currently
+// being edited from the occupancy check, so it doesn't block on its own old
+// slot.
+export function getNextAvailableSlot(
   existingPaints: Paint[],
-  candidate: { name: string; type: string },
   excludeId?: string
 ): SuggestedSlot | null {
-  const CANDIDATE_ID = "__candidate__";
-  const base = existingPaints.filter((paint) => paint.id !== excludeId);
-  const candidatePaint: Paint = {
-    id: CANDIDATE_ID,
-    brand: "",
-    name: candidate.name,
-    parentColours: [],
-    type: candidate.type,
-    count: 0,
-    location: PEG_BOARD_LOCATION,
-    timestamp: new Date().toISOString(),
-  };
+  const occupied = new Set(
+    existingPaints
+      .filter((paint) => paint.location === PEG_BOARD_LOCATION && paint.id !== excludeId)
+      .map((paint) => `${paint.pegRow}-${paint.pegSlot}`)
+  );
 
-  const layout = computeIdealLayout([...base, candidatePaint]);
-  const found = layout.find((entry) => entry.paint.id === CANDIDATE_ID);
-  return found ? { row: found.idealRow, slot: found.idealSlot } : null;
+  const free = allBoardPositions().find(({ row, slot }) => !occupied.has(`${row}-${slot}`));
+  return free ?? null;
 }

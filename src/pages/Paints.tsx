@@ -7,7 +7,7 @@ import PegBoard from "../components/PegBoard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { swatchFor, tagColourFor } from "@/lib/tag-colours";
+import { swatchFor, tagColourFor, textColourFor } from "@/lib/tag-colours";
 import { computeIdealLayout } from "@/lib/paint-layout";
 import { deletePaint, updatePaint, type CreatePaintPayload } from "../services/paintsApi";
 import {
@@ -294,15 +294,18 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex flex-wrap gap-1">
-                          {paint.parentColours.map((colour) => (
-                            <span
-                              key={colour}
-                              className="rounded-sm px-2 py-0.5 text-xs font-medium text-white shadow-sm"
-                              style={{ backgroundColor: swatchFor(colour) }}
-                            >
-                              {colour}
-                            </span>
-                          ))}
+                          {paint.parentColours.map((colour) => {
+                            const bg = swatchFor(colour);
+                            return (
+                              <span
+                                key={colour}
+                                className="rounded-sm px-2 py-0.5 text-xs font-medium shadow-sm"
+                                style={{ backgroundColor: bg, color: textColourFor(bg) }}
+                              >
+                                {colour}
+                              </span>
+                            );
+                          })}
                         </div>
                       </td>
                       {isAuthed && (
