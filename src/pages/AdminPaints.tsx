@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import AdminNav from "../components/AdminNav";
-import { createPaint, updatePaint } from "../services/paintsApi";
+import { createPaint, deletePaint, updatePaint } from "../services/paintsApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -62,6 +62,7 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
 
   const [formData, setFormData] = useState<AdminPaintFormState>(initialState);
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (editingPaint) {
@@ -185,6 +186,28 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
       toast.error(`Failed to save paint: ${message}`);
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const onDelete = async () => {
+    if (!paintId || !editingPaint) {
+      return;
+    }
+    if (!window.confirm(`Delete "${editingPaint.name}"? This can't be undone.`)) {
+      return;
+    }
+
+    setDeleting(true);
+    try {
+      await deletePaint(paintId);
+      await onSaved();
+      toast.success("Paint deleted");
+      navigate("/paints");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      toast.error(`Failed to delete paint: ${message}`);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -352,9 +375,21 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
             </>
           )}
 
-          <Button type="submit" disabled={submitting} className="sm:col-span-2">
-            {submitting ? "Saving..." : isEditing ? "Save Changes" : "Save Paint"}
-          </Button>
+          <div className="flex gap-3 sm:col-span-2">
+            <Button type="submit" disabled={submitting || deleting} className="flex-1">
+              {submitting ? "Saving..." : isEditing ? "Save Changes" : "Save Paint"}
+            </Button>
+            {isEditing && (
+              <Button
+                type="button"
+                variant="destructive"
+                disabled={submitting || deleting}
+                onClick={onDelete}
+              >
+                {deleting ? "Deleting..." : "Delete"}
+              </Button>
+            )}
+          </div>
         </form>
       </div>
     </div>

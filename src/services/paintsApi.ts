@@ -46,3 +46,15 @@ export async function updatePaint(id: string, payload: CreatePaintPayload): Prom
   }
   return res.json();
 }
+
+export async function deletePaint(id: string): Promise<void> {
+  const idToken = await getIdToken();
+  const res = await fetch(`${API_BASE_URL}/paints/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${idToken}` },
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}) as { message?: string });
+    throw new Error(body.message ?? `Failed to delete paint: ${res.status}`);
+  }
+}

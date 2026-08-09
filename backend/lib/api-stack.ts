@@ -106,6 +106,15 @@ export class ApiStack extends cdk.Stack {
     });
     table.grant(updatePaintFn, "dynamodb:GetItem", "dynamodb:PutItem");
 
+    const deletePaintFn = new nodejs.NodejsFunction(this, "DeletePaintFunction", {
+      entry: path.join(__dirname, "../lambdas/deletePaint/index.ts"),
+      handler: "handler",
+      runtime: lambda.Runtime.NODEJS_22_X,
+      environment: { TABLE_NAME: table.tableName },
+      bundling,
+    });
+    table.grant(deletePaintFn, "dynamodb:DeleteItem");
+
     // --- HTTP API ---
     const httpApi = new apigwv2.HttpApi(this, "HttpApi", {
       apiName: "mini-website-api",
@@ -115,6 +124,7 @@ export class ApiStack extends cdk.Stack {
           apigwv2.CorsHttpMethod.GET,
           apigwv2.CorsHttpMethod.POST,
           apigwv2.CorsHttpMethod.PUT,
+          apigwv2.CorsHttpMethod.DELETE,
         ],
         allowHeaders: ["Content-Type", "Authorization"],
       },
@@ -189,6 +199,16 @@ export class ApiStack extends cdk.Stack {
       integration: new integrations.HttpLambdaIntegration(
         "UpdatePaintIntegration",
         updatePaintFn
+      ),
+      authorizer,
+    });
+
+    httpApi.addRoutes({
+      path: "/paints/{id}",
+      methods: [apigwv2.HttpMethod.DELETE],
+      integration: new integrations.HttpLambdaIntegration(
+        "DeletePaintIntegration",
+        deletePaintFn
       ),
       authorizer,
     });

@@ -1,11 +1,13 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Pencil } from "lucide-react";
+import { toast } from "sonner";
+import { Pencil, Trash2 } from "lucide-react";
 import Spinner from "../components/Spinner";
 import PegBoard from "../components/PegBoard";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { swatchFor, tagColourFor } from "@/lib/tag-colours";
+import { deletePaint, updatePaint, type CreatePaintPayload } from "../services/paintsApi";
 import {
   PEG_BOARD_LOCATION,
   PEG_BOARD_ROWS,
@@ -18,6 +20,12 @@ interface PaintsProps {
   data: Paint[];
   loading: boolean;
   isAuthed: boolean;
+  onPaintsChanged: () => Promise<void>;
+}
+
+function toPayload(paint: Paint): CreatePaintPayload {
+  const { id: _id, timestamp: _timestamp, userRef: _userRef, ...rest } = paint;
+  return rest;
 }
 
 type SortKey = "name" | "brand" | "type" | "count" | "location";
@@ -33,7 +41,7 @@ const columns: [SortKey, string][] = [
 
 const TOTAL_SLOTS = (PEG_BOARD_ROWS - 1) * PEG_BOARD_SLOTS_PER_ROW + PEG_BOARD_LAST_ROW_SLOTS;
 
-const Paints = ({ data, loading, isAuthed }: PaintsProps) => {
+const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
   const [view, setView] = useState<View>("table");
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("name");
@@ -76,6 +84,57 @@ const Paints = ({ data, loading, isAuthed }: PaintsProps) => {
     } else {
       setSortKey(key);
       setSortDir("asc");
+    }
+  };
+
+  const handleDelete = async (paint: Paint) => {
+    if (!window.confirm(`Delete "${paint.name}"? This can't be undone.`)) {
+      return;
+    }
+    try {
+      await deletePaint(paint.id);
+      await onPaintsChanged();
+      toast.success("Paint deleted");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      toast.error(`Failed to delete paint: ${message}`);
+    }
+  };
+
+  const handleDropPaint = async (draggedId: string, targetRow: number, targetSlot: number) => {
+    const dragged = pegBoardPaints.find((paint) => paint.id === draggedId);
+    if (!dragged || (dragged.pegRow === targetRow && dragged.pegSlot === targetSlot)) {
+      return;
+    }
+
+    const occupant = pegBoardPaints.find(
+      (paint) =>
+        paint.id !== draggedId && paint.pegRow === targetRow && paint.pegSlot === targetSlot
+    );
+
+    try {
+      if (occupant) {
+        await Promise.all([
+          updatePaint(dragged.id, { ...toPayload(dragged), pegRow: targetRow, pegSlot: targetSlot }),
+          updatePaint(occupant.id, {
+            ...toPayload(occupant),
+            pegRow: dragged.pegRow,
+            pegSlot: dragged.pegSlot,
+          }),
+        ]);
+        toast.success(`Swapped ${dragged.name} and ${occupant.name}`);
+      } else {
+        await updatePaint(dragged.id, {
+          ...toPayload(dragged),
+          pegRow: targetRow,
+          pegSlot: targetSlot,
+        });
+        toast.success(`Moved ${dragged.name} to row ${targetRow}, slot ${targetSlot}`);
+      }
+      await onPaintsChanged();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      toast.error(`Failed to move paint: ${message}`);
     }
   };
 
@@ -206,13 +265,23 @@ const Paints = ({ data, loading, isAuthed }: PaintsProps) => {
                       </td>
                       {isAuthed && (
                         <td className="px-4 py-3 text-right">
-                          <Link
-                            to={`/admin/paints/${paint.id}`}
-                            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
-                          >
-                            <Pencil className="h-3.5 w-3.5" />
-                            Edit
-                          </Link>
+                          <div className="flex items-center justify-end gap-3">
+                            <Link
+                              to={`/admin/paints/${paint.id}`}
+                              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
+                            >
+                              <Pencil className="h-3.5 w-3.5" />
+                              Edit
+                            </Link>
+                            <button
+                              type="button"
+                              onClick={() => handleDelete(paint)}
+                              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                              Delete
+                            </button>
+                          </div>
                         </td>
                       )}
                     </tr>
@@ -243,7 +312,12 @@ const Paints = ({ data, loading, isAuthed }: PaintsProps) => {
                       : `Found “${boardMatch.name}” — row ${boardMatch.pegRow}, slot ${boardMatch.pegSlot}.`}
                 </p>
               )}
-              <PegBoard paints={pegBoardPaints} highlightedPaintId={highlightedPaintId} />
+              <PegBoard
+                paints={pegBoardPaints}
+                highlightedPaintId={highlightedPaintId}
+                isAuthed={isAuthed}
+                onDropPaint={handleDropPaint}
+              />
             </div>
           </div>
         )}

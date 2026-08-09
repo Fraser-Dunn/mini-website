@@ -59,7 +59,14 @@ function App() {
           <Route path="/gallery" element={<Gallery data={data} loading={loading} />} />
           <Route
             path="/paints"
-            element={<Paints data={paints} loading={paintsLoading} isAuthed={isAuthed} />}
+            element={
+              <Paints
+                data={paints}
+                loading={paintsLoading}
+                isAuthed={isAuthed}
+                onPaintsChanged={refetchPaints}
+              />
+            }
           />
           <Route path="/admin" element={<PrivateRoute isAuthed={isAuthed} />}>
             <Route path="/admin" element={<Admin />} />
