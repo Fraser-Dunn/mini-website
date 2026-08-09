@@ -107,14 +107,15 @@ const PegBoard = ({ paints, highlightedPaintId, isAuthed, onDropPaint }: PegBoar
                       <div className="h-full w-full overflow-hidden rounded-[18%] shadow-sm">
                         <div className="h-[26%] w-full border-b border-black/25 bg-plate" />
                         <div
-                          className="relative h-[74%] w-full"
+                          className="flex h-[74%] w-full items-center justify-center"
                           style={{ backgroundColor: paint.hex ?? swatchFor(paint.parentColours[0]) }}
                         >
-                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-1.5 pb-1.5 pt-4">
-                            <p className="line-clamp-3 text-center text-[9px] font-medium leading-[1.2] text-white">
-                              {paint.name}
-                            </p>
-                          </div>
+                          <p
+                            className="line-clamp-3 px-1.5 text-center text-[9px] font-semibold leading-[1.2] text-white"
+                            style={{ textShadow: "0 1px 3px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.6)" }}
+                          >
+                            {paint.name}
+                          </p>
                         </div>
                       </div>
                     )}

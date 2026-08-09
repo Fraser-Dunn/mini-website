@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import AdminNav from "../components/AdminNav";
 import { createPaint, deletePaint, updatePaint } from "../services/paintsApi";
@@ -14,6 +14,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TagInput } from "@/components/ui/tag-input";
+import { computeSuggestedSlot } from "@/lib/paint-layout";
+import { normalizeColourName } from "@/lib/tag-colours";
 import {
   PEG_BOARD_LOCATION,
   PEG_BOARD_ROWS,
@@ -56,9 +58,13 @@ const pegRows = Array.from({ length: PEG_BOARD_ROWS }, (_, i) => i + 1);
 
 const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
   const { paintId } = useParams<{ paintId?: string }>();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const editingPaint = paintId ? paints.find((p) => p.id === paintId) : undefined;
   const isEditing = Boolean(paintId);
+  const duplicateSource = !isEditing
+    ? paints.find((p) => p.id === searchParams.get("from"))
+    : undefined;
 
   const [formData, setFormData] = useState<AdminPaintFormState>(initialState);
   const [submitting, setSubmitting] = useState(false);
@@ -77,15 +83,50 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
         pegRow: editingPaint.pegRow ?? null,
         pegSlot: editingPaint.pegSlot ?? null,
       });
+    } else if (duplicateSource) {
+      // Same paint, new physical pot - copy everything except where it
+      // lives, since that's the whole point of duplicating an entry.
+      setFormData({
+        brand: duplicateSource.brand,
+        name: duplicateSource.name,
+        parentColours: duplicateSource.parentColours,
+        type: duplicateSource.type,
+        count: 1,
+        location: "",
+        hex: duplicateSource.hex ?? "",
+        pegRow: null,
+        pegSlot: null,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editingPaint?.id]);
+  }, [editingPaint?.id, duplicateSource?.id]);
 
   const { brand, name, parentColours, type, count, location, hex, pegRow, pegSlot } =
     formData;
 
   const isPegBoard = location === PEG_BOARD_LOCATION;
   const pegSlots = Array.from({ length: slotsInRow(pegRow ?? 1) }, (_, i) => i + 1);
+
+  const suggestedSlot = useMemo(() => {
+    if (!isPegBoard || !name.trim() || !type.trim()) return null;
+    return computeSuggestedSlot(
+      paints,
+      { name: name.trim(), type: type.trim() },
+      editingPaint?.id
+    );
+  }, [paints, isPegBoard, name, type, editingPaint?.id]);
+
+  const suggestionApplied =
+    suggestedSlot !== null && pegRow === suggestedSlot.row && pegSlot === suggestedSlot.slot;
+
+  const applySuggestedSlot = () => {
+    if (!suggestedSlot) return;
+    setFormData((prevState) => ({
+      ...prevState,
+      pegRow: suggestedSlot.row,
+      pegSlot: suggestedSlot.slot,
+    }));
+  };
 
   const brandSuggestions = useMemo(
     () => [...new Set(paints.map((p) => p.brand))].sort(),
@@ -96,7 +137,7 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
     [paints]
   );
   const colourSuggestions = useMemo(
-    () => [...new Set(paints.flatMap((p) => p.parentColours))].sort(),
+    () => [...new Set(paints.flatMap((p) => p.parentColours).map(normalizeColourName))].sort(),
     [paints]
   );
   const locationSuggestions = useMemo(
@@ -215,11 +256,16 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
     <div className="container max-w-3xl py-14">
       <AdminNav />
       <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
-        {isEditing ? "Editing" : "New entry"}
+        {isEditing ? "Editing" : duplicateSource ? "New entry · duplicate" : "New entry"}
       </p>
       <h1 className="mt-2 font-display text-3xl font-bold uppercase tracking-wide">
         {isEditing ? "Edit Paint" : "Catalogue a Paint"}
       </h1>
+      {duplicateSource && (
+        <p className="mt-2 text-sm text-muted-foreground">
+          Copied from &ldquo;{duplicateSource.name}&rdquo; — give this pot its own location.
+        </p>
+      )}
       <div className="mt-8 rounded-sm border border-primary/15 bg-card p-6">
         <form className="grid grid-cols-1 gap-4 sm:grid-cols-2" onSubmit={onSubmit}>
           <div className="space-y-1.5">
@@ -295,6 +341,7 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
               suggestions={colourSuggestions}
               placeholder="Type a colour, press Enter..."
               max={5}
+              normalize={normalizeColourName}
             />
           </div>
 
@@ -338,6 +385,23 @@ const AdminPaints = ({ paints, onSaved }: AdminPaintsProps) => {
               ))}
             </datalist>
           </div>
+
+          {isPegBoard && suggestedSlot && (
+            <div className="flex items-center justify-between gap-4 rounded-sm border border-primary/15 bg-background/40 px-3 py-2 sm:col-span-2">
+              <span className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
+                Suggested slot: Row {suggestedSlot.row}, Slot {suggestedSlot.slot}
+              </span>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={suggestionApplied}
+                onClick={applySuggestedSlot}
+              >
+                {suggestionApplied ? "Applied" : "Use this"}
+              </Button>
+            </div>
+          )}
 
           {isPegBoard && (
             <>

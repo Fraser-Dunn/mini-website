@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowRight, Pencil, Trash2 } from "lucide-react";
+import { ArrowRight, Copy, Pencil, Trash2 } from "lucide-react";
 import Spinner from "../components/Spinner";
 import PegBoard from "../components/PegBoard";
 import { Button } from "@/components/ui/button";
@@ -314,6 +314,14 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
                             >
                               <Pencil className="h-3.5 w-3.5" />
                               Edit
+                            </Link>
+                            <Link
+                              to={`/admin/paints?from=${paint.id}`}
+                              title="Duplicate this paint into a new location"
+                              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
+                            >
+                              <Copy className="h-3.5 w-3.5" />
+                              Duplicate
                             </Link>
                             <button
                               type="button"

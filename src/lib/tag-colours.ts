@@ -22,6 +22,12 @@ export function swatchFor(colour?: string): string {
   return COLOUR_SWATCHES[colour.toLowerCase()] ?? FALLBACK_SWATCH;
 }
 
+// Consistent display casing for a colour name, regardless of how it was
+// typed - "green", "GREEN", "gReEn" all become "Green".
+export function normalizeColourName(value: string): string {
+  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+}
+
 export interface TagColour {
   bg: string;
   text: string;

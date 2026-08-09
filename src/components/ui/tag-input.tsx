@@ -10,6 +10,7 @@ interface TagInputProps {
   placeholder?: string;
   max?: number;
   className?: string;
+  normalize?: (value: string) => string;
 }
 
 const TagInput = ({
@@ -19,12 +20,14 @@ const TagInput = ({
   placeholder,
   max = 5,
   className,
+  normalize,
 }: TagInputProps) => {
   const [draft, setDraft] = useState("");
   const listId = useId();
 
   const addTag = (raw: string) => {
-    const tag = raw.trim();
+    const trimmed = raw.trim();
+    const tag = normalize ? normalize(trimmed) : trimmed;
     if (
       !tag ||
       value.length >= max ||

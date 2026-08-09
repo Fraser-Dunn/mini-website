@@ -55,3 +55,35 @@ export function computeIdealLayout(paints: Paint[]): LayoutAssignment[] {
     )
     .map(({ paint, pos }) => ({ paint, idealRow: pos.row, idealSlot: pos.slot }));
 }
+
+export interface SuggestedSlot {
+  row: number;
+  slot: number;
+}
+
+// Where a not-yet-saved paint would land if it were added to the board right
+// now, given the other paints already there. `excludeId` drops the paint
+// currently being edited from the comparison set, so re-suggesting a slot
+// for it isn't skewed by its own old entry.
+export function computeSuggestedSlot(
+  existingPaints: Paint[],
+  candidate: { name: string; type: string },
+  excludeId?: string
+): SuggestedSlot | null {
+  const CANDIDATE_ID = "__candidate__";
+  const base = existingPaints.filter((paint) => paint.id !== excludeId);
+  const candidatePaint: Paint = {
+    id: CANDIDATE_ID,
+    brand: "",
+    name: candidate.name,
+    parentColours: [],
+    type: candidate.type,
+    count: 0,
+    location: PEG_BOARD_LOCATION,
+    timestamp: new Date().toISOString(),
+  };
+
+  const layout = computeIdealLayout([...base, candidatePaint]);
+  const found = layout.find((entry) => entry.paint.id === CANDIDATE_ID);
+  return found ? { row: found.idealRow, slot: found.idealSlot } : null;
+}
