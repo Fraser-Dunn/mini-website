@@ -190,7 +190,8 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
         </div>
 
         {view === "table" ? (
-          <div className="container overflow-x-auto rounded-sm border border-primary/15">
+          <div className="container">
+          <div className="overflow-x-auto rounded-sm border border-primary/15">
             <table className="w-full min-w-[760px] border-collapse text-sm">
               <thead>
                 <tr className="border-b border-primary/15 bg-card text-left">
@@ -296,6 +297,7 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
                   : `No paints match “${search}”.`}
               </p>
             )}
+          </div>
           </div>
         ) : (
           <div className="mx-auto w-full max-w-[1800px] px-4 sm:px-6 lg:px-8">
