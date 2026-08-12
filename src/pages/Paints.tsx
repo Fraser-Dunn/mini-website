@@ -30,6 +30,24 @@ function toPayload(paint: Paint): CreatePaintPayload {
   return rest;
 }
 
+// The backend's Lambda concurrency is capped low, so firing many updates at
+// once (e.g. reorganizing dozens of paints) throttles most of them with a
+// 503. Running them in small batches instead keeps concurrent invocations
+// under that ceiling.
+const BATCH_CONCURRENCY = 4;
+
+async function runInBatches<T, R>(
+  items: T[],
+  worker: (item: T) => Promise<R>
+): Promise<R[]> {
+  const results: R[] = [];
+  for (let i = 0; i < items.length; i += BATCH_CONCURRENCY) {
+    const chunk = items.slice(i, i + BATCH_CONCURRENCY);
+    results.push(...(await Promise.all(chunk.map(worker))));
+  }
+  return results;
+}
+
 type SortKey = "name" | "brand" | "type" | "count" | "location";
 type View = "table" | "board" | "reorganize";
 
@@ -113,6 +131,34 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
     }
   };
 
+  // A dropped or throttled request mid-batch shouldn't corrupt the board:
+  // each write gets a couple of retries with backoff, and if it still fails
+  // the others aren't aborted - a Promise.all here would leave whichever
+  // updates already landed in place while reporting total failure, silently
+  // duplicating paints onto the same slot. Failures are reported honestly
+  // instead, and are safe to retry since layout math is recomputed fresh
+  // from whatever's actually saved.
+  const updatePegPosition = async (
+    paint: Paint,
+    pegRow: number,
+    pegSlot: number
+  ): Promise<{ paint: Paint; ok: boolean }> => {
+    const MAX_ATTEMPTS = 3;
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      try {
+        await updatePaint(paint.id, { ...toPayload(paint), pegRow, pegSlot });
+        return { paint, ok: true };
+      } catch (error) {
+        if (attempt === MAX_ATTEMPTS) {
+          console.error(`Failed to update ${paint.name}:`, error);
+          return { paint, ok: false };
+        }
+        await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+      }
+    }
+    return { paint, ok: false };
+  };
+
   const handleDropPaint = async (draggedId: string, targetRow: number, targetSlot: number) => {
     const dragged = pegBoardPaints.find((paint) => paint.id === draggedId);
     if (!dragged || (dragged.pegRow === targetRow && dragged.pegSlot === targetSlot)) {
@@ -124,29 +170,22 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
         paint.id !== draggedId && paint.pegRow === targetRow && paint.pegSlot === targetSlot
     );
 
-    try {
-      if (occupant) {
-        await Promise.all([
-          updatePaint(dragged.id, { ...toPayload(dragged), pegRow: targetRow, pegSlot: targetSlot }),
-          updatePaint(occupant.id, {
-            ...toPayload(occupant),
-            pegRow: dragged.pegRow,
-            pegSlot: dragged.pegSlot,
-          }),
-        ]);
-        toast.success(`Swapped ${dragged.name} and ${occupant.name}`);
-      } else {
-        await updatePaint(dragged.id, {
-          ...toPayload(dragged),
-          pegRow: targetRow,
-          pegSlot: targetSlot,
-        });
-        toast.success(`Moved ${dragged.name} to row ${targetRow}, slot ${targetSlot}`);
-      }
-      await onPaintsChanged();
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Failed to move paint: ${message}`);
+    const results = occupant
+      ? await Promise.all([
+          updatePegPosition(dragged, targetRow, targetSlot),
+          updatePegPosition(occupant, dragged.pegRow!, dragged.pegSlot!),
+        ])
+      : [await updatePegPosition(dragged, targetRow, targetSlot)];
+
+    await onPaintsChanged();
+
+    const failed = results.filter((r) => !r.ok);
+    if (failed.length === 0) {
+      toast.success(
+        occupant ? `Swapped ${dragged.name} and ${occupant.name}` : `Moved ${dragged.name} to row ${targetRow}, slot ${targetSlot}`
+      );
+    } else {
+      toast.error(`Failed to move ${failed.map((r) => r.paint.name).join(", ")} — try again`);
     }
   };
 
@@ -162,16 +201,21 @@ const Paints = ({ data, loading, isAuthed, onPaintsChanged }: PaintsProps) => {
 
     setApplying(true);
     try {
-      await Promise.all(
-        misplaced.map(({ paint, idealRow, idealSlot }) =>
-          updatePaint(paint.id, { ...toPayload(paint), pegRow: idealRow, pegSlot: idealSlot })
-        )
+      const results = await runInBatches(misplaced, ({ paint, idealRow, idealSlot }) =>
+        updatePegPosition(paint, idealRow, idealSlot)
       );
       await onPaintsChanged();
-      toast.success(`Updated ${misplaced.length} paint${misplaced.length === 1 ? "" : "s"}`);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Failed to apply layout: ${message}`);
+
+      const failed = results.filter((r) => !r.ok);
+      if (failed.length === 0) {
+        toast.success(`Updated ${results.length} paint${results.length === 1 ? "" : "s"}`);
+      } else {
+        toast.error(
+          `Updated ${results.length - failed.length} of ${results.length} — ${failed
+            .map((r) => r.paint.name)
+            .join(", ")} failed. Run Reorganize again to retry.`
+        );
+      }
     } finally {
       setApplying(false);
     }
