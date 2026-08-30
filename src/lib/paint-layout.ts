@@ -1,3 +1,4 @@
+import { swatchFor } from "@/lib/tag-colours";
 import {
   PEG_BOARD_LOCATION,
   PAINT_TYPE_ORDER,
@@ -17,11 +18,50 @@ function typeRank(type: string, unknownRank: Map<string, number>): number {
   return PAINT_TYPE_ORDER.length + (unknownRank.get(type) ?? 0);
 }
 
+// Standard RGB hex -> HSL, used to sort paints by hue rather than name.
+function hexToHsl(hex: string): { h: number; s: number; l: number } {
+  const [r, g, b] = (hex.match(/[0-9a-fA-F]{2}/g) ?? ["00", "00", "00"])
+    .slice(0, 3)
+    .map((part) => parseInt(part, 16) / 255);
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  if (max === min) return { h: 0, s: 0, l };
+
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h: number;
+  if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+  else if (max === g) h = (b - r) / d + 2;
+  else h = (r - g) / d + 4;
+  return { h: h * 60, s, l };
+}
+
+// A paint's position in colour order: greys/blacks/whites (low saturation,
+// where "hue" is meaningless) sort first by lightness, then hued colours
+// sort by hue and finally lightness. Based on the same swatch used to render
+// the paint everywhere else, so what you see is what it sorts by.
+function colourSortKey(paint: Paint): [number, number, number] {
+  const hex = paint.hex ?? swatchFor(paint.parentColours[0]);
+  const { h, s, l } = hexToHsl(hex);
+  const achromatic = s < 0.15;
+  return achromatic ? [0, l, 0] : [1, h, l];
+}
+
+function compareColourKeys(a: [number, number, number], b: [number, number, number]): number {
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return a[i] - b[i];
+  }
+  return 0;
+}
+
 // Computes where every peg-board paint *should* sit if the board were packed
 // perfectly: grouped by type in PAINT_TYPE_ORDER (unfamiliar types appended
-// as new sections, ordered by whichever was catalogued earliest), then
-// alphabetical by name within each section, filling slots row by row from
-// the top. Paints not stored on the peg board are ignored entirely.
+// as new sections, ordered by whichever was catalogued earliest), then by
+// colour/hue within each section - so a red stays grouped with other reds of
+// the same type, without a same-hued paint of a different type ending up
+// next to it - filling slots row by row from the top. Paints not stored on
+// the peg board are ignored entirely.
 export function computeIdealLayout(paints: Paint[]): LayoutAssignment[] {
   const boardPaints = paints.filter((paint) => paint.location === PEG_BOARD_LOCATION);
 
@@ -42,6 +82,8 @@ export function computeIdealLayout(paints: Paint[]): LayoutAssignment[] {
   const sorted = [...boardPaints].sort((a, b) => {
     const rankDiff = typeRank(a.type, unknownRank) - typeRank(b.type, unknownRank);
     if (rankDiff !== 0) return rankDiff;
+    const colourDiff = compareColourKeys(colourSortKey(a), colourSortKey(b));
+    if (colourDiff !== 0) return colourDiff;
     return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
   });
 
