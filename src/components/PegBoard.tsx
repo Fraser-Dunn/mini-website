@@ -105,7 +105,11 @@ const PegBoard = ({ paints, highlightedPaintId, isAuthed, onDropPaint }: PegBoar
                   >
                     {paint && (
                       <div className="h-full w-full overflow-hidden rounded-[18%] shadow-sm">
-                        <div className="h-[26%] w-full border-b border-black/25 bg-plate" />
+                        <div className="flex h-[26%] w-full items-center justify-center border-b border-black/25 bg-plate px-1">
+                          <p className="line-clamp-1 text-center font-mono text-[7px] font-semibold uppercase tracking-wide text-plate-foreground/70">
+                            {paint.type}
+                          </p>
+                        </div>
                         <div
                           className="flex h-[74%] w-full items-center justify-center"
                           style={{ backgroundColor: paint.hex ?? swatchFor(paint.parentColours[0]) }}
